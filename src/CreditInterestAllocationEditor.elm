@@ -36,4 +36,21 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] [ h1 [] [ text "Hello world" ] ]
+    div []
+        [ div []
+            [ h4 [] [ text "Pour le paiement en 2 fois" ]
+            , p []
+                [ span [] [ text "Vos frais : ", text "3.40", text "% par transaction" ]
+                , br [] []
+                , span [] [ text "Frais pour votre client : ", text "aucun" ]
+                ]
+            ]
+        , div []
+            [ h4 [] [ text "Pour le paiement en 3 fois" ]
+            , p []
+                [ span [] [ text "Vos frais : ", text "3.80", text "% par transaction" ]
+                , br [] []
+                , span [] [ text "Frais pour votre client : ", text "aucun" ]
+                ]
+            ]
+        ]
