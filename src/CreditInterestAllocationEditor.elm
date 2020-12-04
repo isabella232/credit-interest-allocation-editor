@@ -1,20 +1,16 @@
 module CreditInterestAllocationEditor exposing (main)
 
 import Browser
+import Data.Flags exposing (Flags)
+import Data.Model exposing (Model)
+import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Views.FeePlan as FeePlan
 
 
-type alias Model =
-    ()
-
-
-type Msg
-    = NoOp
-
-
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element
         { init = init
@@ -24,9 +20,9 @@ main =
         }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( (), Cmd.none )
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( { fee_plans = flags.fee_plans }, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -35,22 +31,6 @@ update msg model =
 
 
 view : Model -> Html Msg
-view model =
-    div []
-        [ div []
-            [ h4 [] [ text "Pour le paiement en 2 fois" ]
-            , p []
-                [ span [] [ text "Vos frais : ", text "3.40", text "% par transaction" ]
-                , br [] []
-                , span [] [ text "Frais pour votre client : ", text "aucun" ]
-                ]
-            ]
-        , div []
-            [ h4 [] [ text "Pour le paiement en 3 fois" ]
-            , p []
-                [ span [] [ text "Vos frais : ", text "3.80", text "% par transaction" ]
-                , br [] []
-                , span [] [ text "Frais pour votre client : ", text "aucun" ]
-                ]
-            ]
-        ]
+view ({ fee_plans } as model) =
+    List.map FeePlan.show fee_plans
+        |> div []
