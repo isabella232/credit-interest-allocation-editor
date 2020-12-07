@@ -1858,8 +1858,8 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 		flagDecoder,
 		args,
 		impl.aw,
-		impl.aH,
-		impl.aF,
+		impl.aI,
+		impl.aG,
 		function() { return function() {} }
 	);
 });
@@ -3929,10 +3929,10 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 		flagDecoder,
 		args,
 		impl.aw,
-		impl.aH,
-		impl.aF,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var view = impl.aI;
+			var view = impl.aJ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3965,11 +3965,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		flagDecoder,
 		args,
 		impl.aw,
-		impl.aH,
-		impl.aF,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.I && impl.I(sendToApp)
-			var view = impl.aI;
+			var view = impl.aJ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3982,7 +3982,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aG) && (_VirtualDom_doc.title = title = doc.aG);
+				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aB;
-	var onUrlRequest = impl.aC;
+	var onUrlChange = impl.aC;
+	var onUrlRequest = impl.aD;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4073,9 +4073,9 @@ function _Browser_application(impl)
 		{
 			return A3(impl.aw, flags, _Browser_getUrl(), key);
 		},
+		aJ: impl.aJ,
 		aI: impl.aI,
-		aH: impl.aH,
-		aF: impl.aF
+		aG: impl.aG
 	});
 }
 
@@ -4872,6 +4872,7 @@ var $elm$core$Result$isOk = function (result) {
 	}
 };
 var $elm$json$Json$Decode$andThen = _Json_andThen;
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$map = _Json_map1;
 var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5503,10 +5504,11 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Views$FeePlan$show = function (fee_plan) {
 	var installments_count = fee_plan.ax;
-	var merchant_fee_variable = fee_plan.az;
-	var merchant_fee_fixed = fee_plan.ay;
+	var merchant_fee_variable = fee_plan.aA;
+	var merchant_fee_fixed = fee_plan.az;
 	var customer_fee_variable = fee_plan.aq;
 	var customer_fee_fixed = fee_plan.ap;
+	var is_capped = fee_plan.ay;
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5556,7 +5558,8 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 										$elm$html$Html$text('Frais client : ')
 									])),
 								$elm$html$Html$text(
-								A2($author$project$Views$FeePlan$show_fees, customer_fee_variable, customer_fee_fixed))
+								A2($author$project$Views$FeePlan$show_fees, customer_fee_variable, customer_fee_fixed)),
+								is_capped ? $elm$html$Html$text(' déduits des frais marchands') : $elm$html$Html$text('')
 							]))
 					]))
 			]));
@@ -5571,9 +5574,9 @@ var $author$project$CreditInterestAllocationEditor$view = function (model) {
 var $author$project$CreditInterestAllocationEditor$main = $elm$browser$Browser$element(
 	{
 		aw: $author$project$CreditInterestAllocationEditor$init,
-		aF: $elm$core$Basics$always($elm$core$Platform$Sub$none),
-		aH: $author$project$CreditInterestAllocationEditor$update,
-		aI: $author$project$CreditInterestAllocationEditor$view
+		aG: $elm$core$Basics$always($elm$core$Platform$Sub$none),
+		aI: $author$project$CreditInterestAllocationEditor$update,
+		aJ: $author$project$CreditInterestAllocationEditor$view
 	});
 _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$CreditInterestAllocationEditor$main(
 	A2(
@@ -5594,21 +5597,26 @@ _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$Credi
 							function (merchant_fee_fixed) {
 								return A2(
 									$elm$json$Json$Decode$andThen,
-									function (installments_count) {
+									function (is_capped) {
 										return A2(
 											$elm$json$Json$Decode$andThen,
-											function (customer_fee_variable) {
+											function (installments_count) {
 												return A2(
 													$elm$json$Json$Decode$andThen,
-													function (customer_fee_fixed) {
-														return $elm$json$Json$Decode$succeed(
-															{ap: customer_fee_fixed, aq: customer_fee_variable, ax: installments_count, ay: merchant_fee_fixed, az: merchant_fee_variable});
+													function (customer_fee_variable) {
+														return A2(
+															$elm$json$Json$Decode$andThen,
+															function (customer_fee_fixed) {
+																return $elm$json$Json$Decode$succeed(
+																	{ap: customer_fee_fixed, aq: customer_fee_variable, ax: installments_count, ay: is_capped, az: merchant_fee_fixed, aA: merchant_fee_variable});
+															},
+															A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
 													},
-													A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
+													A2($elm$json$Json$Decode$field, 'customer_fee_variable', $elm$json$Json$Decode$int));
 											},
-											A2($elm$json$Json$Decode$field, 'customer_fee_variable', $elm$json$Json$Decode$int));
+											A2($elm$json$Json$Decode$field, 'installments_count', $elm$json$Json$Decode$int));
 									},
-									A2($elm$json$Json$Decode$field, 'installments_count', $elm$json$Json$Decode$int));
+									A2($elm$json$Json$Decode$field, 'is_capped', $elm$json$Json$Decode$bool));
 							},
 							A2($elm$json$Json$Decode$field, 'merchant_fee_fixed', $elm$json$Json$Decode$int));
 					},
