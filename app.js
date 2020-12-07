@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.z === region.O.z)
+	if (region.J.A === region.O.A)
 	{
-		return 'on line ' + region.J.z;
+		return 'on line ' + region.J.A;
 	}
-	return 'on lines ' + region.J.z + ' through ' + region.O.z;
+	return 'on lines ' + region.J.A + ' through ' + region.O.A;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aw,
-		impl.aI,
-		impl.aG,
+		impl.ay,
+		impl.aJ,
+		impl.aH,
 		function() { return function() {} }
 	);
 });
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aw,
-		impl.aI,
-		impl.aG,
+		impl.ay,
+		impl.aJ,
+		impl.aH,
 		function(sendToApp, initialModel) {
-			var view = impl.aJ;
+			var view = impl.aK;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aw,
-		impl.aI,
-		impl.aG,
+		impl.ay,
+		impl.aJ,
+		impl.aH,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.I && impl.I(sendToApp)
-			var view = impl.aJ;
+			var view = impl.aK;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.an);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ao);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
+				(title !== doc.aI) && (_VirtualDom_doc.title = title = doc.aI);
 			});
 		}
 	);
@@ -4038,8 +4038,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aC;
-	var onUrlRequest = impl.aD;
+	var onUrlChange = impl.aD;
+	var onUrlRequest = impl.aE;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aa === next.aa
+							&& curr.ab === next.ab
 							&& curr.S === next.S
-							&& curr.Y.a === next.Y.a
+							&& curr.Z.a === next.Z.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aw: function(flags)
+		ay: function(flags)
 		{
-			return A3(impl.aw, flags, _Browser_getUrl(), key);
+			return A3(impl.ay, flags, _Browser_getUrl(), key);
 		},
+		aK: impl.aK,
 		aJ: impl.aJ,
-		aI: impl.aI,
-		aG: impl.aG
+		aH: impl.aH
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { au: 'hidden', ao: 'visibilitychange' }
+		? { aw: 'hidden', ap: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { au: 'mozHidden', ao: 'mozvisibilitychange' }
+		? { aw: 'mozHidden', ap: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { au: 'msHidden', ao: 'msvisibilitychange' }
+		? { aw: 'msHidden', ap: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { au: 'webkitHidden', ao: 'webkitvisibilitychange' }
-		: { au: 'hidden', ao: 'visibilitychange' };
+		? { aw: 'webkitHidden', ap: 'webkitvisibilitychange' }
+		: { aw: 'hidden', ap: 'visibilitychange' };
 }
 
 
@@ -4232,11 +4232,11 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ae: _Browser_getScene(),
-		ah: {
-			aj: _Browser_window.pageXOffset,
-			ak: _Browser_window.pageYOffset,
-			ai: _Browser_doc.documentElement.clientWidth,
+		af: _Browser_getScene(),
+		ai: {
+			ak: _Browser_window.pageXOffset,
+			al: _Browser_window.pageYOffset,
+			aj: _Browser_doc.documentElement.clientWidth,
 			R: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4247,7 +4247,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ai: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aj: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		R: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4271,14 +4271,14 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ae: {
-				ai: node.scrollWidth,
+			af: {
+				aj: node.scrollWidth,
 				R: node.scrollHeight
 			},
-			ah: {
-				aj: node.scrollLeft,
-				ak: node.scrollTop,
-				ai: node.clientWidth,
+			ai: {
+				ak: node.scrollLeft,
+				al: node.scrollTop,
+				aj: node.clientWidth,
 				R: node.clientHeight
 			}
 		};
@@ -4309,17 +4309,17 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ae: _Browser_getScene(),
-			ah: {
-				aj: x,
-				ak: y,
-				ai: _Browser_doc.documentElement.clientWidth,
+			af: _Browser_getScene(),
+			ai: {
+				ak: x,
+				al: y,
+				aj: _Browser_doc.documentElement.clientWidth,
 				R: _Browser_doc.documentElement.clientHeight
 			},
-			as: {
-				aj: x + rect.left,
-				ak: y + rect.top,
-				ai: rect.width,
+			at: {
+				ak: x + rect.left,
+				al: y + rect.top,
+				aj: rect.width,
 				R: rect.height
 			}
 		};
@@ -4902,7 +4902,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Q: fragment, S: host, W: path, Y: port_, aa: protocol, ab: query};
+		return {Q: fragment, S: host, X: path, Z: port_, ab: protocol, ac: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5184,23 +5184,256 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$CreditInterestAllocationEditor$init = function (flags) {
 	return _Utils_Tuple2(
-		{E: flags.E},
+		{
+			z: A2(
+				$elm$core$List$sortBy,
+				function ($) {
+					return $.T;
+				},
+				flags.z),
+			av: flags
+		},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $author$project$Data$FeePlan$FeePlan = F6(
+	function (installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped) {
+		return {aq: customer_fee_fixed, ar: customer_fee_variable, T: installments_count, az: is_capped, aA: merchant_fee_fixed, aB: merchant_fee_variable};
+	});
+var $author$project$Data$FeePlan$empty = A6($author$project$Data$FeePlan$FeePlan, 2, 0, 0, 0, 0, false);
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$Basics$round = _Basics_round;
+var $elm$core$String$toFloat = _String_toFloat;
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Update$FeePlan$update = F3(
+	function (model, installments_count, maybe_value) {
+		var other_fee_plans = A2(
+			$elm$core$List$filter,
+			A2(
+				$elm$core$Basics$composeR,
+				function ($) {
+					return $.T;
+				},
+				$elm$core$Basics$neq(installments_count)),
+			model.z);
+		var original_fee_plan = A2(
+			$elm$core$Maybe$withDefault,
+			$author$project$Data$FeePlan$empty,
+			$elm$core$List$head(
+				A2(
+					$elm$core$List$filter,
+					A2(
+						$elm$core$Basics$composeR,
+						function ($) {
+							return $.T;
+						},
+						$elm$core$Basics$eq(installments_count)),
+					model.av.z)));
+		var total_fee_variable = original_fee_plan.aB + original_fee_plan.ar;
+		var fee_plan = A2(
+			$elm$core$Maybe$withDefault,
+			$author$project$Data$FeePlan$empty,
+			$elm$core$List$head(
+				A2(
+					$elm$core$List$filter,
+					A2(
+						$elm$core$Basics$composeR,
+						function ($) {
+							return $.T;
+						},
+						$elm$core$Basics$eq(installments_count)),
+					model.z)));
+		var new_customer_fee_variable = function () {
+			var _v0 = $elm$core$String$toFloat(maybe_value);
+			if (_v0.$ === 1) {
+				return 0;
+			} else {
+				var value = _v0.a;
+				return (!fee_plan.ar) ? ((!(!original_fee_plan.ar)) ? original_fee_plan.ar : 100) : $elm$core$Basics$round(value * 100);
+			}
+		}();
+		var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
+		var new_fee_plan = _Utils_update(
+			fee_plan,
+			{ar: new_customer_fee_variable, aB: new_merchant_fee_variable});
+		return A2(
+			$elm$core$List$sortBy,
+			function ($) {
+				return $.T;
+			},
+			A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
+	});
 var $author$project$CreditInterestAllocationEditor$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		var installments_count = msg.a;
+		var value = msg.b;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{
+					z: A3($author$project$Update$FeePlan$update, model, installments_count, value)
+				}),
+			$elm$core$Platform$Cmd$none);
 	});
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $author$project$Data$Msg$SetCustomerFeeVariable = F2(
+	function (a, b) {
+		return {$: 0, a: a, b: b};
+	});
 var $elm$html$Html$br = _VirtualDom_node('br');
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$h4 = _VirtualDom_node('h4');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
+var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
+var $elm$html$Html$Attributes$step = function (n) {
+	return A2($elm$html$Html$Attributes$stringProperty, 'step', n);
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Views$FeePlan$showCustomerFeeVariableEditor = function (_v0) {
+	var installments_count = _v0.T;
+	var customer_fee_variable = _v0.ar;
+	var fee_plan_editor_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('input-group'),
+				A2($elm$html$Html$Attributes$style, 'width', '210px'),
+				A2($elm$html$Html$Attributes$style, 'margin-left', '20px'),
+				A2($elm$html$Html$Attributes$style, 'display', 'inline-table'),
+				A2($elm$html$Html$Attributes$style, 'vertical-align', 'middle')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$type_('number'),
+						$elm$html$Html$Attributes$min('0.01'),
+						$elm$html$Html$Attributes$max('5'),
+						$elm$html$Html$Attributes$step('0.01'),
+						$elm$html$Html$Events$onInput(
+						$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)),
+						$elm$html$Html$Attributes$value(
+						$elm$core$String$fromFloat(customer_fee_variable / 100))
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$label,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('input-group-addon'),
+						$elm$html$Html$Attributes$for(fee_plan_editor_id)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('% par transaction')
+					]))
+			]));
+};
 var $elm$core$String$replace = F3(
 	function (before, after, string) {
 		return A2(
@@ -5237,7 +5470,6 @@ var $elm$core$List$any = F2(
 			}
 		}
 	});
-var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$String$foldr = _String_foldr;
 var $elm$core$String$toList = function (string) {
 	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
@@ -5254,7 +5486,6 @@ var $myrho$elm_round$Round$addSign = F2(
 			(signed && isNotZero) ? '-' : '',
 			str);
 	});
-var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$core$String$cons = _String_cons;
 var $elm$core$Char$fromCode = _Char_fromCode;
 var $myrho$elm_round$Round$increaseNum = function (_v0) {
@@ -5341,15 +5572,6 @@ var $elm$core$Tuple$mapFirst = F2(
 		return _Utils_Tuple2(
 			func(x),
 			y);
-	});
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
 	});
 var $myrho$elm_round$Round$toDecimal = function (fl) {
 	var _v0 = A2(
@@ -5486,6 +5708,9 @@ var $author$project$Views$Utils$euros = function (cents) {
 		',',
 		A2($myrho$elm_round$Round$round, 2, amount) + '\u00A0€');
 };
+var $author$project$Views$FeePlan$euros_fees = function (euroCents) {
+	return $author$project$Views$Utils$euros(euroCents) + ' par transaction';
+};
 var $author$project$Views$Utils$percents = function (bps) {
 	var percent = bps / 100;
 	return A3(
@@ -5494,21 +5719,40 @@ var $author$project$Views$Utils$percents = function (bps) {
 		',',
 		A2($myrho$elm_round$Round$round, 2, percent) + '\u00A0%');
 };
+var $author$project$Views$FeePlan$percent_fees = function (percentCents) {
+	return $author$project$Views$Utils$percents(percentCents) + ' par transaction';
+};
 var $author$project$Views$FeePlan$show_fees = F2(
 	function (variable, fixed) {
-		return (!(!fixed)) ? ($author$project$Views$Utils$euros(fixed) + ' par transaction') : ((!(!variable)) ? ($author$project$Views$Utils$percents(variable) + ' par transaction') : 'aucun');
+		return (!(!fixed)) ? $author$project$Views$FeePlan$euros_fees(fixed) : ((!(!variable)) ? $author$project$Views$FeePlan$percent_fees(variable) : 'aucun');
+	});
+var $author$project$Views$FeePlan$show_merchant_fees = F2(
+	function (variable, fixed) {
+		var _v0 = _Utils_Tuple2(fixed, variable);
+		if (!_v0.a) {
+			if (!_v0.b) {
+				return 'aucun';
+			} else {
+				return $author$project$Views$FeePlan$percent_fees(variable);
+			}
+		} else {
+			if (!_v0.b) {
+				return $author$project$Views$FeePlan$euros_fees(fixed);
+			} else {
+				return $author$project$Views$FeePlan$percent_fees(variable) + (' + ' + $author$project$Views$FeePlan$euros_fees(fixed));
+			}
+		}
 	});
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$html$Html$strong = _VirtualDom_node('strong');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Views$FeePlan$show = function (fee_plan) {
-	var installments_count = fee_plan.ax;
-	var merchant_fee_variable = fee_plan.aA;
-	var merchant_fee_fixed = fee_plan.az;
-	var customer_fee_variable = fee_plan.aq;
-	var customer_fee_fixed = fee_plan.ap;
-	var is_capped = fee_plan.ay;
+	var installments_count = fee_plan.T;
+	var merchant_fee_variable = fee_plan.aB;
+	var merchant_fee_fixed = fee_plan.aA;
+	var customer_fee_variable = fee_plan.ar;
+	var customer_fee_fixed = fee_plan.aq;
+	var is_capped = fee_plan.az;
+	var fee_plan_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5542,7 +5786,7 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 										$elm$html$Html$text('Vos frais : ')
 									])),
 								$elm$html$Html$text(
-								A2($author$project$Views$FeePlan$show_fees, merchant_fee_variable, merchant_fee_fixed))
+								A2($author$project$Views$FeePlan$show_merchant_fees, merchant_fee_variable, merchant_fee_fixed))
 							])),
 						A2($elm$html$Html$br, _List_Nil, _List_Nil),
 						A2(
@@ -5561,11 +5805,75 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 								A2($author$project$Views$FeePlan$show_fees, customer_fee_variable, customer_fee_fixed)),
 								is_capped ? $elm$html$Html$text(' déduits des frais marchands') : $elm$html$Html$text('')
 							]))
+					])),
+				(!(!customer_fee_fixed)) ? $elm$html$Html$text('') : A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$strong,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Ajouter des frais clients variables ?')
+							])),
+						A2($elm$html$Html$br, _List_Nil, _List_Nil),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$type_('radio'),
+								$elm$html$Html$Attributes$name(fee_plan_id),
+								$elm$html$Html$Attributes$id(fee_plan_id + '-non'),
+								$elm$html$Html$Attributes$checked(!customer_fee_variable),
+								$elm$html$Html$Attributes$value('0'),
+								$elm$html$Html$Events$onInput(
+								$author$project$Data$Msg$SetCustomerFeeVariable(installments_count))
+							]),
+						_List_Nil),
+						$elm$html$Html$text('\u00A0'),
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$for(fee_plan_id + '-non')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Non')
+							])),
+						A2($elm$html$Html$br, _List_Nil, _List_Nil),
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$type_('radio'),
+								$elm$html$Html$Attributes$name(fee_plan_id),
+								$elm$html$Html$Attributes$id(fee_plan_id + '-oui'),
+								$elm$html$Html$Attributes$checked(!(!customer_fee_variable)),
+								$elm$html$Html$Attributes$value('1'),
+								$elm$html$Html$Events$onInput(
+								$author$project$Data$Msg$SetCustomerFeeVariable(installments_count))
+							]),
+						_List_Nil),
+						$elm$html$Html$text('\u00A0'),
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$for(fee_plan_id + '-oui')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Oui')
+							])),
+						(!customer_fee_variable) ? $elm$html$Html$text('') : $author$project$Views$FeePlan$showCustomerFeeVariableEditor(fee_plan)
 					]))
 			]));
 };
 var $author$project$CreditInterestAllocationEditor$view = function (model) {
-	var fee_plans = model.E;
+	var fee_plans = model.z;
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5573,17 +5881,17 @@ var $author$project$CreditInterestAllocationEditor$view = function (model) {
 };
 var $author$project$CreditInterestAllocationEditor$main = $elm$browser$Browser$element(
 	{
-		aw: $author$project$CreditInterestAllocationEditor$init,
-		aG: $elm$core$Basics$always($elm$core$Platform$Sub$none),
-		aI: $author$project$CreditInterestAllocationEditor$update,
-		aJ: $author$project$CreditInterestAllocationEditor$view
+		ay: $author$project$CreditInterestAllocationEditor$init,
+		aH: $elm$core$Basics$always($elm$core$Platform$Sub$none),
+		aJ: $author$project$CreditInterestAllocationEditor$update,
+		aK: $author$project$CreditInterestAllocationEditor$view
 	});
 _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$CreditInterestAllocationEditor$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
 		function (fee_plans) {
 			return $elm$json$Json$Decode$succeed(
-				{E: fee_plans});
+				{z: fee_plans});
 		},
 		A2(
 			$elm$json$Json$Decode$field,
@@ -5608,7 +5916,7 @@ _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$Credi
 															$elm$json$Json$Decode$andThen,
 															function (customer_fee_fixed) {
 																return $elm$json$Json$Decode$succeed(
-																	{ap: customer_fee_fixed, aq: customer_fee_variable, ax: installments_count, ay: is_capped, az: merchant_fee_fixed, aA: merchant_fee_variable});
+																	{aq: customer_fee_fixed, ar: customer_fee_variable, T: installments_count, az: is_capped, aA: merchant_fee_fixed, aB: merchant_fee_variable});
 															},
 															A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
 													},
