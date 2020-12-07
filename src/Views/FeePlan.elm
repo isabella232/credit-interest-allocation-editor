@@ -5,6 +5,7 @@ import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes as HA exposing (..)
 import Html.Events exposing (..)
+import Input.Float as MaskedPercentage
 import Views.Utils exposing (euros, percents)
 
 
@@ -50,7 +51,7 @@ show ({ installments_count, merchant_fee_variable, merchant_fee_fixed, customer_
                     , id <| fee_plan_id ++ "-non"
                     , checked <| customer_fee_variable == 0
                     , value "0"
-                    , onInput <| SetCustomerFeeVariable installments_count
+                    , onInput <| (String.toFloat >> SetCustomerFeeVariable installments_count)
                     ]
                     []
                 , text "\u{00A0}"
@@ -62,7 +63,7 @@ show ({ installments_count, merchant_fee_variable, merchant_fee_fixed, customer_
                     , id <| fee_plan_id ++ "-oui"
                     , checked <| customer_fee_variable /= 0
                     , value "1"
-                    , onInput <| SetCustomerFeeVariable installments_count
+                    , onInput <| (String.toFloat >> SetCustomerFeeVariable installments_count)
                     ]
                     []
                 , text "\u{00A0}"
@@ -115,11 +116,21 @@ show_merchant_fees variable fixed =
 
 
 showCustomerFeeVariableEditor : FeePlan -> Html Msg
-showCustomerFeeVariableEditor { installments_count, customer_fee_variable } =
+showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, customer_fee_variable } =
     let
         fee_plan_editor_id =
             String.fromInt installments_count
                 |> (++) "fee-plan-"
+
+        initialOptions =
+            MaskedPercentage.defaultOptions (SetCustomerFeeVariable installments_count)
+
+        inputOptions =
+            { initialOptions
+                | maxValue = Just <| toFloat (customer_fee_variable + merchant_fee_variable) / 100
+                , minValue = Just 0.01
+                , stepValue = Just 0.01
+            }
     in
     div
         [ class "input-group"
@@ -128,16 +139,10 @@ showCustomerFeeVariableEditor { installments_count, customer_fee_variable } =
         , style "display" "inline-table"
         , style "vertical-align" "middle"
         ]
-        [ input
-            [ class "form-control"
-            , type_ "number"
-            , HA.min "0.01"
-            , HA.max "5"
-            , HA.step "0.01"
-            , onInput <| SetCustomerFeeVariable installments_count
-            , value <| String.fromFloat <| toFloat customer_fee_variable / 100
-            ]
-            []
+        [ MaskedPercentage.input
+            inputOptions
+            [ class "form-control", id fee_plan_editor_id ]
+            (Just <| toFloat customer_fee_variable / 100)
         , label
             [ class "input-group-addon"
             , for fee_plan_editor_id
