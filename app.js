@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.A === region.O.A)
+	if (region.O.F === region.T.F)
 	{
-		return 'on line ' + region.J.A;
+		return 'on line ' + region.O.F;
 	}
-	return 'on lines ' + region.J.A + ' through ' + region.O.A;
+	return 'on lines ' + region.O.F + ' through ' + region.T.F;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aJ,
-		impl.aH,
+		impl.aF,
+		impl.aT,
+		impl.aR,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		o: func(record.o),
-		K: record.K,
-		H: record.H
+		r: func(record.r),
+		P: record.P,
+		M: record.M
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
+		var message = !tag ? value : tag < 3 ? value.a : value.r;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.P;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.H) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aJ,
-		impl.aH,
+		impl.aF,
+		impl.aT,
+		impl.aR,
 		function(sendToApp, initialModel) {
-			var view = impl.aK;
+			var view = impl.aU;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aJ,
-		impl.aH,
+		impl.aF,
+		impl.aT,
+		impl.aR,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.I && impl.I(sendToApp)
-			var view = impl.aK;
+			var divertHrefToApp = impl.N && impl.N(sendToApp)
+			var view = impl.aU;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ao);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.au);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aI) && (_VirtualDom_doc.title = title = doc.aI);
+				(title !== doc.aS) && (_VirtualDom_doc.title = title = doc.aS);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aD;
-	var onUrlRequest = impl.aE;
+	var onUrlChange = impl.aM;
+	var onUrlRequest = impl.aN;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		I: function(sendToApp)
+		N: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ab === next.ab
-							&& curr.S === next.S
-							&& curr.Z.a === next.Z.a
+							&& curr.ag === next.ag
+							&& curr.X === next.X
+							&& curr.ad.a === next.ad.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ay: function(flags)
+		aF: function(flags)
 		{
-			return A3(impl.ay, flags, _Browser_getUrl(), key);
+			return A3(impl.aF, flags, _Browser_getUrl(), key);
 		},
-		aK: impl.aK,
-		aJ: impl.aJ,
-		aH: impl.aH
+		aU: impl.aU,
+		aT: impl.aT,
+		aR: impl.aR
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aw: 'hidden', ap: 'visibilitychange' }
+		? { aD: 'hidden', av: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aw: 'mozHidden', ap: 'mozvisibilitychange' }
+		? { aD: 'mozHidden', av: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aw: 'msHidden', ap: 'msvisibilitychange' }
+		? { aD: 'msHidden', av: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aw: 'webkitHidden', ap: 'webkitvisibilitychange' }
-		: { aw: 'hidden', ap: 'visibilitychange' };
+		? { aD: 'webkitHidden', av: 'webkitvisibilitychange' }
+		: { aD: 'hidden', av: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		af: _Browser_getScene(),
-		ai: {
-			ak: _Browser_window.pageXOffset,
-			al: _Browser_window.pageYOffset,
-			aj: _Browser_doc.documentElement.clientWidth,
-			R: _Browser_doc.documentElement.clientHeight
+		ak: _Browser_getScene(),
+		an: {
+			ap: _Browser_window.pageXOffset,
+			aq: _Browser_window.pageYOffset,
+			ao: _Browser_doc.documentElement.clientWidth,
+			W: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aj: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		R: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			af: {
-				aj: node.scrollWidth,
-				R: node.scrollHeight
+			ak: {
+				ao: node.scrollWidth,
+				W: node.scrollHeight
 			},
-			ai: {
-				ak: node.scrollLeft,
-				al: node.scrollTop,
-				aj: node.clientWidth,
-				R: node.clientHeight
+			an: {
+				ap: node.scrollLeft,
+				aq: node.scrollTop,
+				ao: node.clientWidth,
+				W: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			af: _Browser_getScene(),
-			ai: {
-				ak: x,
-				al: y,
-				aj: _Browser_doc.documentElement.clientWidth,
-				R: _Browser_doc.documentElement.clientHeight
+			ak: _Browser_getScene(),
+			an: {
+				ap: x,
+				aq: y,
+				ao: _Browser_doc.documentElement.clientWidth,
+				W: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
-				ak: x + rect.left,
-				al: y + rect.top,
-				aj: rect.width,
-				R: rect.height
+			aA: {
+				ap: x + rect.left,
+				aq: y + rect.top,
+				ao: rect.width,
+				W: rect.height
 			}
 		};
 	});
@@ -4805,22 +4805,22 @@ var $elm$core$Array$builderToArray = F2(
 		if (!builder.a) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c),
+				$elm$core$Elm$JsArray$length(builder.d),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.c);
+				builder.d);
 		} else {
 			var treeLen = builder.a * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.d) : builder.d;
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.e) : builder.e;
 			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.d) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.c);
+				builder.d);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4833,7 +4833,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{d: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
+					{e: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, d: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4902,7 +4902,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Q: fragment, S: host, X: path, Z: port_, ab: protocol, ac: query};
+		return {V: fragment, X: host, ab: path, ad: port_, ag: protocol, ah: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5188,13 +5188,13 @@ var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$CreditInterestAllocationEditor$init = function (flags) {
 	return _Utils_Tuple2(
 		{
-			z: A2(
+			E: A2(
 				$elm$core$List$sortBy,
 				function ($) {
-					return $.T;
+					return $.Y;
 				},
-				flags.z),
-			av: flags
+				flags.E),
+			aC: flags
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5209,7 +5209,7 @@ var $elm$core$Basics$composeR = F3(
 	});
 var $author$project$Data$FeePlan$FeePlan = F6(
 	function (installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped) {
-		return {aq: customer_fee_fixed, ar: customer_fee_variable, T: installments_count, az: is_capped, aA: merchant_fee_fixed, aB: merchant_fee_variable};
+		return {ax: customer_fee_fixed, ay: customer_fee_variable, Y: installments_count, aG: is_capped, aI: merchant_fee_fixed, aJ: merchant_fee_variable};
 	});
 var $author$project$Data$FeePlan$empty = A6($author$project$Data$FeePlan$FeePlan, 2, 0, 0, 0, 0, false);
 var $elm$core$List$filter = F2(
@@ -5234,7 +5234,6 @@ var $elm$core$List$head = function (list) {
 };
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$Basics$round = _Basics_round;
-var $elm$core$String$toFloat = _String_toFloat;
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (!maybe.$) {
@@ -5251,10 +5250,10 @@ var $author$project$Update$FeePlan$update = F3(
 			A2(
 				$elm$core$Basics$composeR,
 				function ($) {
-					return $.T;
+					return $.Y;
 				},
 				$elm$core$Basics$neq(installments_count)),
-			model.z);
+			model.E);
 		var original_fee_plan = A2(
 			$elm$core$Maybe$withDefault,
 			$author$project$Data$FeePlan$empty,
@@ -5264,11 +5263,11 @@ var $author$project$Update$FeePlan$update = F3(
 					A2(
 						$elm$core$Basics$composeR,
 						function ($) {
-							return $.T;
+							return $.Y;
 						},
 						$elm$core$Basics$eq(installments_count)),
-					model.av.z)));
-		var total_fee_variable = original_fee_plan.aB + original_fee_plan.ar;
+					model.aC.E)));
+		var total_fee_variable = original_fee_plan.aJ + original_fee_plan.ay;
 		var fee_plan = A2(
 			$elm$core$Maybe$withDefault,
 			$author$project$Data$FeePlan$empty,
@@ -5278,27 +5277,26 @@ var $author$project$Update$FeePlan$update = F3(
 					A2(
 						$elm$core$Basics$composeR,
 						function ($) {
-							return $.T;
+							return $.Y;
 						},
 						$elm$core$Basics$eq(installments_count)),
-					model.z)));
+					model.E)));
 		var new_customer_fee_variable = function () {
-			var _v0 = $elm$core$String$toFloat(maybe_value);
-			if (_v0.$ === 1) {
+			if (maybe_value.$ === 1) {
 				return 0;
 			} else {
-				var value = _v0.a;
-				return (!fee_plan.ar) ? ((!(!original_fee_plan.ar)) ? original_fee_plan.ar : 100) : $elm$core$Basics$round(value * 100);
+				var value = maybe_value.a;
+				return (!fee_plan.ay) ? ((!(!original_fee_plan.ay)) ? original_fee_plan.ay : 100) : $elm$core$Basics$round(value * 100);
 			}
 		}();
 		var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
 		var new_fee_plan = _Utils_update(
 			fee_plan,
-			{ar: new_customer_fee_variable, aB: new_merchant_fee_variable});
+			{ay: new_customer_fee_variable, aJ: new_merchant_fee_variable});
 		return A2(
 			$elm$core$List$sortBy,
 			function ($) {
-				return $.T;
+				return $.Y;
 			},
 			A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 	});
@@ -5310,7 +5308,7 @@ var $author$project$CreditInterestAllocationEditor$update = F2(
 			_Utils_update(
 				model,
 				{
-					z: A3($author$project$Update$FeePlan$update, model, installments_count, value)
+					E: A3($author$project$Update$FeePlan$update, model, installments_count, value)
 				}),
 			$elm$core$Platform$Cmd$none);
 	});
@@ -5378,77 +5376,129 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $author$project$Input$Float$defaultOptions = function (onInput) {
+	return {q: $elm$core$Maybe$Nothing, m: $elm$core$Maybe$Nothing, s: $elm$core$Maybe$Nothing, c: onInput, B: $elm$core$Maybe$Nothing};
+};
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
 var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
-var $elm$html$Html$Attributes$step = function (n) {
-	return A2($elm$html$Html$Attributes$stringProperty, 'step', n);
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
 };
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Views$FeePlan$showCustomerFeeVariableEditor = function (_v0) {
-	var installments_count = _v0.T;
-	var customer_fee_variable = _v0.ar;
-	var fee_plan_editor_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('input-group'),
-				A2($elm$html$Html$Attributes$style, 'width', '210px'),
-				A2($elm$html$Html$Attributes$style, 'margin-left', '20px'),
-				A2($elm$html$Html$Attributes$style, 'display', 'inline-table'),
-				A2($elm$html$Html$Attributes$style, 'vertical-align', 'middle')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$input,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('form-control'),
-						$elm$html$Html$Attributes$type_('number'),
-						$elm$html$Html$Attributes$min('0.01'),
-						$elm$html$Html$Attributes$max('5'),
-						$elm$html$Html$Attributes$step('0.01'),
-						$elm$html$Html$Events$onInput(
-						$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)),
-						$elm$html$Html$Attributes$value(
-						$elm$core$String$fromFloat(customer_fee_variable / 100))
-					]),
-				_List_Nil),
-				A2(
-				$elm$html$Html$label,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('input-group-addon'),
-						$elm$html$Html$Attributes$for(fee_plan_editor_id)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('% par transaction')
-					]))
-			]));
-};
-var $elm$core$String$replace = F3(
-	function (before, after, string) {
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
 		return A2(
-			$elm$core$String$join,
-			after,
-			A2($elm$core$String$split, before, string));
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
 	});
-var $elm$core$Basics$ge = _Utils_ge;
-var $elm$core$Basics$not = _Basics_not;
-var $elm$core$Basics$negate = function (n) {
-	return -n;
+var $elm$html$Html$Events$onBlur = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'blur',
+		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$core$Basics$abs = function (n) {
-	return (n < 0) ? (-n) : n;
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 1) {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 1) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $author$project$Input$Float$exceedMaxValue = F2(
+	function (maxValue, maybeNumber) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			false,
+			A3(
+				$elm$core$Maybe$map2,
+				F2(
+					function (max, number) {
+						return _Utils_cmp(number, max) > 0;
+					}),
+				maxValue,
+				maybeNumber));
+	});
+var $author$project$Input$Float$lessThanMinValue = F2(
+	function (minValue, maybeNumber) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			false,
+			A3(
+				$elm$core$Maybe$map2,
+				F2(
+					function (min, number) {
+						return _Utils_cmp(number, min) < 0;
+					}),
+				minValue,
+				maybeNumber));
+	});
+var $elm$core$String$toFloat = _String_toFloat;
+var $author$project$Input$Float$onChange = function (options) {
+	var checkWithMinValue = function (number) {
+		return A2($author$project$Input$Float$lessThanMinValue, options.s, number) ? options.s : number;
+	};
+	var checkWithMaxValue = function (number) {
+		return A2($author$project$Input$Float$exceedMaxValue, options.m, number) ? options.m : number;
+	};
+	var toFloat = function (string) {
+		return checkWithMaxValue(
+			checkWithMinValue(
+				$elm$core$String$toFloat(string)));
+	};
+	return A2(
+		$elm$html$Html$Events$on,
+		'change',
+		A2(
+			$elm$json$Json$Decode$map,
+			A2($elm$core$Basics$composeR, toFloat, options.c),
+			$elm$html$Html$Events$targetValue));
 };
+var $elm$html$Html$Events$onFocus = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'focus',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Input$KeyCode$alt = 18;
+var $author$project$Input$KeyCode$backspace = 8;
+var $author$project$Input$KeyCode$ctrl = 17;
+var $author$project$Input$KeyCode$delete = 46;
+var $author$project$Input$KeyCode$downArrow = 40;
+var $author$project$Input$KeyCode$enter = 13;
+var $author$project$Input$KeyCode$leftArrow = 37;
+var $author$project$Input$KeyCode$rightArrow = 39;
+var $author$project$Input$KeyCode$shift = 16;
+var $author$project$Input$KeyCode$tab = 9;
+var $author$project$Input$KeyCode$upArrow = 38;
+var $author$project$Input$KeyCode$allowedKeyCodes = _List_fromArray(
+	[$author$project$Input$KeyCode$leftArrow, $author$project$Input$KeyCode$upArrow, $author$project$Input$KeyCode$rightArrow, $author$project$Input$KeyCode$downArrow, $author$project$Input$KeyCode$backspace, $author$project$Input$KeyCode$ctrl, $author$project$Input$KeyCode$alt, $author$project$Input$KeyCode$delete, $author$project$Input$KeyCode$tab, $author$project$Input$KeyCode$enter, $author$project$Input$KeyCode$shift]);
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -5470,6 +5520,47 @@ var $elm$core$List$any = F2(
 			}
 		}
 	});
+var $author$project$Input$Decoder$Event = F5(
+	function (keyCode, ctrlKey, altKey, metaKey, shiftKey) {
+		return {as: altKey, aw: ctrlKey, aH: keyCode, aK: metaKey, aQ: shiftKey};
+	});
+var $elm$json$Json$Decode$map5 = _Json_map5;
+var $author$project$Input$Decoder$eventDecoder = A6(
+	$elm$json$Json$Decode$map5,
+	$author$project$Input$Decoder$Event,
+	A2($elm$json$Json$Decode$field, 'keyCode', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'ctrlKey', $elm$json$Json$Decode$bool),
+	A2($elm$json$Json$Decode$field, 'altKey', $elm$json$Json$Decode$bool),
+	A2($elm$json$Json$Decode$field, 'metaKey', $elm$json$Json$Decode$bool),
+	A2($elm$json$Json$Decode$field, 'shiftKey', $elm$json$Json$Decode$bool));
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Char$fromCode = _Char_fromCode;
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Basics$not = _Basics_not;
+var $author$project$Input$Float$isValid = F2(
+	function (newValue, options) {
+		var updatedNumber = $elm$core$String$toFloat(newValue);
+		return !A2($author$project$Input$Float$exceedMaxValue, options.m, updatedNumber);
+	});
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 2, a: a};
+};
+var $elm$html$Html$Events$preventDefaultOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
+	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
 var $elm$core$String$foldr = _String_foldr;
 var $elm$core$String$toList = function (string) {
 	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
@@ -5486,8 +5577,6 @@ var $myrho$elm_round$Round$addSign = F2(
 			(signed && isNotZero) ? '-' : '',
 			str);
 	});
-var $elm$core$String$cons = _String_cons;
-var $elm$core$Char$fromCode = _Char_fromCode;
 var $myrho$elm_round$Round$increaseNum = function (_v0) {
 	var head = _v0.a;
 	var tail = _v0.b;
@@ -5512,19 +5601,6 @@ var $myrho$elm_round$Round$increaseNum = function (_v0) {
 };
 var $elm$core$Basics$isInfinite = _Basics_isInfinite;
 var $elm$core$Basics$isNaN = _Basics_isNaN;
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $elm$core$String$fromChar = function (_char) {
-	return A2($elm$core$String$cons, _char, '');
-};
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
 var $elm$core$String$repeatHelp = F3(
@@ -5700,6 +5776,218 @@ var $myrho$elm_round$Round$round = $myrho$elm_round$Round$roundFun(
 				}
 			}
 		}));
+var $author$project$Input$Float$onKeyDown = F2(
+	function (options, currentValue) {
+		var newValue = function (keyCode) {
+			return _Utils_ap(
+				A2(
+					$elm$core$Maybe$withDefault,
+					'',
+					A2(
+						$elm$core$Maybe$map,
+						$myrho$elm_round$Round$round(2),
+						currentValue)),
+				$elm$core$String$fromChar(
+					$elm$core$Char$fromCode(keyCode)));
+		};
+		var isNumber = function (keyCode) {
+			return ((keyCode >= 48) && (keyCode <= 57)) || (keyCode === 190);
+		};
+		var isNumPad = function (keyCode) {
+			return (keyCode >= 96) && (keyCode <= 105);
+		};
+		var filterKey = function (event) {
+			return (event.aw || (event.as || event.aK)) ? _Utils_Tuple2(
+				options.c(currentValue),
+				false) : (event.aQ ? _Utils_Tuple2(
+				options.c(currentValue),
+				false) : (A2(
+				$elm$core$List$any,
+				$elm$core$Basics$eq(event.aH),
+				$author$project$Input$KeyCode$allowedKeyCodes) ? _Utils_Tuple2(
+				options.c(currentValue),
+				false) : (((isNumber(event.aH) || isNumPad(event.aH)) && A2(
+				$author$project$Input$Float$isValid,
+				newValue(event.aH),
+				options)) ? _Utils_Tuple2(
+				options.c(
+					$elm$core$String$toFloat(
+						newValue(event.aH))),
+				false) : _Utils_Tuple2(
+				options.c(currentValue),
+				true))));
+		};
+		var decoder = A2($elm$json$Json$Decode$map, filterKey, $author$project$Input$Decoder$eventDecoder);
+		return A2($elm$html$Html$Events$preventDefaultOn, 'keydown', decoder);
+	});
+var $elm$html$Html$Attributes$step = function (n) {
+	return A2($elm$html$Html$Attributes$stringProperty, 'step', n);
+};
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Input$Float$input = F3(
+	function (options, attributes, currentValue) {
+		var toArray = function (a) {
+			return _List_fromArray(
+				[a]);
+		};
+		var stepAttribute = A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				toArray,
+				A2(
+					$elm$core$Maybe$map,
+					$elm$html$Html$Attributes$step,
+					A2($elm$core$Maybe$map, $elm$core$String$fromFloat, options.B))));
+		var onFocusAttribute = A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				toArray,
+				A2(
+					$elm$core$Maybe$map,
+					$elm$html$Html$Events$onFocus,
+					A2(
+						$elm$core$Maybe$map,
+						function (f) {
+							return f(true);
+						},
+						options.q))));
+		var onBlurAttribute = A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				toArray,
+				A2(
+					$elm$core$Maybe$map,
+					$elm$html$Html$Events$onBlur,
+					A2(
+						$elm$core$Maybe$map,
+						function (f) {
+							return f(false);
+						},
+						options.q))));
+		var minAttribute = A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				toArray,
+				A2(
+					$elm$core$Maybe$map,
+					$elm$html$Html$Attributes$min,
+					A2($elm$core$Maybe$map, $elm$core$String$fromFloat, options.s))));
+		var maxAttribute = A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$core$Maybe$map,
+				toArray,
+				A2(
+					$elm$core$Maybe$map,
+					$elm$html$Html$Attributes$max,
+					A2($elm$core$Maybe$map, $elm$core$String$fromFloat, options.m))));
+		return A2(
+			$elm$html$Html$input,
+			A2(
+				$elm$core$List$append,
+				stepAttribute,
+				A2(
+					$elm$core$List$append,
+					minAttribute,
+					A2(
+						$elm$core$List$append,
+						maxAttribute,
+						A2(
+							$elm$core$List$append,
+							onBlurAttribute,
+							A2(
+								$elm$core$List$append,
+								onFocusAttribute,
+								A2(
+									$elm$core$List$append,
+									attributes,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$value(
+											A2(
+												$elm$core$Maybe$withDefault,
+												'',
+												A2(
+													$elm$core$Maybe$map,
+													$myrho$elm_round$Round$round(2),
+													currentValue))),
+											A2($author$project$Input$Float$onKeyDown, options, currentValue),
+											$elm$html$Html$Events$onInput(
+											A2($elm$core$Basics$composeR, $elm$core$String$toFloat, options.c)),
+											$author$project$Input$Float$onChange(options),
+											$elm$html$Html$Attributes$type_('number')
+										]))))))),
+			_List_Nil);
+	});
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Views$FeePlan$showCustomerFeeVariableEditor = function (_v0) {
+	var installments_count = _v0.Y;
+	var merchant_fee_variable = _v0.aJ;
+	var customer_fee_variable = _v0.ay;
+	var initialOptions = $author$project$Input$Float$defaultOptions(
+		$author$project$Data$Msg$SetCustomerFeeVariable(installments_count));
+	var inputOptions = _Utils_update(
+		initialOptions,
+		{
+			m: $elm$core$Maybe$Just((customer_fee_variable + merchant_fee_variable) / 100),
+			s: $elm$core$Maybe$Just(0.01),
+			B: $elm$core$Maybe$Just(0.01)
+		});
+	var fee_plan_editor_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('input-group'),
+				A2($elm$html$Html$Attributes$style, 'width', '210px'),
+				A2($elm$html$Html$Attributes$style, 'margin-left', '20px'),
+				A2($elm$html$Html$Attributes$style, 'display', 'inline-table'),
+				A2($elm$html$Html$Attributes$style, 'vertical-align', 'middle')
+			]),
+		_List_fromArray(
+			[
+				A3(
+				$author$project$Input$Float$input,
+				inputOptions,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$id(fee_plan_editor_id)
+					]),
+				$elm$core$Maybe$Just(customer_fee_variable / 100)),
+				A2(
+				$elm$html$Html$label,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('input-group-addon'),
+						$elm$html$Html$Attributes$for(fee_plan_editor_id)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('% par transaction')
+					]))
+			]));
+};
+var $elm$core$String$replace = F3(
+	function (before, after, string) {
+		return A2(
+			$elm$core$String$join,
+			after,
+			A2($elm$core$String$split, before, string));
+	});
 var $author$project$Views$Utils$euros = function (cents) {
 	var amount = cents / 100;
 	return A3(
@@ -5746,12 +6034,12 @@ var $author$project$Views$FeePlan$show_merchant_fees = F2(
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$Views$FeePlan$show = function (fee_plan) {
-	var installments_count = fee_plan.T;
-	var merchant_fee_variable = fee_plan.aB;
-	var merchant_fee_fixed = fee_plan.aA;
-	var customer_fee_variable = fee_plan.ar;
-	var customer_fee_fixed = fee_plan.aq;
-	var is_capped = fee_plan.az;
+	var installments_count = fee_plan.Y;
+	var merchant_fee_variable = fee_plan.aJ;
+	var merchant_fee_fixed = fee_plan.aI;
+	var customer_fee_variable = fee_plan.ay;
+	var customer_fee_fixed = fee_plan.ax;
+	var is_capped = fee_plan.aG;
 	var fee_plan_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
 	return A2(
 		$elm$html$Html$div,
@@ -5829,7 +6117,10 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 								$elm$html$Html$Attributes$checked(!customer_fee_variable),
 								$elm$html$Html$Attributes$value('0'),
 								$elm$html$Html$Events$onInput(
-								$author$project$Data$Msg$SetCustomerFeeVariable(installments_count))
+								A2(
+									$elm$core$Basics$composeR,
+									$elm$core$String$toFloat,
+									$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
 							]),
 						_List_Nil),
 						$elm$html$Html$text('\u00A0'),
@@ -5854,7 +6145,10 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 								$elm$html$Html$Attributes$checked(!(!customer_fee_variable)),
 								$elm$html$Html$Attributes$value('1'),
 								$elm$html$Html$Events$onInput(
-								$author$project$Data$Msg$SetCustomerFeeVariable(installments_count))
+								A2(
+									$elm$core$Basics$composeR,
+									$elm$core$String$toFloat,
+									$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
 							]),
 						_List_Nil),
 						$elm$html$Html$text('\u00A0'),
@@ -5873,7 +6167,7 @@ var $author$project$Views$FeePlan$show = function (fee_plan) {
 			]));
 };
 var $author$project$CreditInterestAllocationEditor$view = function (model) {
-	var fee_plans = model.z;
+	var fee_plans = model.E;
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5881,17 +6175,17 @@ var $author$project$CreditInterestAllocationEditor$view = function (model) {
 };
 var $author$project$CreditInterestAllocationEditor$main = $elm$browser$Browser$element(
 	{
-		ay: $author$project$CreditInterestAllocationEditor$init,
-		aH: $elm$core$Basics$always($elm$core$Platform$Sub$none),
-		aJ: $author$project$CreditInterestAllocationEditor$update,
-		aK: $author$project$CreditInterestAllocationEditor$view
+		aF: $author$project$CreditInterestAllocationEditor$init,
+		aR: $elm$core$Basics$always($elm$core$Platform$Sub$none),
+		aT: $author$project$CreditInterestAllocationEditor$update,
+		aU: $author$project$CreditInterestAllocationEditor$view
 	});
 _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$CreditInterestAllocationEditor$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
 		function (fee_plans) {
 			return $elm$json$Json$Decode$succeed(
-				{z: fee_plans});
+				{E: fee_plans});
 		},
 		A2(
 			$elm$json$Json$Decode$field,
@@ -5916,7 +6210,7 @@ _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$Credi
 															$elm$json$Json$Decode$andThen,
 															function (customer_fee_fixed) {
 																return $elm$json$Json$Decode$succeed(
-																	{aq: customer_fee_fixed, ar: customer_fee_variable, T: installments_count, az: is_capped, aA: merchant_fee_fixed, aB: merchant_fee_variable});
+																	{ax: customer_fee_fixed, ay: customer_fee_variable, Y: installments_count, aG: is_capped, aI: merchant_fee_fixed, aJ: merchant_fee_variable});
 															},
 															A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
 													},
