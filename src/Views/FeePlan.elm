@@ -9,8 +9,8 @@ import Input.Float as MaskedPercentage
 import Views.Utils exposing (euros, percents)
 
 
-show : FeePlan -> Html Msg
-show ({ installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped } as fee_plan) =
+show : ( FeePlan, FeePlan ) -> Html Msg
+show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -74,6 +74,11 @@ show ({ installments_count, merchant_fee_variable, merchant_fee_fixed, customer_
                   else
                     showCustomerFeeVariableEditor fee_plan
                 ]
+        , if original_fee_plan /= fee_plan then
+            div [ class "text-center" ] [ button [ class "btn btn-primary" ] [ text "Enregistrer" ] ]
+
+          else
+            div [] []
         ]
 
 

@@ -6,5 +6,5 @@ import Data.Flags exposing (Flags)
 
 type alias Model =
     { fee_plans : List FeePlan
-    , flags : Flags
+    , original_fee_plans : List FeePlan
     }
