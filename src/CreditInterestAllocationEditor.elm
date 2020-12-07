@@ -7,6 +7,7 @@ import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Update.FeePlan as FeePlan
 import Views.FeePlan as FeePlan
 
 
@@ -22,12 +23,22 @@ main =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { fee_plans = flags.fee_plans }, Cmd.none )
+    ( { fee_plans = flags.fee_plans |> List.sortBy .installments_count
+      , flags = flags
+      }
+    , Cmd.none
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        SetCustomerFeeVariable installments_count value ->
+            ( { model
+                | fee_plans = FeePlan.update model installments_count value
+              }
+            , Cmd.none
+            )
 
 
 view : Model -> Html Msg

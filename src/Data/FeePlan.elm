@@ -1,7 +1,11 @@
-module Data.FeePlan exposing (FeePlan, decode, empty)
+module Data.FeePlan exposing (FeePlan, FeePlanID, decode, empty)
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline exposing (optional, required)
+
+
+type alias FeePlanID =
+    Int
 
 
 type alias FeePlan =
