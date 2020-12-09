@@ -1,6 +1,7 @@
 module CreditInterestAllocationEditor exposing (main)
 
 import Browser
+import Browser.Navigation as Navigation
 import Data.FeePlan as FeePlan
 import Data.Flags exposing (Flags)
 import Data.Interest exposing (MaximumInterestRate)
@@ -9,6 +10,7 @@ import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Request.FeePlan as FeePlan
 import Update.FeePlan as FeePlan
 import Views.FeePlan as FeePlan
 
@@ -33,10 +35,8 @@ init flags =
     in
     ( { fee_plans = fee_plans
       , original_fee_plans = fee_plans
-      , maximum_purchase_amount =
-            flags.maximum_purchase_amount
-                |> Maybe.withDefault 1000000
       , alma_settings = flags.alma_settings
+      , is_sending = False
       }
     , Cmd.none
     )
@@ -52,6 +52,11 @@ update msg model =
             , Cmd.none
             )
 
+        UpdateFeePlan fee_plan ->
+            ( { model | is_sending = True }
+            , FeePlan.updateFeePlan fee_plan (FeePlanUpdated fee_plan) model.alma_settings
+            )
+
         FeePlanUpdated _ (Err err) ->
             -- let
             --     _ =
@@ -59,7 +64,7 @@ update msg model =
             --             |> Debug.log "An error occured while loading email templates"
             -- in
             -- Keep demo templates
-            ( model, Cmd.none )
+            ( { model | is_sending = False }, Cmd.none )
 
         FeePlanUpdated original_fee_plan (Ok new_fee_plan) ->
             let
@@ -75,11 +80,17 @@ update msg model =
                         |> (::) new_fee_plan
                         |> List.sortBy .installments_count
             in
-            ( { model | fee_plans = new_fee_plans, original_fee_plans = new_original_fee_plans }, Cmd.none )
+            ( { model
+                | is_sending = False
+                , fee_plans = new_fee_plans
+                , original_fee_plans = new_original_fee_plans
+              }
+            , Cmd.none
+            )
 
 
 view : Model -> Html Msg
-view { fee_plans, original_fee_plans, maximum_purchase_amount } =
+view { fee_plans, original_fee_plans } =
     List.map2 Tuple.pair original_fee_plans fee_plans
-        |> List.map (FeePlan.show maximum_purchase_amount)
+        |> List.map FeePlan.show
         |> div []

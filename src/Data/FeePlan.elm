@@ -10,56 +10,64 @@ type alias FeePlanID =
 
 
 type alias FlagsFeePlan =
-    { installments_count : Int
+    { kind : String
+    , installments_count : Int
     , merchant_fee_variable : Int
     , merchant_fee_fixed : Int
     , customer_fee_variable : Int
     , customer_fee_fixed : Int
-    , is_capped : Bool
+    , capped : Bool
     , maximum_interest_rate : MaximumInterestRate
+    , max_purchase_amount : Int
     }
 
 
 type alias FeePlan =
-    { installments_count : Int
+    { kind : String
+    , installments_count : Int
     , merchant_fee_variable : Int
     , merchant_fee_fixed : Int
     , customer_fee_variable : Int
     , customer_fee_fixed : Int
-    , is_capped : Bool
+    , capped : Bool
     , maximum_interest_rate : MaximumInterestRate
+    , max_purchase_amount : Int
     , maybe_customer_fee_variable : Maybe Float
     }
 
 
 empty : FeePlan
 empty =
-    FeePlan 2 0 0 0 0 False MaximumInterestRate.empty Nothing
+    FeePlan "general" 2 0 0 0 0 False MaximumInterestRate.empty 0 Nothing
 
 
 fromFlagsFeePlan : FlagsFeePlan -> FeePlan
 fromFlagsFeePlan flags_fee_plan =
     FeePlan
+        flags_fee_plan.kind
         flags_fee_plan.installments_count
         flags_fee_plan.merchant_fee_variable
         flags_fee_plan.merchant_fee_fixed
         flags_fee_plan.customer_fee_variable
         flags_fee_plan.customer_fee_fixed
-        flags_fee_plan.is_capped
+        flags_fee_plan.capped
         flags_fee_plan.maximum_interest_rate
+        flags_fee_plan.max_purchase_amount
         (Just <| toFloat flags_fee_plan.customer_fee_variable / 100)
 
 
 decode : Decoder FeePlan
 decode =
     Decode.succeed FeePlan
+        |> required "kind" Decode.string
         |> required "installments_count" Decode.int
         |> required "merchant_fee_variable" Decode.int
         |> required "merchant_fee_fixed" Decode.int
         |> required "customer_fee_variable" Decode.int
         |> required "customer_fee_fixed" Decode.int
-        |> required "is_capped" Decode.bool
-        |> required "maximum_interest" MaximumInterestRate.decode
+        |> required "capped" Decode.bool
+        |> required "maximum_interest_rate" MaximumInterestRate.decode
+        |> required "max_purchase_amount" Decode.int
         |> required "customer_fee_variable" decodeMaybeCustomerFeeVariable
 
 

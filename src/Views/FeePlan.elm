@@ -10,8 +10,8 @@ import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)
 
 
-show : Int -> ( FeePlan, FeePlan ) -> Html Msg
-show maximum_purchase_amount ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped, maximum_interest_rate } as fee_plan ) =
+show : ( FeePlan, FeePlan ) -> Html Msg
+show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -32,7 +32,7 @@ show maximum_purchase_amount ( original_fee_plan, { installments_count, merchant
             , span []
                 [ strong [] [ text "Frais client : " ]
                 , show_fees customer_fee_variable customer_fee_fixed |> text
-                , if is_capped then
+                , if capped then
                     text " déduits des frais marchands"
 
                   else
@@ -77,7 +77,7 @@ show maximum_purchase_amount ( original_fee_plan, { installments_count, merchant
                         showCustomerFeeVariableEditor fee_plan
                     , if original_fee_plan /= fee_plan then
                         div [ class "text-center", style "margin" "20px" ]
-                            [ button [ class "btn btn-primary" ] [ text "Enregistrer" ]
+                            [ button [ class "btn btn-primary", onClick (UpdateFeePlan fee_plan) ] [ text "Enregistrer" ]
                             ]
 
                       else
@@ -88,7 +88,7 @@ show maximum_purchase_amount ( original_fee_plan, { installments_count, merchant
 
                   else
                     showInterestPanel fee_plan
-                , showOver3000Message maximum_purchase_amount fee_plan
+                , showOver3000Message fee_plan
                 ]
         ]
 
@@ -347,8 +347,8 @@ showOverRate { installments_count, customer_fee_variable, maximum_interest_rate 
         text ""
 
 
-showOver3000Message : Int -> FeePlan -> Html Msg
-showOver3000Message maximum_purchase_amount ({ installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
+showOver3000Message : FeePlan -> Html Msg
+showOver3000Message ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
     let
         customerFee =
             Basics.min customer_fee_variable maximum_interest_rate.below_3000
@@ -361,13 +361,13 @@ showOver3000Message maximum_purchase_amount ({ installments_count, customer_fee_
             (toFloat installments_count / toFloat (installments_count - 1) * 600000)
                 |> round
     in
-    if customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= maximum_purchase_amount then
+    if customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ showOverRate fee_plan
             , p [ style "margin" "10px" ]
                 [ text <| "Les\u{00A0}" ++ percents customerFee ++ "\u{00A0}de frais ne seront appliqués que pour les paniers inférieurs à\u{00A0}" ++ euros over3000Amount ++ "."
                 , br [] []
-                , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= maximum_purchase_amount then
+                , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= max_purchase_amount then
                     text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_3000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over3000Amount ++ "\u{00A0}et inférieurs à\u{00A0}" ++ euros over6000Amount ++ " puis\u{00A0}" ++ percents maximum_interest_rate.over_6000 ++ "\u{00A0}pour les paniers supérieurs à\u{00A0}" ++ euros over6000Amount ++ "."
 
                   else
@@ -375,7 +375,7 @@ showOver3000Message maximum_purchase_amount ({ installments_count, customer_fee_
                 ]
             ]
 
-    else if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= maximum_purchase_amount then
+    else if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ p [ style "margin" "10px" ]
                 [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over6000Amount ++ "."

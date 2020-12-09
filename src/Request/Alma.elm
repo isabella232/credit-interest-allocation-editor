@@ -76,7 +76,7 @@ endpointUrl baseUrl endpoint =
     in
     case endpoint of
         MerchantFeePlan ->
-            url ++ "/v1/fee_plan"
+            url ++ "/v1/me/fee-plans"
 
 
 {-| Convert any Alma.Error to a string
