@@ -5322,7 +5322,7 @@ var $author$project$Update$FeePlan$update = F3(
 					$elm$core$Basics$min,
 					fee_plan.a0.aK,
 					$elm$core$Basics$round(value * 100));
-				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? $elm$core$Maybe$Just(original_fee_plan.aR) : $elm$core$Maybe$Just(1)) : (_Utils_eq(value, -1) ? $elm$core$Maybe$Just(0) : ((!value) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(cappedValue)));
+				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? $elm$core$Maybe$Just(original_fee_plan.aR) : $elm$core$Maybe$Just(1)) : (_Utils_eq(value, -1) ? $elm$core$Maybe$Just(0) : ((!value) ? $elm$core$Maybe$Just(0) : $elm$core$Maybe$Just(cappedValue)));
 			},
 			maybe_value);
 		if (maybe_customer_fee_variable.$ === 1) {
@@ -5337,21 +5337,35 @@ var $author$project$Update$FeePlan$update = F3(
 				A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 		} else {
 			var new_customer_fee_variable = maybe_customer_fee_variable.a;
-			var total_fee_variable = original_fee_plan.a3 + original_fee_plan.aR;
-			var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
-			var new_fee_plan = _Utils_update(
-				fee_plan,
-				{
-					aR: new_customer_fee_variable,
-					a1: $elm$core$Maybe$Just(new_customer_fee_variable / 100),
-					a3: new_merchant_fee_variable
-				});
-			return A2(
-				$elm$core$List$sortBy,
-				function ($) {
-					return $.r;
-				},
-				A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
+			if (!new_customer_fee_variable) {
+				var new_fee_plan = _Utils_update(
+					fee_plan,
+					{
+						a1: $elm$core$Maybe$Just(0)
+					});
+				return A2(
+					$elm$core$List$sortBy,
+					function ($) {
+						return $.r;
+					},
+					A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
+			} else {
+				var total_fee_variable = original_fee_plan.a3 + original_fee_plan.aR;
+				var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
+				var new_fee_plan = _Utils_update(
+					fee_plan,
+					{
+						aR: new_customer_fee_variable,
+						a1: $elm$core$Maybe$Just(new_customer_fee_variable / 100),
+						a3: new_merchant_fee_variable
+					});
+				return A2(
+					$elm$core$List$sortBy,
+					function ($) {
+						return $.r;
+					},
+					A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
+			}
 		}
 	});
 var $author$project$CreditInterestAllocationEditor$update = F2(
