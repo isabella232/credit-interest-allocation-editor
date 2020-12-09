@@ -205,13 +205,6 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
 
         exampleMerchantFee =
             round <| toFloat effectiveMerchantFee * exampleAmount / 10000
-
-        feeClass =
-            if maximum_interest_rate.below_3000 < totalFees then
-                "col-xs-4"
-
-            else
-                "col-xs-6"
     in
     div
         [ class "col-sm-6"
@@ -265,7 +258,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
             ]
         , div [ class "row" ]
             [ div
-                [ class feeClass
+                [ class "col-xs-6"
                 , style "color" "#4c86e5"
                 , style "font-weight" "bold"
                 , style "font-size" "1.1em"
@@ -274,7 +267,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     |> text
                 ]
             , if maximum_interest_rate.below_3000 < totalFees then
-                div [ class <| feeClass ++ " text-center" ]
+                div [ style "position" "absolute", style "left" maximumInterestShare ]
                     [ strong []
                         [ percents maximum_interest_rate.below_3000
                             |> text
@@ -299,7 +292,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
               else
                 text ""
             , div
-                [ class <| feeClass ++ " text-right"
+                [ class <| "col-xs-6 text-right"
                 , style "color" "#273d52"
                 , style "font-weight" "bold"
                 , style "font-size" "1.1em"
@@ -313,7 +306,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 [ class "col-xs-12"
                 , style "font-size" "0.83em"
                 ]
-                [ p [ style "padding-top" "20px" ]
+                [ p [ style "padding-top" "30px", style "margin-bottom" "10px" ]
                     [ u [] [ text "Exemple :" ]
                     , text " Pour l'achat de "
                     , span
