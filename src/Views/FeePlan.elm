@@ -6,11 +6,12 @@ import Html exposing (..)
 import Html.Attributes as HA exposing (..)
 import Html.Events exposing (..)
 import Input.Float as MaskedPercentage
+import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)
 
 
 show : ( FeePlan, FeePlan ) -> Html Msg
-show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped } as fee_plan ) =
+show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped, maximum_interest_rate } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -87,6 +88,7 @@ show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_
 
                   else
                     showInterestPanel fee_plan
+                , showOver3000Message fee_plan
                 ]
         ]
 
@@ -252,7 +254,20 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                         |> text
                     ]
                 , br [] []
-                , a [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer." ] [ text "frais max" ]
+                , a
+                    [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
+                    , style "color" "black"
+                    , style "text-decoration" "none"
+                    ]
+                    [ text "frais max"
+                    , div
+                        [ style "display" "inline-block"
+                        , style "width" "16px"
+                        , style "padding-left" "2px"
+                        , style "color" "#4c86e5"
+                        ]
+                        [ Svg.info ]
+                    ]
                 ]
             , div
                 [ class "col-xs-4 text-right"
@@ -288,3 +303,40 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 ]
             ]
         ]
+
+
+showOver3000Message : FeePlan -> Html Msg
+showOver3000Message { installments_count, customer_fee_variable, maximum_interest_rate } =
+    let
+        over3000Amount =
+            (toFloat installments_count / toFloat (installments_count - 1) * 300000)
+                |> round
+
+        over6000Amount =
+            (toFloat installments_count / toFloat (installments_count - 1) * 600000)
+                |> round
+    in
+    if customer_fee_variable > maximum_interest_rate.over_3000 then
+        div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
+            [ p [ style "margin" "10px" ]
+                [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over3000Amount ++ "."
+                , br [] []
+                , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount < 1000000 then
+                    text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_3000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over3000Amount ++ " et inférieurs à " ++ euros over6000Amount ++ " puis " ++ percents maximum_interest_rate.over_6000 ++ " pour les paniers supérieurs à " ++ euros over6000Amount ++ "."
+
+                  else
+                    text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_3000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over3000Amount ++ "."
+                ]
+            ]
+
+    else if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount < 1000000 then
+        div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
+            [ p [ style "margin" "10px" ]
+                [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over6000Amount ++ "."
+                , br [] []
+                , text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_6000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over6000Amount ++ "."
+                ]
+            ]
+
+    else
+        text ""
