@@ -33,6 +33,9 @@ init flags =
     in
     ( { fee_plans = fee_plans
       , original_fee_plans = fee_plans
+      , maximum_purchase_amount =
+            flags.maximum_purchase_amount
+                |> Maybe.withDefault 1000000
       , alma_settings = flags.alma_settings
       }
     , Cmd.none
@@ -76,7 +79,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view ({ fee_plans, original_fee_plans } as model) =
+view { fee_plans, original_fee_plans, maximum_purchase_amount } =
     List.map2 Tuple.pair original_fee_plans fee_plans
-        |> List.map FeePlan.show
+        |> List.map (FeePlan.show maximum_purchase_amount)
         |> div []
