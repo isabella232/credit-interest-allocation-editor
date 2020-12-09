@@ -6114,7 +6114,6 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 		',',
 		'.',
 		$author$project$Views$Utils$percents(maxFeeShare));
-	var feeClass = (_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? 'col-xs-4' : 'col-xs-6';
 	var exampleAmount = 30000;
 	var effectiveClientFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aK);
 	var effectiveMerchantFee = (customer_fee_variable + merchant_fee_variable) - effectiveClientFee;
@@ -6231,7 +6230,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class(feeClass),
+								$elm$html$Html$Attributes$class('col-xs-6'),
 								A2($elm$html$Html$Attributes$style, 'color', '#4c86e5'),
 								A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
 								A2($elm$html$Html$Attributes$style, 'font-size', '1.1em')
@@ -6245,7 +6244,8 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class(feeClass + ' text-center')
+								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2($elm$html$Html$Attributes$style, 'left', maximumInterestShare)
 							]),
 						_List_fromArray(
 							[
@@ -6286,7 +6286,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class(feeClass + ' text-right'),
+								$elm$html$Html$Attributes$class('col-xs-6 text-right'),
 								A2($elm$html$Html$Attributes$style, 'color', '#273d52'),
 								A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
 								A2($elm$html$Html$Attributes$style, 'font-size', '1.1em')
@@ -6318,7 +6318,8 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 								$elm$html$Html$p,
 								_List_fromArray(
 									[
-										A2($elm$html$Html$Attributes$style, 'padding-top', '20px')
+										A2($elm$html$Html$Attributes$style, 'padding-top', '30px'),
+										A2($elm$html$Html$Attributes$style, 'margin-bottom', '10px')
 									]),
 								_List_fromArray(
 									[
