@@ -85,6 +85,10 @@
     const app = Elm.CreditInterestAllocationEditor.init({
       node: element,
       flags: {
+        "alma_settings": {
+          apiServer: "http://localhost:1337",
+          csrfToken : "19sPmw2nVoGwWm42iUeq",
+        },
         "fee_plans": [
           {
             "installments_count": 2,
@@ -114,9 +118,9 @@
           },
           {
             "installments_count": 4,
-            "merchant_fee_variable": 380,
+            "merchant_fee_variable": 180,
             "merchant_fee_fixed": 0,
-            "customer_fee_variable": 100,
+            "customer_fee_variable": 300,
             "customer_fee_fixed": 0,
             "is_capped": false,
             "maximum_interest_rate": {
