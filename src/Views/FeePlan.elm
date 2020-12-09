@@ -261,7 +261,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     ]
                 ]
             ]
-        , div [ class "row" ]
+        , div [ class "row", style "height" "50px" ]
             [ div
                 [ class "col-xs-6"
                 , style "color" "#4c86e5"
@@ -282,6 +282,8 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                         [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
                         , style "color" "black"
                         , style "text-decoration" "none"
+                        , style "display" "inline-block"
+                        , style "cursor" "help"
                         ]
                         [ text "frais max"
                         , div
@@ -311,7 +313,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 [ class "col-xs-12"
                 , style "font-size" "0.83em"
                 ]
-                [ p [ style "padding-top" "30px", style "margin-bottom" "10px" ]
+                [ p [ style "margin-bottom" "10px" ]
                     [ u [] [ text "Exemple :" ]
                     , text " Pour l'achat de "
                     , span
