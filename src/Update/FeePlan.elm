@@ -25,7 +25,7 @@ update model installments_count maybe_value =
 
         maybe_customer_fee_variable =
             maybe_value
-                |> Maybe.map
+                |> Maybe.andThen
                     (\value ->
                         let
                             cappedValue =
@@ -36,19 +36,19 @@ update model installments_count maybe_value =
                         in
                         if fee_plan.customer_fee_variable == 0 then
                             if original_fee_plan.customer_fee_variable /= 0 then
-                                original_fee_plan.customer_fee_variable
+                                Just original_fee_plan.customer_fee_variable
 
                             else
-                                1
+                                Just 1
 
                         else if value == -1 then
-                            0
+                            Just 0
 
                         else if value == 0 then
-                            1
+                            Just 0
 
                         else
-                            cappedValue
+                            Just cappedValue
                     )
     in
     case maybe_customer_fee_variable of
@@ -65,19 +65,30 @@ update model installments_count maybe_value =
 
         Just new_customer_fee_variable ->
             -- Update bot maybe_customer_fee_variable and customer_fee_variable
-            let
-                total_fee_variable =
-                    original_fee_plan.merchant_fee_variable + original_fee_plan.customer_fee_variable
+            if new_customer_fee_variable == 0 then
+                let
+                    new_fee_plan =
+                        { fee_plan
+                            | maybe_customer_fee_variable = Just 0
+                        }
+                in
+                (new_fee_plan :: other_fee_plans)
+                    |> List.sortBy .installments_count
 
-                new_merchant_fee_variable =
-                    total_fee_variable - new_customer_fee_variable
+            else
+                let
+                    total_fee_variable =
+                        original_fee_plan.merchant_fee_variable + original_fee_plan.customer_fee_variable
 
-                new_fee_plan =
-                    { fee_plan
-                        | customer_fee_variable = new_customer_fee_variable
-                        , maybe_customer_fee_variable = Just <| toFloat new_customer_fee_variable / 100
-                        , merchant_fee_variable = new_merchant_fee_variable
-                    }
-            in
-            (new_fee_plan :: other_fee_plans)
-                |> List.sortBy .installments_count
+                    new_merchant_fee_variable =
+                        total_fee_variable - new_customer_fee_variable
+
+                    new_fee_plan =
+                        { fee_plan
+                            | customer_fee_variable = new_customer_fee_variable
+                            , maybe_customer_fee_variable = Just <| toFloat new_customer_fee_variable / 100
+                            , merchant_fee_variable = new_merchant_fee_variable
+                        }
+                in
+                (new_fee_plan :: other_fee_plans)
+                    |> List.sortBy .installments_count
