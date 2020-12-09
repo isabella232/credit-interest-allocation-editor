@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.S.G === region.Z.G)
+	if (region.T.G === region._.G)
 	{
-		return 'on line ' + region.S.G;
+		return 'on line ' + region.T.G;
 	}
-	return 'on lines ' + region.S.G + ' through ' + region.Z.G;
+	return 'on lines ' + region.T.G + ' through ' + region._.G;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
-		impl.bj,
-		impl.bg,
+		impl.a_,
+		impl.bk,
+		impl.bh,
 		function() { return function() {} }
 	);
 });
@@ -2704,9 +2704,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		ag: func(record.ag),
-		T: record.T,
-		Q: record.Q
+		ah: func(record.ah),
+		U: record.U,
+		R: record.R
 	}
 });
 
@@ -2974,11 +2974,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.ag;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.T;
+		var message = !tag ? value : tag < 3 ? value.a : value.ah;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.U;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.Q) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.R) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
-		impl.bj,
-		impl.bg,
+		impl.a_,
+		impl.bk,
+		impl.bh,
 		function(sendToApp, initialModel) {
-			var view = impl.bk;
+			var view = impl.bl;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
-		impl.bj,
-		impl.bg,
+		impl.a_,
+		impl.bk,
+		impl.bh,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.R && impl.R(sendToApp)
-			var view = impl.bk;
+			var divertHrefToApp = impl.S && impl.S(sendToApp)
+			var view = impl.bl;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aL);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aM);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bi) && (_VirtualDom_doc.title = title = doc.bi);
+				(title !== doc.bj) && (_VirtualDom_doc.title = title = doc.bj);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a7;
-	var onUrlRequest = impl.a8;
+	var onUrlChange = impl.a8;
+	var onUrlRequest = impl.a9;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		R: function(sendToApp)
+		S: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ao === next.ao
-							&& curr.ae === next.ae
-							&& curr.al.a === next.al.a
+							&& curr.ap === next.ap
+							&& curr.af === next.af
+							&& curr.am.a === next.am.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aZ: function(flags)
+		a_: function(flags)
 		{
-			return A3(impl.aZ, flags, _Browser_getUrl(), key);
+			return A3(impl.a_, flags, _Browser_getUrl(), key);
 		},
+		bl: impl.bl,
 		bk: impl.bk,
-		bj: impl.bj,
-		bg: impl.bg
+		bh: impl.bh
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aX: 'hidden', aM: 'visibilitychange' }
+		? { aY: 'hidden', aN: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aX: 'mozHidden', aM: 'mozvisibilitychange' }
+		? { aY: 'mozHidden', aN: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aX: 'msHidden', aM: 'msvisibilitychange' }
+		? { aY: 'msHidden', aN: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aX: 'webkitHidden', aM: 'webkitvisibilitychange' }
-		: { aX: 'hidden', aM: 'visibilitychange' };
+		? { aY: 'webkitHidden', aN: 'webkitvisibilitychange' }
+		: { aY: 'hidden', aN: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		au: _Browser_getScene(),
-		aB: {
-			aD: _Browser_window.pageXOffset,
-			aE: _Browser_window.pageYOffset,
-			aC: _Browser_doc.documentElement.clientWidth,
-			ad: _Browser_doc.documentElement.clientHeight
+		av: _Browser_getScene(),
+		aC: {
+			aE: _Browser_window.pageXOffset,
+			aF: _Browser_window.pageYOffset,
+			aD: _Browser_doc.documentElement.clientWidth,
+			ae: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aC: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ad: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aD: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ae: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			au: {
-				aC: node.scrollWidth,
-				ad: node.scrollHeight
+			av: {
+				aD: node.scrollWidth,
+				ae: node.scrollHeight
 			},
-			aB: {
-				aD: node.scrollLeft,
-				aE: node.scrollTop,
-				aC: node.clientWidth,
-				ad: node.clientHeight
+			aC: {
+				aE: node.scrollLeft,
+				aF: node.scrollTop,
+				aD: node.clientWidth,
+				ae: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			au: _Browser_getScene(),
-			aB: {
-				aD: x,
-				aE: y,
-				aC: _Browser_doc.documentElement.clientWidth,
-				ad: _Browser_doc.documentElement.clientHeight
+			av: _Browser_getScene(),
+			aC: {
+				aE: x,
+				aF: y,
+				aD: _Browser_doc.documentElement.clientWidth,
+				ae: _Browser_doc.documentElement.clientHeight
 			},
-			aT: {
-				aD: x + rect.left,
-				aE: y + rect.top,
-				aC: rect.width,
-				ad: rect.height
+			aU: {
+				aE: x + rect.left,
+				aF: y + rect.top,
+				aD: rect.width,
+				ae: rect.height
 			}
 		};
 	});
@@ -4392,6 +4392,10 @@ var _Bitwise_shiftRightZfBy = F2(function(offset, a)
 {
 	return a >>> offset;
 });
+var $elm$core$Maybe$Just = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$core$Maybe$Nothing = {$: 1};
 var $elm$core$Basics$always = F2(
 	function (a, _v0) {
 		return a;
@@ -4499,10 +4503,6 @@ var $elm$json$Json$Decode$OneOf = function (a) {
 };
 var $elm$core$Basics$False = 1;
 var $elm$core$Basics$add = _Basics_add;
-var $elm$core$Maybe$Just = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$core$Maybe$Nothing = {$: 1};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -4902,7 +4902,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ab: fragment, ae: host, aj: path, al: port_, ao: protocol, ap: query};
+		return {ac: fragment, af: host, ak: path, am: port_, ap: protocol, aq: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5184,23 +5184,32 @@ var $elm$browser$Browser$element = _Browser_element;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Data$FeePlan$FeePlan = F8(
 	function (installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, is_capped, maximum_interest_rate, maybe_customer_fee_variable) {
-		return {aQ: customer_fee_fixed, aR: customer_fee_variable, r: installments_count, a_: is_capped, a0: maximum_interest_rate, a1: maybe_customer_fee_variable, a2: merchant_fee_fixed, a3: merchant_fee_variable};
+		return {aR: customer_fee_fixed, aS: customer_fee_variable, r: installments_count, a$: is_capped, a1: maximum_interest_rate, a2: maybe_customer_fee_variable, a3: merchant_fee_fixed, a4: merchant_fee_variable};
 	});
 var $author$project$Data$FeePlan$fromFlagsFeePlan = function (flags_fee_plan) {
 	return A8(
 		$author$project$Data$FeePlan$FeePlan,
 		flags_fee_plan.r,
+		flags_fee_plan.a4,
 		flags_fee_plan.a3,
-		flags_fee_plan.a2,
+		flags_fee_plan.aS,
 		flags_fee_plan.aR,
-		flags_fee_plan.aQ,
-		flags_fee_plan.a_,
-		flags_fee_plan.a0,
-		$elm$core$Maybe$Just(flags_fee_plan.aR / 100));
+		flags_fee_plan.a$,
+		flags_fee_plan.a1,
+		$elm$core$Maybe$Just(flags_fee_plan.aS / 100));
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$List$sortBy = _List_sortBy;
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var $author$project$CreditInterestAllocationEditor$init = function (flags) {
 	var fee_plans = A2(
 		$elm$core$List$map,
@@ -5212,13 +5221,20 @@ var $author$project$CreditInterestAllocationEditor$init = function (flags) {
 			},
 			flags.v));
 	return _Utils_Tuple2(
-		{M: flags.M, v: fee_plans, L: fee_plans},
+		{
+			N: flags.N,
+			v: fee_plans,
+			L: A2($elm$core$Maybe$withDefault, 1000000, flags.L),
+			M: fee_plans
+		},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$json$Json$Decode$null = _Json_decodeNull;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
@@ -5248,7 +5264,7 @@ var $elm$core$Basics$composeR = F3(
 	});
 var $author$project$Data$Interest$MaximumInterestRate = F3(
 	function (below_3000, over_3000, over_6000) {
-		return {aK: below_3000, ba: over_3000, bb: over_6000};
+		return {aL: below_3000, bb: over_3000, bc: over_6000};
 	});
 var $author$project$Data$Interest$empty = A3($author$project$Data$Interest$MaximumInterestRate, 153, 79, 41);
 var $author$project$Data$FeePlan$empty = A8($author$project$Data$FeePlan$FeePlan, 2, 0, 0, 0, 0, false, $author$project$Data$Interest$empty, $elm$core$Maybe$Nothing);
@@ -5269,15 +5285,6 @@ var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $elm$core$Basics$round = _Basics_round;
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Update$FeePlan$update = F3(
 	function (model, installments_count, maybe_value) {
 		var other_fee_plans = A2(
@@ -5301,7 +5308,7 @@ var $author$project$Update$FeePlan$update = F3(
 							return $.r;
 						},
 						$elm$core$Basics$eq(installments_count)),
-					model.L)));
+					model.M)));
 		var fee_plan = A2(
 			$elm$core$Maybe$withDefault,
 			$author$project$Data$FeePlan$empty,
@@ -5320,15 +5327,15 @@ var $author$project$Update$FeePlan$update = F3(
 			function (value) {
 				var cappedValue = A2(
 					$elm$core$Basics$min,
-					fee_plan.a0.aK,
+					fee_plan.a1.aL,
 					$elm$core$Basics$round(value * 100));
-				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? $elm$core$Maybe$Just(original_fee_plan.aR) : $elm$core$Maybe$Just(1)) : (_Utils_eq(value, -1) ? $elm$core$Maybe$Just(0) : ((!value) ? $elm$core$Maybe$Just(0) : $elm$core$Maybe$Just(cappedValue)));
+				return (!fee_plan.aS) ? ((!(!original_fee_plan.aS)) ? $elm$core$Maybe$Just(original_fee_plan.aS) : $elm$core$Maybe$Just(1)) : (_Utils_eq(value, -1) ? $elm$core$Maybe$Just(0) : ((!value) ? $elm$core$Maybe$Just(0) : $elm$core$Maybe$Just(cappedValue)));
 			},
 			maybe_value);
 		if (maybe_customer_fee_variable.$ === 1) {
 			var new_fee_plan = _Utils_update(
 				fee_plan,
-				{a1: $elm$core$Maybe$Nothing});
+				{a2: $elm$core$Maybe$Nothing});
 			return A2(
 				$elm$core$List$sortBy,
 				function ($) {
@@ -5341,7 +5348,7 @@ var $author$project$Update$FeePlan$update = F3(
 				var new_fee_plan = _Utils_update(
 					fee_plan,
 					{
-						a1: $elm$core$Maybe$Just(0)
+						a2: $elm$core$Maybe$Just(0)
 					});
 				return A2(
 					$elm$core$List$sortBy,
@@ -5350,14 +5357,14 @@ var $author$project$Update$FeePlan$update = F3(
 					},
 					A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 			} else {
-				var total_fee_variable = original_fee_plan.a3 + original_fee_plan.aR;
+				var total_fee_variable = original_fee_plan.a4 + original_fee_plan.aS;
 				var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
 				var new_fee_plan = _Utils_update(
 					fee_plan,
 					{
-						aR: new_customer_fee_variable,
-						a1: $elm$core$Maybe$Just(new_customer_fee_variable / 100),
-						a3: new_merchant_fee_variable
+						aS: new_customer_fee_variable,
+						a2: $elm$core$Maybe$Just(new_customer_fee_variable / 100),
+						a4: new_merchant_fee_variable
 					});
 				return A2(
 					$elm$core$List$sortBy,
@@ -5400,7 +5407,7 @@ var $author$project$CreditInterestAllocationEditor$update = F2(
 							function (i) {
 								return !_Utils_eq(i.r, original_fee_plan.r);
 							},
-							model.L)));
+							model.M)));
 				var new_fee_plans = A2(
 					$elm$core$List$sortBy,
 					function ($) {
@@ -5418,7 +5425,7 @@ var $author$project$CreditInterestAllocationEditor$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{v: new_fee_plans, L: new_original_fee_plans}),
+						{v: new_fee_plans, M: new_original_fee_plans}),
 					$elm$core$Platform$Cmd$none);
 			}
 		}
@@ -5637,7 +5644,7 @@ var $elm$core$List$any = F2(
 	});
 var $author$project$Input$Decoder$Event = F5(
 	function (keyCode, ctrlKey, altKey, metaKey, shiftKey) {
-		return {aH: altKey, aP: ctrlKey, a$: keyCode, a4: metaKey, bf: shiftKey};
+		return {aI: altKey, aQ: ctrlKey, a0: keyCode, a5: metaKey, bg: shiftKey};
 	});
 var $elm$json$Json$Decode$map5 = _Json_map5;
 var $author$project$Input$Decoder$eventDecoder = A6(
@@ -5688,22 +5695,22 @@ var $author$project$Input$Float$onKeyDown = F2(
 			return (keyCode >= 96) && (keyCode <= 105);
 		};
 		var filterKey = function (event) {
-			return (event.aP || (event.aH || event.a4)) ? _Utils_Tuple2(
+			return (event.aQ || (event.aI || event.a5)) ? _Utils_Tuple2(
 				options.c(currentValue),
-				false) : (event.bf ? _Utils_Tuple2(
+				false) : (event.bg ? _Utils_Tuple2(
 				options.c(currentValue),
 				false) : (A2(
 				$elm$core$List$any,
-				$elm$core$Basics$eq(event.a$),
+				$elm$core$Basics$eq(event.a0),
 				$author$project$Input$KeyCode$allowedKeyCodes) ? _Utils_Tuple2(
 				options.c(currentValue),
-				false) : (((isNumber(event.a$) || isNumPad(event.a$)) && A2(
+				false) : (((isNumber(event.a0) || isNumPad(event.a0)) && A2(
 				$author$project$Input$Float$isValid,
-				newValue(event.a$),
+				newValue(event.a0),
 				options)) ? _Utils_Tuple2(
 				options.c(
 					$elm$core$String$toFloat(
-						newValue(event.a$))),
+						newValue(event.a0))),
 				false) : _Utils_Tuple2(
 				options.c(currentValue),
 				true))));
@@ -5823,15 +5830,14 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Views$FeePlan$showCustomerFeeVariableEditor = function (_v0) {
 	var installments_count = _v0.r;
-	var merchant_fee_variable = _v0.a3;
-	var customer_fee_variable = _v0.aR;
-	var maybe_customer_fee_variable = _v0.a1;
+	var merchant_fee_variable = _v0.a4;
+	var customer_fee_variable = _v0.aS;
+	var maybe_customer_fee_variable = _v0.a2;
 	var initialOptions = $author$project$Input$Float$defaultOptions(
 		$author$project$Data$Msg$SetCustomerFeeVariable(installments_count));
 	var inputOptions = _Utils_update(
 		initialOptions,
 		{
-			m: $elm$core$Maybe$Just((customer_fee_variable + merchant_fee_variable) / 100),
 			s: $elm$core$Maybe$Just(0.01),
 			C: $elm$core$Maybe$Just(0.01)
 		});
@@ -6146,11 +6152,11 @@ var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
 var $elm$html$Html$u = _VirtualDom_node('u');
 var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
-	var customer_fee_variable = _v0.aR;
-	var merchant_fee_variable = _v0.a3;
-	var maximum_interest_rate = _v0.a0;
+	var customer_fee_variable = _v0.aS;
+	var merchant_fee_variable = _v0.a4;
+	var maximum_interest_rate = _v0.a1;
 	var totalFees = customer_fee_variable + merchant_fee_variable;
-	var maxFeeShare = $elm$core$Basics$round((maximum_interest_rate.aK / totalFees) * 10000);
+	var maxFeeShare = $elm$core$Basics$round((maximum_interest_rate.aL / totalFees) * 10000);
 	var maxInterestBarPosition = A3(
 		$elm$core$String$replace,
 		',',
@@ -6166,7 +6172,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 				1900,
 				A2($elm$core$Basics$min, 6700, maxFeeShare))));
 	var exampleAmount = 30000;
-	var effectiveClientFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aK);
+	var effectiveClientFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aL);
 	var effectiveMerchantFee = (customer_fee_variable + merchant_fee_variable) - effectiveClientFee;
 	var exampleMerchantFee = $elm$core$Basics$round((effectiveMerchantFee * exampleAmount) / 10000);
 	var exampleClientFee = $elm$core$Basics$round((effectiveClientFee * exampleAmount) / 10000);
@@ -6254,7 +6260,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 									]),
 								_List_fromArray(
 									[
-										(_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? A2(
+										(_Utils_cmp(maximum_interest_rate.aL, totalFees) < 0) ? A2(
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
@@ -6292,7 +6298,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 								$elm$html$Html$text(
 								$author$project$Views$Utils$percents(customer_fee_variable))
 							])),
-						(_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? A2(
+						(_Utils_cmp(maximum_interest_rate.aL, totalFees) < 0) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -6307,7 +6313,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Views$Utils$percents(maximum_interest_rate.aK))
+										$author$project$Views$Utils$percents(maximum_interest_rate.aL))
 									])),
 								A2($elm$html$Html$br, _List_Nil, _List_Nil),
 								A2(
@@ -6417,10 +6423,10 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 };
 var $author$project$Views$FeePlan$showOverRate = function (_v0) {
 	var installments_count = _v0.r;
-	var customer_fee_variable = _v0.aR;
-	var maximum_interest_rate = _v0.a0;
+	var customer_fee_variable = _v0.aS;
+	var maximum_interest_rate = _v0.a1;
 	var over3000Amount = $elm$core$Basics$round((installments_count / (installments_count - 1)) * 300000);
-	return (_Utils_cmp(customer_fee_variable, maximum_interest_rate.aK) > 0) ? A2(
+	return (_Utils_cmp(customer_fee_variable, maximum_interest_rate.aL) > 0) ? A2(
 		$elm$html$Html$p,
 		_List_fromArray(
 			[
@@ -6429,68 +6435,69 @@ var $author$project$Views$FeePlan$showOverRate = function (_v0) {
 		_List_fromArray(
 			[
 				$elm$html$Html$text(
-				'Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.aK) + (' pour les paniers inférieurs à ' + ($author$project$Views$Utils$euros(over3000Amount) + '.'))))
+				'Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.aL) + (' pour les paniers inférieurs à ' + ($author$project$Views$Utils$euros(over3000Amount) + '.'))))
 			])) : $elm$html$Html$text('');
 };
-var $author$project$Views$FeePlan$showOver3000Message = function (fee_plan) {
-	var installments_count = fee_plan.r;
-	var customer_fee_variable = fee_plan.aR;
-	var maximum_interest_rate = fee_plan.a0;
-	var over6000Amount = $elm$core$Basics$round((installments_count / (installments_count - 1)) * 600000);
-	var over3000Amount = $elm$core$Basics$round((installments_count / (installments_count - 1)) * 300000);
-	var customerFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aK);
-	return (_Utils_cmp(customer_fee_variable, maximum_interest_rate.ba) > 0) ? A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('col-xs-12'),
-				A2($elm$html$Html$Attributes$style, 'background-color', '#f6f6f6'),
-				A2($elm$html$Html$Attributes$style, 'margin', '10px 0')
-			]),
-		_List_fromArray(
-			[
-				$author$project$Views$FeePlan$showOverRate(fee_plan),
-				A2(
-				$elm$html$Html$p,
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'margin', '10px')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						'Les\u00A0' + ($author$project$Views$Utils$percents(customerFee) + ('\u00A0de frais ne seront appliqués que pour les paniers inférieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + '.')))),
-						A2($elm$html$Html$br, _List_Nil, _List_Nil),
-						((_Utils_cmp(customer_fee_variable, maximum_interest_rate.bb) > 0) && (over6000Amount < 1000000)) ? $elm$html$Html$text(
-						'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.ba) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + ('\u00A0et inférieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + (' puis\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bb) + ('\u00A0pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + '.')))))))))) : $elm$html$Html$text(
-						'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.ba) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + '.'))))
-					]))
-			])) : (((_Utils_cmp(customer_fee_variable, maximum_interest_rate.bb) > 0) && (over6000Amount < 1000000)) ? A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('col-xs-12'),
-				A2($elm$html$Html$Attributes$style, 'background-color', '#f6f6f6'),
-				A2($elm$html$Html$Attributes$style, 'margin', '10px 0')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$p,
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'margin', '10px')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						'Les ' + ($author$project$Views$Utils$percents(customer_fee_variable) + (' de frais ne seront appliqués que pour les paniers inférieurs à ' + ($author$project$Views$Utils$euros(over6000Amount) + '.')))),
-						A2($elm$html$Html$br, _List_Nil, _List_Nil),
-						$elm$html$Html$text(
-						'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bb) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + '.'))))
-					]))
-			])) : $elm$html$Html$text(''));
-};
+var $author$project$Views$FeePlan$showOver3000Message = F2(
+	function (maximum_purchase_amount, fee_plan) {
+		var installments_count = fee_plan.r;
+		var customer_fee_variable = fee_plan.aS;
+		var maximum_interest_rate = fee_plan.a1;
+		var over6000Amount = $elm$core$Basics$round((installments_count / (installments_count - 1)) * 600000);
+		var over3000Amount = $elm$core$Basics$round((installments_count / (installments_count - 1)) * 300000);
+		var customerFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aL);
+		return ((_Utils_cmp(customer_fee_variable, maximum_interest_rate.bb) > 0) && (_Utils_cmp(over3000Amount, maximum_purchase_amount) < 1)) ? A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('col-xs-12'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#f6f6f6'),
+					A2($elm$html$Html$Attributes$style, 'margin', '10px 0')
+				]),
+			_List_fromArray(
+				[
+					$author$project$Views$FeePlan$showOverRate(fee_plan),
+					A2(
+					$elm$html$Html$p,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'margin', '10px')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Les\u00A0' + ($author$project$Views$Utils$percents(customerFee) + ('\u00A0de frais ne seront appliqués que pour les paniers inférieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + '.')))),
+							A2($elm$html$Html$br, _List_Nil, _List_Nil),
+							((_Utils_cmp(customer_fee_variable, maximum_interest_rate.bc) > 0) && (_Utils_cmp(over6000Amount, maximum_purchase_amount) < 1)) ? $elm$html$Html$text(
+							'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bb) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + ('\u00A0et inférieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + (' puis\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bc) + ('\u00A0pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + '.')))))))))) : $elm$html$Html$text(
+							'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bb) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over3000Amount) + '.'))))
+						]))
+				])) : (((_Utils_cmp(customer_fee_variable, maximum_interest_rate.bc) > 0) && (_Utils_cmp(over6000Amount, maximum_purchase_amount) < 1)) ? A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('col-xs-12'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#f6f6f6'),
+					A2($elm$html$Html$Attributes$style, 'margin', '10px 0')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$p,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'margin', '10px')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Les ' + ($author$project$Views$Utils$percents(customer_fee_variable) + (' de frais ne seront appliqués que pour les paniers inférieurs à ' + ($author$project$Views$Utils$euros(over6000Amount) + '.')))),
+							A2($elm$html$Html$br, _List_Nil, _List_Nil),
+							$elm$html$Html$text(
+							'Nous sommes contraints d\'appliquer\u00A0' + ($author$project$Views$Utils$percents(maximum_interest_rate.bc) + ('\u00A0de frais client (maximum légal autorisé) pour les paniers supérieurs à\u00A0' + ($author$project$Views$Utils$euros(over6000Amount) + '.'))))
+						]))
+				])) : $elm$html$Html$text(''));
+	});
 var $author$project$Views$FeePlan$euros_fees = function (euroCents) {
 	return $author$project$Views$Utils$euros(euroCents) + ' par transaction';
 };
@@ -6518,279 +6525,294 @@ var $author$project$Views$FeePlan$show_merchant_fees = F2(
 			}
 		}
 	});
-var $author$project$Views$FeePlan$show = function (_v0) {
-	var original_fee_plan = _v0.a;
-	var fee_plan = _v0.b;
-	var installments_count = fee_plan.r;
-	var merchant_fee_variable = fee_plan.a3;
-	var merchant_fee_fixed = fee_plan.a2;
-	var customer_fee_variable = fee_plan.aR;
-	var customer_fee_fixed = fee_plan.aQ;
-	var is_capped = fee_plan.a_;
-	var maximum_interest_rate = fee_plan.a0;
-	var fee_plan_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$h4,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Pour le paiement en '),
-						$elm$html$Html$text(
-						$elm$core$String$fromInt(installments_count)),
-						$elm$html$Html$text(' fois')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$span,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$strong,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Vos frais : ')
-									])),
-								$elm$html$Html$text(
-								A2($author$project$Views$FeePlan$show_merchant_fees, merchant_fee_variable, merchant_fee_fixed))
-							])),
-						A2($elm$html$Html$br, _List_Nil, _List_Nil),
-						A2(
-						$elm$html$Html$span,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$strong,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Frais client : ')
-									])),
-								$elm$html$Html$text(
-								A2($author$project$Views$FeePlan$show_fees, customer_fee_variable, customer_fee_fixed)),
-								is_capped ? $elm$html$Html$text(' déduits des frais marchands') : $elm$html$Html$text('')
-							]))
-					])),
-				(!(!customer_fee_fixed)) ? $elm$html$Html$text('') : A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('row'),
-						A2($elm$html$Html$Attributes$style, 'min-height', '230px')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('col-sm-6'),
-								A2($elm$html$Html$Attributes$style, 'min-height', '160px')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$strong,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Ajouter des frais clients variables ?')
-									])),
-								A2($elm$html$Html$br, _List_Nil, _List_Nil),
-								A2(
-								$elm$html$Html$input,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$type_('radio'),
-										$elm$html$Html$Attributes$name(fee_plan_id),
-										$elm$html$Html$Attributes$id(fee_plan_id + '-non'),
-										$elm$html$Html$Attributes$checked(!customer_fee_variable),
-										$elm$html$Html$Attributes$value('-1'),
-										$elm$html$Html$Events$onInput(
-										A2(
-											$elm$core$Basics$composeR,
-											$elm$core$String$toFloat,
-											$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
-									]),
-								_List_Nil),
-								$elm$html$Html$text('\u00A0'),
-								A2(
-								$elm$html$Html$label,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$for(fee_plan_id + '-non')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Non')
-									])),
-								A2($elm$html$Html$br, _List_Nil, _List_Nil),
-								A2(
-								$elm$html$Html$input,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$type_('radio'),
-										$elm$html$Html$Attributes$name(fee_plan_id),
-										$elm$html$Html$Attributes$id(fee_plan_id + '-oui'),
-										$elm$html$Html$Attributes$checked(!(!customer_fee_variable)),
-										$elm$html$Html$Attributes$value('1'),
-										$elm$html$Html$Events$onInput(
-										A2(
-											$elm$core$Basics$composeR,
-											$elm$core$String$toFloat,
-											$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
-									]),
-								_List_Nil),
-								$elm$html$Html$text('\u00A0'),
-								A2(
-								$elm$html$Html$label,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$for(fee_plan_id + '-oui')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Oui')
-									])),
-								(!customer_fee_variable) ? $elm$html$Html$text('') : $author$project$Views$FeePlan$showCustomerFeeVariableEditor(fee_plan),
-								(!_Utils_eq(original_fee_plan, fee_plan)) ? A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('text-center'),
-										A2($elm$html$Html$Attributes$style, 'margin', '20px')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$button,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('btn btn-primary')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Enregistrer')
-											]))
-									])) : A2($elm$html$Html$div, _List_Nil, _List_Nil)
-							])),
-						(!customer_fee_variable) ? $elm$html$Html$text('') : $author$project$Views$FeePlan$showInterestPanel(fee_plan),
-						$author$project$Views$FeePlan$showOver3000Message(fee_plan)
-					]))
-			]));
-};
-var $author$project$CreditInterestAllocationEditor$view = function (model) {
-	var fee_plans = model.v;
-	var original_fee_plans = model.L;
+var $author$project$Views$FeePlan$show = F2(
+	function (maximum_purchase_amount, _v0) {
+		var original_fee_plan = _v0.a;
+		var fee_plan = _v0.b;
+		var installments_count = fee_plan.r;
+		var merchant_fee_variable = fee_plan.a4;
+		var merchant_fee_fixed = fee_plan.a3;
+		var customer_fee_variable = fee_plan.aS;
+		var customer_fee_fixed = fee_plan.aR;
+		var is_capped = fee_plan.a$;
+		var maximum_interest_rate = fee_plan.a1;
+		var fee_plan_id = 'fee-plan-' + $elm$core$String$fromInt(installments_count);
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h4,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Pour le paiement en '),
+							$elm$html$Html$text(
+							$elm$core$String$fromInt(installments_count)),
+							$elm$html$Html$text(' fois')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$strong,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Vos frais : ')
+										])),
+									$elm$html$Html$text(
+									A2($author$project$Views$FeePlan$show_merchant_fees, merchant_fee_variable, merchant_fee_fixed))
+								])),
+							A2($elm$html$Html$br, _List_Nil, _List_Nil),
+							A2(
+							$elm$html$Html$span,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$strong,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Frais client : ')
+										])),
+									$elm$html$Html$text(
+									A2($author$project$Views$FeePlan$show_fees, customer_fee_variable, customer_fee_fixed)),
+									is_capped ? $elm$html$Html$text(' déduits des frais marchands') : $elm$html$Html$text('')
+								]))
+						])),
+					(!(!customer_fee_fixed)) ? $elm$html$Html$text('') : A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('row'),
+							A2($elm$html$Html$Attributes$style, 'min-height', '230px')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-sm-6'),
+									A2($elm$html$Html$Attributes$style, 'min-height', '160px')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$strong,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Ajouter des frais clients variables ?')
+										])),
+									A2($elm$html$Html$br, _List_Nil, _List_Nil),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$type_('radio'),
+											$elm$html$Html$Attributes$name(fee_plan_id),
+											$elm$html$Html$Attributes$id(fee_plan_id + '-non'),
+											$elm$html$Html$Attributes$checked(!customer_fee_variable),
+											$elm$html$Html$Attributes$value('-1'),
+											$elm$html$Html$Events$onInput(
+											A2(
+												$elm$core$Basics$composeR,
+												$elm$core$String$toFloat,
+												$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
+										]),
+									_List_Nil),
+									$elm$html$Html$text('\u00A0'),
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for(fee_plan_id + '-non')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Non')
+										])),
+									A2($elm$html$Html$br, _List_Nil, _List_Nil),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$type_('radio'),
+											$elm$html$Html$Attributes$name(fee_plan_id),
+											$elm$html$Html$Attributes$id(fee_plan_id + '-oui'),
+											$elm$html$Html$Attributes$checked(!(!customer_fee_variable)),
+											$elm$html$Html$Attributes$value('1'),
+											$elm$html$Html$Events$onInput(
+											A2(
+												$elm$core$Basics$composeR,
+												$elm$core$String$toFloat,
+												$author$project$Data$Msg$SetCustomerFeeVariable(installments_count)))
+										]),
+									_List_Nil),
+									$elm$html$Html$text('\u00A0'),
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for(fee_plan_id + '-oui')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Oui')
+										])),
+									(!customer_fee_variable) ? $elm$html$Html$text('') : $author$project$Views$FeePlan$showCustomerFeeVariableEditor(fee_plan),
+									(!_Utils_eq(original_fee_plan, fee_plan)) ? A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('text-center'),
+											A2($elm$html$Html$Attributes$style, 'margin', '20px')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$button,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('btn btn-primary')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('Enregistrer')
+												]))
+										])) : A2($elm$html$Html$div, _List_Nil, _List_Nil)
+								])),
+							(!customer_fee_variable) ? $elm$html$Html$text('') : $author$project$Views$FeePlan$showInterestPanel(fee_plan),
+							A2($author$project$Views$FeePlan$showOver3000Message, maximum_purchase_amount, fee_plan)
+						]))
+				]));
+	});
+var $author$project$CreditInterestAllocationEditor$view = function (_v0) {
+	var fee_plans = _v0.v;
+	var original_fee_plans = _v0.M;
+	var maximum_purchase_amount = _v0.L;
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		A2(
 			$elm$core$List$map,
-			$author$project$Views$FeePlan$show,
+			$author$project$Views$FeePlan$show(maximum_purchase_amount),
 			A3($elm$core$List$map2, $elm$core$Tuple$pair, original_fee_plans, fee_plans)));
 };
 var $author$project$CreditInterestAllocationEditor$main = $elm$browser$Browser$element(
 	{
-		aZ: $author$project$CreditInterestAllocationEditor$init,
-		bg: $elm$core$Basics$always($elm$core$Platform$Sub$none),
-		bj: $author$project$CreditInterestAllocationEditor$update,
-		bk: $author$project$CreditInterestAllocationEditor$view
+		a_: $author$project$CreditInterestAllocationEditor$init,
+		bh: $elm$core$Basics$always($elm$core$Platform$Sub$none),
+		bk: $author$project$CreditInterestAllocationEditor$update,
+		bl: $author$project$CreditInterestAllocationEditor$view
 	});
 _Platform_export({'CreditInterestAllocationEditor':{'init':$author$project$CreditInterestAllocationEditor$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
-		function (fee_plans) {
+		function (maximum_purchase_amount) {
 			return A2(
 				$elm$json$Json$Decode$andThen,
-				function (alma_settings) {
-					return $elm$json$Json$Decode$succeed(
-						{M: alma_settings, v: fee_plans});
+				function (fee_plans) {
+					return A2(
+						$elm$json$Json$Decode$andThen,
+						function (alma_settings) {
+							return $elm$json$Json$Decode$succeed(
+								{N: alma_settings, v: fee_plans, L: maximum_purchase_amount});
+						},
+						A2(
+							$elm$json$Json$Decode$field,
+							'alma_settings',
+							A2(
+								$elm$json$Json$Decode$andThen,
+								function (csrfToken) {
+									return A2(
+										$elm$json$Json$Decode$andThen,
+										function (apiServer) {
+											return $elm$json$Json$Decode$succeed(
+												{aJ: apiServer, aP: csrfToken});
+										},
+										A2($elm$json$Json$Decode$field, 'apiServer', $elm$json$Json$Decode$string));
+								},
+								A2($elm$json$Json$Decode$field, 'csrfToken', $elm$json$Json$Decode$string))));
 				},
 				A2(
 					$elm$json$Json$Decode$field,
-					'alma_settings',
-					A2(
-						$elm$json$Json$Decode$andThen,
-						function (csrfToken) {
-							return A2(
-								$elm$json$Json$Decode$andThen,
-								function (apiServer) {
-									return $elm$json$Json$Decode$succeed(
-										{aI: apiServer, aO: csrfToken});
-								},
-								A2($elm$json$Json$Decode$field, 'apiServer', $elm$json$Json$Decode$string));
-						},
-						A2($elm$json$Json$Decode$field, 'csrfToken', $elm$json$Json$Decode$string))));
+					'fee_plans',
+					$elm$json$Json$Decode$list(
+						A2(
+							$elm$json$Json$Decode$andThen,
+							function (merchant_fee_variable) {
+								return A2(
+									$elm$json$Json$Decode$andThen,
+									function (merchant_fee_fixed) {
+										return A2(
+											$elm$json$Json$Decode$andThen,
+											function (maximum_interest_rate) {
+												return A2(
+													$elm$json$Json$Decode$andThen,
+													function (is_capped) {
+														return A2(
+															$elm$json$Json$Decode$andThen,
+															function (installments_count) {
+																return A2(
+																	$elm$json$Json$Decode$andThen,
+																	function (customer_fee_variable) {
+																		return A2(
+																			$elm$json$Json$Decode$andThen,
+																			function (customer_fee_fixed) {
+																				return $elm$json$Json$Decode$succeed(
+																					{aR: customer_fee_fixed, aS: customer_fee_variable, r: installments_count, a$: is_capped, a1: maximum_interest_rate, a3: merchant_fee_fixed, a4: merchant_fee_variable});
+																			},
+																			A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
+																	},
+																	A2($elm$json$Json$Decode$field, 'customer_fee_variable', $elm$json$Json$Decode$int));
+															},
+															A2($elm$json$Json$Decode$field, 'installments_count', $elm$json$Json$Decode$int));
+													},
+													A2($elm$json$Json$Decode$field, 'is_capped', $elm$json$Json$Decode$bool));
+											},
+											A2(
+												$elm$json$Json$Decode$field,
+												'maximum_interest_rate',
+												A2(
+													$elm$json$Json$Decode$andThen,
+													function (over_6000) {
+														return A2(
+															$elm$json$Json$Decode$andThen,
+															function (over_3000) {
+																return A2(
+																	$elm$json$Json$Decode$andThen,
+																	function (below_3000) {
+																		return $elm$json$Json$Decode$succeed(
+																			{aL: below_3000, bb: over_3000, bc: over_6000});
+																	},
+																	A2($elm$json$Json$Decode$field, 'below_3000', $elm$json$Json$Decode$int));
+															},
+															A2($elm$json$Json$Decode$field, 'over_3000', $elm$json$Json$Decode$int));
+													},
+													A2($elm$json$Json$Decode$field, 'over_6000', $elm$json$Json$Decode$int))));
+									},
+									A2($elm$json$Json$Decode$field, 'merchant_fee_fixed', $elm$json$Json$Decode$int));
+							},
+							A2($elm$json$Json$Decode$field, 'merchant_fee_variable', $elm$json$Json$Decode$int)))));
 		},
 		A2(
 			$elm$json$Json$Decode$field,
-			'fee_plans',
-			$elm$json$Json$Decode$list(
-				A2(
-					$elm$json$Json$Decode$andThen,
-					function (merchant_fee_variable) {
-						return A2(
-							$elm$json$Json$Decode$andThen,
-							function (merchant_fee_fixed) {
-								return A2(
-									$elm$json$Json$Decode$andThen,
-									function (maximum_interest_rate) {
-										return A2(
-											$elm$json$Json$Decode$andThen,
-											function (is_capped) {
-												return A2(
-													$elm$json$Json$Decode$andThen,
-													function (installments_count) {
-														return A2(
-															$elm$json$Json$Decode$andThen,
-															function (customer_fee_variable) {
-																return A2(
-																	$elm$json$Json$Decode$andThen,
-																	function (customer_fee_fixed) {
-																		return $elm$json$Json$Decode$succeed(
-																			{aQ: customer_fee_fixed, aR: customer_fee_variable, r: installments_count, a_: is_capped, a0: maximum_interest_rate, a2: merchant_fee_fixed, a3: merchant_fee_variable});
-																	},
-																	A2($elm$json$Json$Decode$field, 'customer_fee_fixed', $elm$json$Json$Decode$int));
-															},
-															A2($elm$json$Json$Decode$field, 'customer_fee_variable', $elm$json$Json$Decode$int));
-													},
-													A2($elm$json$Json$Decode$field, 'installments_count', $elm$json$Json$Decode$int));
-											},
-											A2($elm$json$Json$Decode$field, 'is_capped', $elm$json$Json$Decode$bool));
-									},
-									A2(
-										$elm$json$Json$Decode$field,
-										'maximum_interest_rate',
-										A2(
-											$elm$json$Json$Decode$andThen,
-											function (over_6000) {
-												return A2(
-													$elm$json$Json$Decode$andThen,
-													function (over_3000) {
-														return A2(
-															$elm$json$Json$Decode$andThen,
-															function (below_3000) {
-																return $elm$json$Json$Decode$succeed(
-																	{aK: below_3000, ba: over_3000, bb: over_6000});
-															},
-															A2($elm$json$Json$Decode$field, 'below_3000', $elm$json$Json$Decode$int));
-													},
-													A2($elm$json$Json$Decode$field, 'over_3000', $elm$json$Json$Decode$int));
-											},
-											A2($elm$json$Json$Decode$field, 'over_6000', $elm$json$Json$Decode$int))));
-							},
-							A2($elm$json$Json$Decode$field, 'merchant_fee_fixed', $elm$json$Json$Decode$int));
-					},
-					A2($elm$json$Json$Decode$field, 'merchant_fee_variable', $elm$json$Json$Decode$int))))))(0)}});}(this));
+			'maximum_purchase_amount',
+			$elm$json$Json$Decode$oneOf(
+				_List_fromArray(
+					[
+						$elm$json$Json$Decode$null($elm$core$Maybe$Nothing),
+						A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, $elm$json$Json$Decode$int)
+					])))))(0)}});}(this));
