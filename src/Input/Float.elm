@@ -361,7 +361,17 @@ onKeyDown options currentValue =
                     (isNumber event.keyCode || isNumPad event.keyCode)
                         && isValid (newValue event.keyCode) options
                 then
-                    ( options.onInput (newValue event.keyCode |> String.toFloat), False )
+                    ( options.onInput
+                        (newValue event.keyCode
+                            |> String.toFloat
+                            |> (Maybe.andThen Just
+                                -- This hack is needed for some reason,
+                                -- if we remove it a strange behaviour occurs with the . <dot>
+                                -- when removing digits
+                               )
+                        )
+                    , False
+                    )
 
                 else
                     ( options.onInput currentValue, True )
