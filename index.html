@@ -89,15 +89,16 @@
           apiServer: "http://localhost:1337",
           csrfToken : "19sPmw2nVoGwWm42iUeq",
         },
-        "maximum_purchase_amount": 80000,
         "fee_plans": [
           {
+            "kind": "general",
             "installments_count": 2,
             "merchant_fee_variable": 300,
             "merchant_fee_fixed": 0,
             "customer_fee_variable": 40,
             "customer_fee_fixed": 0,
-            "is_capped": false,
+            "capped": false,
+            "max_purchase_amount": 80000,
             "maximum_interest_rate": {
               "below_3000": 77,
               "over_3000": 39,
@@ -105,12 +106,14 @@
             }
           },
           {
+            "kind": "general",
             "installments_count": 3,
             "merchant_fee_variable": 380,
             "merchant_fee_fixed": 0,
             "customer_fee_variable": 0,
             "customer_fee_fixed": 100,
-            "is_capped": true,
+            "capped": true,
+            "max_purchase_amount": 80000,
             "maximum_interest_rate": {
               "below_3000": 153,
               "over_3000": 79,
@@ -118,12 +121,14 @@
             }
           },
           {
+            "kind": "general",
             "installments_count": 4,
             "merchant_fee_variable": 98,
             "merchant_fee_fixed": 0,
             "customer_fee_variable": 322,
             "customer_fee_fixed": 0,
-            "is_capped": false,
+            "capped": false,
+            "max_purchase_amount": 80000,
             "maximum_interest_rate": {
               "below_3000": 229,
               "over_3000": 118,
@@ -131,12 +136,14 @@
             }
           },
           {
+            "kind": "general",
             "installments_count": 10,
             "merchant_fee_variable": 380,
             "merchant_fee_fixed": 0,
             "customer_fee_variable": 0,
             "customer_fee_fixed": 0,
-            "is_capped": false,
+            "capped": false,
+            "max_purchase_amount": 80000,
             "maximum_interest_rate": {
               "below_3000": 671,
               "over_3000": 351,
