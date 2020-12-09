@@ -43,8 +43,8 @@ show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_
             text ""
 
           else
-            div [ class "row" ]
-                [ div [ class "col-sm-6" ]
+            div [ class "row", style "min-height" "230px" ]
+                [ div [ class "col-sm-6", style "min-height" "160px" ]
                     [ strong [] [ text "Ajouter des frais clients variables ?" ]
                     , br [] []
                     , input
@@ -132,7 +132,7 @@ show_merchant_fees variable fixed =
 
 
 showCustomerFeeVariableEditor : FeePlan -> Html Msg
-showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, customer_fee_variable } =
+showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, customer_fee_variable, maybe_customer_fee_variable } =
     let
         fee_plan_editor_id =
             String.fromInt installments_count
@@ -158,7 +158,7 @@ showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, custo
         [ MaskedPercentage.input
             inputOptions
             [ class "form-control", id fee_plan_editor_id ]
-            (Just <| toFloat customer_fee_variable / 100)
+            maybe_customer_fee_variable
         , label
             [ class "input-group-addon"
             , for fee_plan_editor_id
@@ -315,7 +315,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 ]
                 [ p [ style "margin-bottom" "10px" ]
                     [ u [] [ text "Exemple :" ]
-                    , text " Pour l'achat de "
+                    , text " Pour un achat de "
                     , span
                         [ style "color" "#4c86e5"
                         , style "font-weight" "bold"
@@ -334,9 +334,26 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
         ]
 
 
-showOver3000Message : FeePlan -> Html Msg
-showOver3000Message { installments_count, customer_fee_variable, maximum_interest_rate } =
+showOverRate : FeePlan -> Html Msg
+showOverRate { installments_count, customer_fee_variable, maximum_interest_rate } =
     let
+        over3000Amount =
+            (toFloat installments_count / toFloat (installments_count - 1) * 300000)
+                |> round
+    in
+    if customer_fee_variable > maximum_interest_rate.below_3000 then
+        p [ style "margin" "10px" ] [ text <| "Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u{00A0}" ++ percents maximum_interest_rate.below_3000 ++ " pour les paniers inférieurs à " ++ euros over3000Amount ++ "." ]
+
+    else
+        text ""
+
+
+showOver3000Message : FeePlan -> Html Msg
+showOver3000Message ({ installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
+    let
+        customerFee =
+            Basics.min customer_fee_variable maximum_interest_rate.below_3000
+
         over3000Amount =
             (toFloat installments_count / toFloat (installments_count - 1) * 300000)
                 |> round
@@ -347,14 +364,15 @@ showOver3000Message { installments_count, customer_fee_variable, maximum_interes
     in
     if customer_fee_variable > maximum_interest_rate.over_3000 then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
-            [ p [ style "margin" "10px" ]
-                [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over3000Amount ++ "."
+            [ showOverRate fee_plan
+            , p [ style "margin" "10px" ]
+                [ text <| "Les\u{00A0}" ++ percents customerFee ++ "\u{00A0}de frais ne seront appliqués que pour les paniers inférieurs à\u{00A0}" ++ euros over3000Amount ++ "."
                 , br [] []
                 , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount < 1000000 then
-                    text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_3000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over3000Amount ++ " et inférieurs à " ++ euros over6000Amount ++ " puis " ++ percents maximum_interest_rate.over_6000 ++ " pour les paniers supérieurs à " ++ euros over6000Amount ++ "."
+                    text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_3000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over3000Amount ++ "\u{00A0}et inférieurs à\u{00A0}" ++ euros over6000Amount ++ " puis\u{00A0}" ++ percents maximum_interest_rate.over_6000 ++ "\u{00A0}pour les paniers supérieurs à\u{00A0}" ++ euros over6000Amount ++ "."
 
                   else
-                    text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_3000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over3000Amount ++ "."
+                    text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_3000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over3000Amount ++ "."
                 ]
             ]
 
@@ -363,7 +381,7 @@ showOver3000Message { installments_count, customer_fee_variable, maximum_interes
             [ p [ style "margin" "10px" ]
                 [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over6000Amount ++ "."
                 , br [] []
-                , text <| "Nous sommes contraints d'appliquer " ++ percents maximum_interest_rate.over_6000 ++ " de frais client (maximum légal autorisé) pour les paniers supérieurs à " ++ euros over6000Amount ++ "."
+                , text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_6000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over6000Amount ++ "."
                 ]
             ]
 

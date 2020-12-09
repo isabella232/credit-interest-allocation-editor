@@ -24,7 +24,6 @@ import Html.Events exposing (preventDefaultOn)
 import Input.Decoder exposing (eventDecoder)
 import Input.KeyCode exposing (allowedKeyCodes)
 import Json.Decode as Json
-import Round
 import String
 
 
@@ -179,7 +178,7 @@ input options attributes currentValue =
     Html.input
         (List.append attributes
             [ currentValue
-                |> Maybe.map (Round.round 2)
+                |> Maybe.map String.fromFloat
                 |> Maybe.withDefault ""
                 |> value
             , onKeyDown options currentValue
@@ -330,7 +329,7 @@ onKeyDown options currentValue =
             keyCode
                 |> Char.fromCode
                 |> String.fromChar
-                |> (++) (Maybe.withDefault "" <| Maybe.map (Round.round 2) <| currentValue)
+                |> (++) (Maybe.withDefault "" <| Maybe.map String.fromFloat <| currentValue)
 
         isNumPad keyCode =
             keyCode

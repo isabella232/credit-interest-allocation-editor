@@ -1,6 +1,7 @@
 module CreditInterestAllocationEditor exposing (main)
 
 import Browser
+import Data.FeePlan as FeePlan
 import Data.Flags exposing (Flags)
 import Data.Interest exposing (MaximumInterestRate)
 import Data.Model exposing (Model)
@@ -26,7 +27,9 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         fee_plans =
-            flags.fee_plans |> List.sortBy .installments_count
+            flags.fee_plans
+                |> List.sortBy .installments_count
+                |> List.map FeePlan.fromFlagsFeePlan
     in
     ( { fee_plans = fee_plans
       , original_fee_plans = fee_plans
