@@ -176,11 +176,16 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
         maxFeeShare =
             (toFloat maximum_interest_rate.below_3000 / toFloat totalFees * 10000)
                 |> round
-                |> Basics.min 10000
-                |> Basics.max 0
 
-        maximumInterestShare =
+        maxInterestBarPosition =
             maxFeeShare
+                |> percents
+                |> String.replace "," "."
+
+        maxInterestTextPosition =
+            maxFeeShare
+                |> Basics.min 6700
+                |> Basics.max 1900
                 |> percents
                 |> String.replace "," "."
 
@@ -209,7 +214,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
     div
         [ class "col-sm-6"
         , style "background-color" "#f0f8ff"
-        , style "padding-top" "20px"
+        , style "padding-top" "15px"
         ]
         [ div [ class "row" ]
             [ div
@@ -244,7 +249,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                         div
                             [ style "position" "absolute"
                             , style "top" "-5px"
-                            , style "left" maximumInterestShare
+                            , style "left" maxInterestBarPosition
                             , style "width" "5px"
                             , style "height" "15px"
                             , style "background-color" "#c5c5c5"
@@ -267,7 +272,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     |> text
                 ]
             , if maximum_interest_rate.below_3000 < totalFees then
-                div [ style "position" "absolute", style "left" maximumInterestShare ]
+                div [ style "position" "absolute", style "left" maxInterestTextPosition ]
                     [ strong []
                         [ percents maximum_interest_rate.below_3000
                             |> text

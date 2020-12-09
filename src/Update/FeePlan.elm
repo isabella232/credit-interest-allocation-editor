@@ -41,7 +41,7 @@ update model installments_count maybe_value =
                             original_fee_plan.customer_fee_variable
 
                         else
-                            100
+                            1
 
                     else if value == -1 then
                         0
