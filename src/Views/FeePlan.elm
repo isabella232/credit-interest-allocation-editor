@@ -170,8 +170,22 @@ showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, custo
 showInterestPanel : FeePlan -> Html Msg
 showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_interest_rate } =
     let
+        totalFees =
+            customer_fee_variable + merchant_fee_variable
+
+        maxFeeShare =
+            (toFloat maximum_interest_rate.below_3000 / toFloat totalFees * 10000)
+                |> round
+                |> Basics.min 10000
+                |> Basics.max 0
+
+        maximumInterestShare =
+            maxFeeShare
+                |> percents
+                |> String.replace "," "."
+
         customerFeeShare =
-            (toFloat customer_fee_variable / toFloat maximum_interest_rate.below_3000 * 0.5 * 10000)
+            (toFloat customer_fee_variable / toFloat totalFees * 10000)
                 |> round
                 |> Basics.min 10000
                 |> percents
@@ -191,6 +205,13 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
 
         exampleMerchantFee =
             round <| toFloat effectiveMerchantFee * exampleAmount / 10000
+
+        feeClass =
+            if maximum_interest_rate.below_3000 < totalFees then
+                "col-xs-4"
+
+            else
+                "col-xs-6"
     in
     div
         [ class "col-sm-6"
@@ -226,21 +247,25 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     , style "border-radius" "5px"
                     , style "width" customerFeeShare
                     ]
-                    [ div
-                        [ style "position" "absolute"
-                        , style "top" "-5px"
-                        , style "left" "50%"
-                        , style "width" "5px"
-                        , style "height" "15px"
-                        , style "background-color" "#c5c5c5"
-                        ]
-                        []
+                    [ if maximum_interest_rate.below_3000 < totalFees then
+                        div
+                            [ style "position" "absolute"
+                            , style "top" "-5px"
+                            , style "left" maximumInterestShare
+                            , style "width" "5px"
+                            , style "height" "15px"
+                            , style "background-color" "#c5c5c5"
+                            ]
+                            []
+
+                      else
+                        text ""
                     ]
                 ]
             ]
         , div [ class "row" ]
             [ div
-                [ class "col-xs-4"
+                [ class feeClass
                 , style "color" "#4c86e5"
                 , style "font-weight" "bold"
                 , style "font-size" "1.1em"
@@ -248,29 +273,33 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 [ percents customer_fee_variable
                     |> text
                 ]
-            , div [ class "col-xs-4 text-center" ]
-                [ strong []
-                    [ percents maximum_interest_rate.below_3000
-                        |> text
-                    ]
-                , br [] []
-                , a
-                    [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
-                    , style "color" "black"
-                    , style "text-decoration" "none"
-                    ]
-                    [ text "frais max"
-                    , div
-                        [ style "display" "inline-block"
-                        , style "width" "16px"
-                        , style "padding-left" "2px"
-                        , style "color" "#4c86e5"
+            , if maximum_interest_rate.below_3000 < totalFees then
+                div [ class <| feeClass ++ " text-center" ]
+                    [ strong []
+                        [ percents maximum_interest_rate.below_3000
+                            |> text
                         ]
-                        [ Svg.info ]
+                    , br [] []
+                    , a
+                        [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
+                        , style "color" "black"
+                        , style "text-decoration" "none"
+                        ]
+                        [ text "frais max"
+                        , div
+                            [ style "display" "inline-block"
+                            , style "width" "16px"
+                            , style "padding-left" "2px"
+                            , style "color" "#4c86e5"
+                            ]
+                            [ Svg.info ]
+                        ]
                     ]
-                ]
+
+              else
+                text ""
             , div
-                [ class "col-xs-4 text-right"
+                [ class <| feeClass ++ " text-right"
                 , style "color" "#273d52"
                 , style "font-weight" "bold"
                 , style "font-size" "1.1em"
