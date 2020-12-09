@@ -6101,6 +6101,20 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 	var customer_fee_variable = _v0.aR;
 	var merchant_fee_variable = _v0.a2;
 	var maximum_interest_rate = _v0.a0;
+	var totalFees = customer_fee_variable + merchant_fee_variable;
+	var maxFeeShare = A2(
+		$elm$core$Basics$max,
+		0,
+		A2(
+			$elm$core$Basics$min,
+			10000,
+			$elm$core$Basics$round((maximum_interest_rate.aK / totalFees) * 10000)));
+	var maximumInterestShare = A3(
+		$elm$core$String$replace,
+		',',
+		'.',
+		$author$project$Views$Utils$percents(maxFeeShare));
+	var feeClass = (_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? 'col-xs-4' : 'col-xs-6';
 	var exampleAmount = 30000;
 	var effectiveClientFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aK);
 	var effectiveMerchantFee = (customer_fee_variable + merchant_fee_variable) - effectiveClientFee;
@@ -6114,7 +6128,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 			A2(
 				$elm$core$Basics$min,
 				10000,
-				$elm$core$Basics$round(((customer_fee_variable / maximum_interest_rate.aK) * 0.5) * 10000))));
+				$elm$core$Basics$round((customer_fee_variable / totalFees) * 10000))));
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -6190,18 +6204,18 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 									]),
 								_List_fromArray(
 									[
-										A2(
+										(_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? A2(
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
 												A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
 												A2($elm$html$Html$Attributes$style, 'top', '-5px'),
-												A2($elm$html$Html$Attributes$style, 'left', '50%'),
+												A2($elm$html$Html$Attributes$style, 'left', maximumInterestShare),
 												A2($elm$html$Html$Attributes$style, 'width', '5px'),
 												A2($elm$html$Html$Attributes$style, 'height', '15px'),
 												A2($elm$html$Html$Attributes$style, 'background-color', '#c5c5c5')
 											]),
-										_List_Nil)
+										_List_Nil) : $elm$html$Html$text('')
 									]))
 							]))
 					])),
@@ -6217,7 +6231,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-xs-4'),
+								$elm$html$Html$Attributes$class(feeClass),
 								A2($elm$html$Html$Attributes$style, 'color', '#4c86e5'),
 								A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
 								A2($elm$html$Html$Attributes$style, 'font-size', '1.1em')
@@ -6227,11 +6241,11 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 								$elm$html$Html$text(
 								$author$project$Views$Utils$percents(customer_fee_variable))
 							])),
-						A2(
+						(_Utils_cmp(maximum_interest_rate.aK, totalFees) < 0) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-xs-4 text-center')
+								$elm$html$Html$Attributes$class(feeClass + ' text-center')
 							]),
 						_List_fromArray(
 							[
@@ -6267,12 +6281,12 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 										_List_fromArray(
 											[$author$project$Views$Svg$info]))
 									]))
-							])),
+							])) : $elm$html$Html$text(''),
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-xs-4 text-right'),
+								$elm$html$Html$Attributes$class(feeClass + ' text-right'),
 								A2($elm$html$Html$Attributes$style, 'color', '#273d52'),
 								A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
 								A2($elm$html$Html$Attributes$style, 'font-size', '1.1em')
