@@ -30,6 +30,7 @@ init flags =
     in
     ( { fee_plans = fee_plans
       , original_fee_plans = fee_plans
+      , alma_settings = flags.alma_settings
       }
     , Cmd.none
     )
@@ -44,6 +45,31 @@ update msg model =
               }
             , Cmd.none
             )
+
+        FeePlanUpdated _ (Err err) ->
+            -- let
+            --     _ =
+            --         Alma.errorToString err
+            --             |> Debug.log "An error occured while loading email templates"
+            -- in
+            -- Keep demo templates
+            ( model, Cmd.none )
+
+        FeePlanUpdated original_fee_plan (Ok new_fee_plan) ->
+            let
+                new_original_fee_plans =
+                    model.original_fee_plans
+                        |> List.filter (\i -> i.installments_count /= original_fee_plan.installments_count)
+                        |> (::) new_fee_plan
+                        |> List.sortBy .installments_count
+
+                new_fee_plans =
+                    model.fee_plans
+                        |> List.filter (\i -> i.installments_count /= original_fee_plan.installments_count)
+                        |> (::) new_fee_plan
+                        |> List.sortBy .installments_count
+            in
+            ( { model | fee_plans = new_fee_plans, original_fee_plans = new_original_fee_plans }, Cmd.none )
 
 
 view : Model -> Html Msg

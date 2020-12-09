@@ -173,7 +173,6 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 |> round
                 |> Basics.min 10000
                 |> percents
-                |> String.replace "\u{00A0}" ""
                 |> String.replace "," "."
 
         exampleAmount =
@@ -245,17 +244,15 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 , style "font-size" "1.1em"
                 ]
                 [ percents customer_fee_variable
-                    |> String.replace "\u{00A0}" ""
                     |> text
                 ]
             , div [ class "col-xs-4 text-center" ]
                 [ strong []
                     [ percents maximum_interest_rate.below_3000
-                        |> String.replace "\u{00A0}" ""
                         |> text
                     ]
                 , br [] []
-                , text "frais max"
+                , a [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer." ] [ text "frais max" ]
                 ]
             , div
                 [ class "col-xs-4 text-right"
@@ -264,12 +261,14 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 , style "font-size" "1.1em"
                 ]
                 [ percents merchant_fee_variable
-                    |> String.replace "\u{00A0}" ""
                     |> text
                 ]
             ]
         , div [ class "row" ]
-            [ div [ class "col-xs-12" ]
+            [ div
+                [ class "col-xs-12"
+                , style "font-size" "0.83em"
+                ]
                 [ p [ style "padding-top" "20px" ]
                     [ u [] [ text "Exemple :" ]
                     , text " Pour l'achat de "
@@ -277,13 +276,14 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                         [ style "color" "#4c86e5"
                         , style "font-weight" "bold"
                         ]
-                        [ text <| "300€, votre client paiera\u{00A0}" ++ euros exampleClientFee ]
+                        [ text <| euros exampleAmount ++ ", votre client paiera\u{00A0}" ++ euros exampleClientFee ]
                     , text " de frais et "
                     , span
                         [ style "color" "#5273d52"
                         , style "font-weight" "bold"
                         ]
                         [ text <| "vous paierez\u{00A0}" ++ euros exampleMerchantFee ]
+                    , text " de frais."
                     ]
                 ]
             ]

@@ -9,8 +9,9 @@ euros cents =
         amount =
             toFloat cents / 100
     in
-    (Round.round 2 amount ++ "\u{00A0}€")
+    (Round.round 2 amount ++ "€")
         |> String.replace "." ","
+        |> String.replace ",00" ""
 
 
 percents : Int -> String
@@ -19,5 +20,5 @@ percents bps =
         percent =
             toFloat bps / 100
     in
-    (Round.round 2 percent ++ "\u{00A0}%")
+    (Round.round 2 percent ++ "%")
         |> String.replace "." ","
