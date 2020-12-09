@@ -2,6 +2,7 @@ module CreditInterestAllocationEditor exposing (main)
 
 import Browser
 import Data.Flags exposing (Flags)
+import Data.Interest exposing (MaximumInterestRate)
 import Data.Model exposing (Model)
 import Data.Msg exposing (Msg(..))
 import Html exposing (..)
