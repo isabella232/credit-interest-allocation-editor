@@ -5301,7 +5301,7 @@ var $author$project$Update$FeePlan$update = F3(
 					$elm$core$Basics$min,
 					fee_plan.a0.aK,
 					$elm$core$Basics$round(value * 100));
-				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? original_fee_plan.aR : 100) : (_Utils_eq(value, -1) ? 0 : ((!value) ? 1 : cappedValue));
+				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? original_fee_plan.aR : 1) : (_Utils_eq(value, -1) ? 0 : ((!value) ? 1 : cappedValue));
 			}
 		}();
 		var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
@@ -6102,18 +6102,21 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 	var merchant_fee_variable = _v0.a2;
 	var maximum_interest_rate = _v0.a0;
 	var totalFees = customer_fee_variable + merchant_fee_variable;
-	var maxFeeShare = A2(
-		$elm$core$Basics$max,
-		0,
-		A2(
-			$elm$core$Basics$min,
-			10000,
-			$elm$core$Basics$round((maximum_interest_rate.aK / totalFees) * 10000)));
-	var maximumInterestShare = A3(
+	var maxFeeShare = $elm$core$Basics$round((maximum_interest_rate.aK / totalFees) * 10000);
+	var maxInterestBarPosition = A3(
 		$elm$core$String$replace,
 		',',
 		'.',
 		$author$project$Views$Utils$percents(maxFeeShare));
+	var maxInterestTextPosition = A3(
+		$elm$core$String$replace,
+		',',
+		'.',
+		$author$project$Views$Utils$percents(
+			A2(
+				$elm$core$Basics$max,
+				1900,
+				A2($elm$core$Basics$min, 6700, maxFeeShare))));
 	var exampleAmount = 30000;
 	var effectiveClientFee = A2($elm$core$Basics$min, customer_fee_variable, maximum_interest_rate.aK);
 	var effectiveMerchantFee = (customer_fee_variable + merchant_fee_variable) - effectiveClientFee;
@@ -6134,7 +6137,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 			[
 				$elm$html$Html$Attributes$class('col-sm-6'),
 				A2($elm$html$Html$Attributes$style, 'background-color', '#f0f8ff'),
-				A2($elm$html$Html$Attributes$style, 'padding-top', '20px')
+				A2($elm$html$Html$Attributes$style, 'padding-top', '15px')
 			]),
 		_List_fromArray(
 			[
@@ -6209,7 +6212,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 											[
 												A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
 												A2($elm$html$Html$Attributes$style, 'top', '-5px'),
-												A2($elm$html$Html$Attributes$style, 'left', maximumInterestShare),
+												A2($elm$html$Html$Attributes$style, 'left', maxInterestBarPosition),
 												A2($elm$html$Html$Attributes$style, 'width', '5px'),
 												A2($elm$html$Html$Attributes$style, 'height', '15px'),
 												A2($elm$html$Html$Attributes$style, 'background-color', '#c5c5c5')
@@ -6222,7 +6225,8 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('row')
+						$elm$html$Html$Attributes$class('row'),
+						A2($elm$html$Html$Attributes$style, 'height', '50px')
 					]),
 				_List_fromArray(
 					[
@@ -6245,7 +6249,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 						_List_fromArray(
 							[
 								A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
-								A2($elm$html$Html$Attributes$style, 'left', maximumInterestShare)
+								A2($elm$html$Html$Attributes$style, 'left', maxInterestTextPosition)
 							]),
 						_List_fromArray(
 							[
@@ -6264,7 +6268,9 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 									[
 										$elm$html$Html$Attributes$title('Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer.'),
 										A2($elm$html$Html$Attributes$style, 'color', 'black'),
-										A2($elm$html$Html$Attributes$style, 'text-decoration', 'none')
+										A2($elm$html$Html$Attributes$style, 'text-decoration', 'none'),
+										A2($elm$html$Html$Attributes$style, 'display', 'inline-block'),
+										A2($elm$html$Html$Attributes$style, 'cursor', 'help')
 									]),
 								_List_fromArray(
 									[
@@ -6318,7 +6324,6 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 								$elm$html$Html$p,
 								_List_fromArray(
 									[
-										A2($elm$html$Html$Attributes$style, 'padding-top', '30px'),
 										A2($elm$html$Html$Attributes$style, 'margin-bottom', '10px')
 									]),
 								_List_fromArray(
