@@ -5232,6 +5232,15 @@ var $elm$core$List$filter = F2(
 			list);
 	});
 var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
 var $elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -5252,16 +5261,6 @@ var $elm$core$List$head = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
 var $elm$core$Basics$min = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) < 0) ? x : y;
@@ -5317,13 +5316,13 @@ var $author$project$Update$FeePlan$update = F3(
 						$elm$core$Basics$eq(installments_count)),
 					model.v)));
 		var maybe_customer_fee_variable = A2(
-			$elm$core$Maybe$map,
+			$elm$core$Maybe$andThen,
 			function (value) {
 				var cappedValue = A2(
 					$elm$core$Basics$min,
 					fee_plan.a0.aK,
 					$elm$core$Basics$round(value * 100));
-				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? original_fee_plan.aR : 1) : (_Utils_eq(value, -1) ? 0 : ((!value) ? 1 : cappedValue));
+				return (!fee_plan.aR) ? ((!(!original_fee_plan.aR)) ? $elm$core$Maybe$Just(original_fee_plan.aR) : $elm$core$Maybe$Just(1)) : (_Utils_eq(value, -1) ? $elm$core$Maybe$Just(0) : ((!value) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(cappedValue)));
 			},
 			maybe_value);
 		if (maybe_customer_fee_variable.$ === 1) {
@@ -5490,6 +5489,16 @@ var $elm$core$List$append = F2(
 		}
 	});
 var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
