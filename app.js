@@ -5709,8 +5709,11 @@ var $author$project$Input$Float$onKeyDown = F2(
 				newValue(event.a0),
 				options)) ? _Utils_Tuple2(
 				options.c(
-					$elm$core$String$toFloat(
-						newValue(event.a0))),
+					A2(
+						$elm$core$Maybe$andThen,
+						$elm$core$Maybe$Just,
+						$elm$core$String$toFloat(
+							newValue(event.a0)))),
 				false) : _Utils_Tuple2(
 				options.c(currentValue),
 				true))));
