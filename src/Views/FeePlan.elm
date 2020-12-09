@@ -179,11 +179,17 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
         exampleAmount =
             30000
 
+        effectiveClientFee =
+            Basics.min customer_fee_variable maximum_interest_rate.below_3000
+
+        effectiveMerchantFee =
+            customer_fee_variable + merchant_fee_variable - effectiveClientFee
+
         exampleClientFee =
-            round <| toFloat customer_fee_variable * exampleAmount / 10000
+            round <| toFloat effectiveClientFee * exampleAmount / 10000
 
         exampleMerchantFee =
-            round <| toFloat merchant_fee_variable * exampleAmount / 10000
+            round <| toFloat effectiveMerchantFee * exampleAmount / 10000
     in
     div
         [ class "col-sm-6"
