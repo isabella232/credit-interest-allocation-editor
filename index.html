@@ -90,9 +90,14 @@
             "installments_count": 2,
             "merchant_fee_variable": 340,
             "merchant_fee_fixed": 100,
-            "customer_fee_variable": 340,
+            "customer_fee_variable": 77,
             "customer_fee_fixed": 0,
             "is_capped": false,
+            "maximum_interest_rate": {
+              "below_3000": 77,
+              "over_3000": 39,
+              "over_6000": 20,
+            }
           },
           {
             "installments_count": 3,
@@ -101,6 +106,11 @@
             "customer_fee_variable": 0,
             "customer_fee_fixed": 100,
             "is_capped": true,
+            "maximum_interest_rate": {
+              "below_3000": 153,
+              "over_3000": 79,
+              "over_6000": 41,
+            }
           },
           {
             "installments_count": 4,
@@ -109,6 +119,11 @@
             "customer_fee_variable": 100,
             "customer_fee_fixed": 0,
             "is_capped": false,
+            "maximum_interest_rate": {
+              "below_3000": 229,
+              "over_3000": 118,
+              "over_6000": 62,
+            }
           },
           {
             "installments_count": 10,
@@ -117,8 +132,13 @@
             "customer_fee_variable": 0,
             "customer_fee_fixed": 0,
             "is_capped": false,
+            "maximum_interest_rate": {
+              "below_3000": 671,
+              "over_3000": 351,
+              "over_6000": 186,
+            }
           }
-        ]
+        ],
       }
     });
   </script>
