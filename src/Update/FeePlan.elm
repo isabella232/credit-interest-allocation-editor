@@ -65,18 +65,7 @@ update model installments_count maybe_value =
 
         Just new_customer_fee_variable ->
             -- Update bot maybe_customer_fee_variable and customer_fee_variable
-            if new_customer_fee_variable == -1 then
-                let
-                    new_fee_plan =
-                        { fee_plan
-                            | maybe_customer_fee_variable = Just 0
-                            , customer_fee_variable = 0
-                        }
-                in
-                (new_fee_plan :: other_fee_plans)
-                    |> List.sortBy .installments_count
-
-            else if new_customer_fee_variable == 0 then
+            if new_customer_fee_variable == 0 then
                 let
                     new_fee_plan =
                         { fee_plan
@@ -88,16 +77,23 @@ update model installments_count maybe_value =
 
             else
                 let
+                    customer_fee_variable =
+                        if new_customer_fee_variable == -1 then
+                            0
+
+                        else
+                            new_customer_fee_variable
+
                     total_fee_variable =
                         original_fee_plan.merchant_fee_variable + original_fee_plan.customer_fee_variable
 
                     new_merchant_fee_variable =
-                        total_fee_variable - new_customer_fee_variable
+                        total_fee_variable - customer_fee_variable
 
                     new_fee_plan =
                         { fee_plan
-                            | customer_fee_variable = new_customer_fee_variable
-                            , maybe_customer_fee_variable = Just <| toFloat new_customer_fee_variable / 100
+                            | customer_fee_variable = customer_fee_variable
+                            , maybe_customer_fee_variable = Just <| toFloat customer_fee_variable / 100
                             , merchant_fee_variable = new_merchant_fee_variable
                         }
                 in
