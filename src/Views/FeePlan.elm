@@ -213,7 +213,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
     div
         [ class "col-sm-6"
         , style "background-color" "#f0f8ff"
-        , style "padding-top" "20px"
+        , style "padding" "20px"
         ]
         [ div [ class "row" ]
             [ div
