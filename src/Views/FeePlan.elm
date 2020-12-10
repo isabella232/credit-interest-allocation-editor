@@ -213,7 +213,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
     div
         [ class "col-sm-6"
         , style "background-color" "#f0f8ff"
-        , style "padding-top" "15px"
+        , style "padding-top" "20px"
         ]
         [ div [ class "row" ]
             [ div
@@ -312,7 +312,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 [ class "col-xs-12"
                 , style "font-size" "0.83em"
                 ]
-                [ p [ style "margin-bottom" "10px" ]
+                [ p []
                     [ u [] [ text "Exemple :" ]
                     , text " Pour un achat de "
                     , span
