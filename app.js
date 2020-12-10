@@ -5525,11 +5525,10 @@ var $author$project$Update$FeePlan$update = F3(
 				A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 		} else {
 			var new_customer_fee_variable = maybe_customer_fee_variable.a;
-			if (_Utils_eq(new_customer_fee_variable, -1)) {
+			if (!new_customer_fee_variable) {
 				var new_fee_plan = _Utils_update(
 					fee_plan,
 					{
-						aT: 0,
 						a4: $elm$core$Maybe$Just(0)
 					});
 				return A2(
@@ -5539,35 +5538,22 @@ var $author$project$Update$FeePlan$update = F3(
 					},
 					A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 			} else {
-				if (!new_customer_fee_variable) {
-					var new_fee_plan = _Utils_update(
-						fee_plan,
-						{
-							a4: $elm$core$Maybe$Just(0)
-						});
-					return A2(
-						$elm$core$List$sortBy,
-						function ($) {
-							return $.r;
-						},
-						A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
-				} else {
-					var total_fee_variable = original_fee_plan.a6 + original_fee_plan.aT;
-					var new_merchant_fee_variable = total_fee_variable - new_customer_fee_variable;
-					var new_fee_plan = _Utils_update(
-						fee_plan,
-						{
-							aT: new_customer_fee_variable,
-							a4: $elm$core$Maybe$Just(new_customer_fee_variable / 100),
-							a6: new_merchant_fee_variable
-						});
-					return A2(
-						$elm$core$List$sortBy,
-						function ($) {
-							return $.r;
-						},
-						A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
-				}
+				var total_fee_variable = original_fee_plan.a6 + original_fee_plan.aT;
+				var customer_fee_variable = _Utils_eq(new_customer_fee_variable, -1) ? 0 : new_customer_fee_variable;
+				var new_merchant_fee_variable = total_fee_variable - customer_fee_variable;
+				var new_fee_plan = _Utils_update(
+					fee_plan,
+					{
+						aT: customer_fee_variable,
+						a4: $elm$core$Maybe$Just(customer_fee_variable / 100),
+						a6: new_merchant_fee_variable
+					});
+				return A2(
+					$elm$core$List$sortBy,
+					function ($) {
+						return $.r;
+					},
+					A2($elm$core$List$cons, new_fee_plan, other_fee_plans));
 			}
 		}
 	});
@@ -7440,7 +7426,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 			[
 				$elm$html$Html$Attributes$class('col-sm-6'),
 				A2($elm$html$Html$Attributes$style, 'background-color', '#f0f8ff'),
-				A2($elm$html$Html$Attributes$style, 'padding-top', '15px')
+				A2($elm$html$Html$Attributes$style, 'padding-top', '20px')
 			]),
 		_List_fromArray(
 			[
@@ -7625,10 +7611,7 @@ var $author$project$Views$FeePlan$showInterestPanel = function (_v0) {
 							[
 								A2(
 								$elm$html$Html$p,
-								_List_fromArray(
-									[
-										A2($elm$html$Html$Attributes$style, 'margin-bottom', '10px')
-									]),
+								_List_Nil,
 								_List_fromArray(
 									[
 										A2(
