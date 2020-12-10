@@ -90,7 +90,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view { fee_plans, original_fee_plans } =
+view { fee_plans, original_fee_plans, is_sending } =
     List.map2 Tuple.pair original_fee_plans fee_plans
-        |> List.map FeePlan.show
+        |> List.map (FeePlan.show is_sending)
         |> div []

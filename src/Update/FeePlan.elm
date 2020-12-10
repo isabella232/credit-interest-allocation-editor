@@ -42,7 +42,7 @@ update model installments_count maybe_value =
                                 Just 1
 
                         else if value == -1 then
-                            Just 0
+                            Just -1
 
                         else if value == 0 then
                             Just 0
@@ -65,7 +65,18 @@ update model installments_count maybe_value =
 
         Just new_customer_fee_variable ->
             -- Update bot maybe_customer_fee_variable and customer_fee_variable
-            if new_customer_fee_variable == 0 then
+            if new_customer_fee_variable == -1 then
+                let
+                    new_fee_plan =
+                        { fee_plan
+                            | maybe_customer_fee_variable = Just 0
+                            , customer_fee_variable = 0
+                        }
+                in
+                (new_fee_plan :: other_fee_plans)
+                    |> List.sortBy .installments_count
+
+            else if new_customer_fee_variable == 0 then
                 let
                     new_fee_plan =
                         { fee_plan

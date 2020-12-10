@@ -10,8 +10,8 @@ import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)
 
 
-show : ( FeePlan, FeePlan ) -> Html Msg
-show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
+show : Bool -> ( FeePlan, FeePlan ) -> Html Msg
+show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -77,7 +77,7 @@ show ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_
                         showCustomerFeeVariableEditor fee_plan
                     , if original_fee_plan /= fee_plan then
                         div [ class "text-center", style "margin" "20px" ]
-                            [ button [ class "btn btn-primary", onClick (UpdateFeePlan fee_plan) ] [ text "Enregistrer" ]
+                            [ button [ class "btn btn-primary", onClick (UpdateFeePlan fee_plan), disabled is_sending ] [ text "Enregistrer" ]
                             ]
 
                       else
