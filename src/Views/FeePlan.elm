@@ -22,6 +22,7 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
             [ text "Pour le paiement en "
             , text <| String.fromInt installments_count
             , text " fois"
+            , text <| if fee_plan.kind == "pos" then " - POS" else ""
             ]
         , p []
             [ span []
