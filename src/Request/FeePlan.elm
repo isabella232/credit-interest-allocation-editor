@@ -1,7 +1,6 @@
 module Request.FeePlan exposing (..)
 
 import Data.FeePlan as FeePlan exposing (FeePlan)
-import Http
 import HttpBuilder
 import Json.Encode as Encode
 import Request.Alma as Alma exposing (AlmaSettings, send)

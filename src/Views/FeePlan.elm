@@ -3,7 +3,7 @@ module Views.FeePlan exposing (show)
 import Data.FeePlan exposing (FeePlan)
 import Data.Msg exposing (Msg(..))
 import Html exposing (..)
-import Html.Attributes as HA exposing (..)
+import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Input.Float as MaskedPercentage
 import Views.Svg as Svg
