@@ -22,7 +22,12 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
             [ text "Pour le paiement en "
             , text <| String.fromInt installments_count
             , text " fois"
-            , text <| if fee_plan.kind == "pos" then " - POS" else ""
+            , text <|
+                if fee_plan.kind == "pos" then
+                    " - POS"
+
+                else
+                    ""
             ]
         , p []
             [ span []
@@ -280,6 +285,7 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     , br [] []
                     , a
                         [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
+                        , href "#"
                         , style "color" "black"
                         , style "text-decoration" "none"
                         , style "display" "inline-block"
