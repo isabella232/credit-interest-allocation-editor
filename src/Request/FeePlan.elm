@@ -1,4 +1,4 @@
-module Request.FeePlan exposing (..)
+module Request.FeePlan exposing (updateFeePlan)
 
 import Data.FeePlan as FeePlan exposing (FeePlan)
 import HttpBuilder

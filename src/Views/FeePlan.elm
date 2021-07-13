@@ -4,7 +4,7 @@ import Data.FeePlan exposing (FeePlan)
 import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
+import Html.Events exposing (onClick, onInput)
 import Input.Float as MaskedPercentage
 import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)

@@ -1,4 +1,4 @@
-module Update.FeePlan exposing (..)
+module Update.FeePlan exposing (update)
 
 import Data.FeePlan as FeePlan exposing (FeePlan, FeePlanID)
 import Data.Model exposing (Model)

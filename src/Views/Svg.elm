@@ -1,7 +1,8 @@
 module Views.Svg exposing (info)
 
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Html exposing (Html)
+import Svg exposing (svg)
+import Svg.Attributes exposing (class, d, fill, viewBox)
 
 
 info =
