@@ -13,7 +13,6 @@ module Request.Alma exposing
 import Http
 import HttpBuilder
 import Json.Decode as Decode
-import Url.Builder exposing (string)
 
 
 type alias Url =

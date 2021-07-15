@@ -1,7 +1,7 @@
 module Data.Interest exposing (MaximumInterestRate, decode, empty)
 
 import Json.Decode as Decode exposing (Decoder)
-import Json.Decode.Pipeline exposing (optional, required)
+import Json.Decode.Pipeline exposing (required)
 
 
 type alias MaximumInterestRate =

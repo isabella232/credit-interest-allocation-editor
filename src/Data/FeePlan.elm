@@ -2,7 +2,7 @@ module Data.FeePlan exposing (FeePlan, FeePlanID, FlagsFeePlan, decode, empty, f
 
 import Data.Interest as MaximumInterestRate exposing (MaximumInterestRate)
 import Json.Decode as Decode exposing (Decoder)
-import Json.Decode.Pipeline exposing (optional, required)
+import Json.Decode.Pipeline exposing (required)
 
 
 type alias FeePlanID =

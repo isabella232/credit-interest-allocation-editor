@@ -1,7 +1,6 @@
 module Data.Model exposing (Model)
 
-import Data.FeePlan exposing (FeePlan, FlagsFeePlan)
-import Data.Flags exposing (Flags)
+import Data.FeePlan exposing (FeePlan)
 import Request.Alma exposing (AlmaSettings)
 
 

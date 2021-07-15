@@ -1,15 +1,11 @@
 module CreditInterestAllocationEditor exposing (main)
 
 import Browser
-import Browser.Navigation as Navigation
 import Data.FeePlan as FeePlan
 import Data.Flags exposing (Flags)
-import Data.Interest exposing (MaximumInterestRate)
 import Data.Model exposing (Model)
 import Data.Msg exposing (Msg(..))
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
+import Html exposing (Html, div)
 import Request.FeePlan as FeePlan
 import Update.FeePlan as FeePlan
 import Views.FeePlan as FeePlan
@@ -57,7 +53,7 @@ update msg model =
             , FeePlan.updateFeePlan fee_plan (FeePlanUpdated fee_plan) model.alma_settings
             )
 
-        FeePlanUpdated _ (Err err) ->
+        FeePlanUpdated _ (Err _) ->
             -- let
             --     _ =
             --         Alma.errorToString err
