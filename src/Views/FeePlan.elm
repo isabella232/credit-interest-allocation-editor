@@ -1,6 +1,7 @@
 module Views.FeePlan exposing (show)
 
 import Data.FeePlan exposing (FeePlan)
+import Data.L10n exposing (L10n)
 import Data.Msg exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -10,8 +11,8 @@ import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)
 
 
-show : Bool -> ( FeePlan, FeePlan ) -> Html Msg
-show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
+show : L10n -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
+show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -19,27 +20,25 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
     in
     div []
         [ h4 []
-            [ text "Pour le paiement en "
-            , text <| String.fromInt installments_count
-            , text " fois"
+            [ text <| String.replace "{installments_count}" (String.fromInt installments_count) l10n.fee_plan_title
             , text <|
                 if fee_plan.kind == "pos" then
-                    " - POS"
+                    l10n.fee_plan_title_pos_suffix
 
                 else
                     ""
             ]
         , p []
             [ span []
-                [ strong [] [ text "Vos frais : " ]
-                , show_merchant_fees merchant_fee_variable merchant_fee_fixed |> text
+                [ strong [] [ text <| l10n.merchant_fees_label ++ " " ]
+                , show_merchant_fees l10n merchant_fee_variable merchant_fee_fixed |> text
                 ]
             , br [] []
             , span []
-                [ strong [] [ text "Frais client : " ]
-                , show_fees customer_fee_variable customer_fee_fixed |> text
+                [ strong [] [ text <| l10n.customer_fees_label ++ " " ]
+                , show_fees l10n customer_fee_variable customer_fee_fixed |> text
                 , if capped then
-                    text " déduits des frais marchands"
+                    text <| " " ++ l10n.deducted_from_merchant_fees
 
                   else
                     text ""
@@ -51,7 +50,7 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
           else
             div [ class "row", style "min-height" "230px" ]
                 [ div [ class "col-sm-6", style "min-height" "160px" ]
-                    [ strong [] [ text "Ajouter des frais clients variables ?" ]
+                    [ strong [] [ text <| l10n.add_variable_customer_fees ]
                     , br [] []
                     , input
                         [ type_ "radio"
@@ -63,7 +62,7 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
                         ]
                         []
                     , text "\u{00A0}"
-                    , label [ for <| fee_plan_id ++ "-non" ] [ text "Non" ]
+                    , label [ for <| fee_plan_id ++ "-non" ] [ text l10n.no ]
                     , br [] []
                     , input
                         [ type_ "radio"
@@ -75,15 +74,15 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
                         ]
                         []
                     , text "\u{00A0}"
-                    , label [ for <| fee_plan_id ++ "-oui" ] [ text "Oui" ]
+                    , label [ for <| fee_plan_id ++ "-oui" ] [ text l10n.yes ]
                     , if customer_fee_variable == 0 then
                         text ""
 
                       else
-                        showCustomerFeeVariableEditor fee_plan
+                        showCustomerFeeVariableEditor l10n fee_plan
                     , if original_fee_plan /= fee_plan then
                         div [ class "text-center", style "margin" "20px" ]
-                            [ button [ class "btn btn-primary", onClick (UpdateFeePlan fee_plan), disabled is_sending ] [ text "Enregistrer" ]
+                            [ button [ class "btn btn-primary", onClick (UpdateFeePlan fee_plan), disabled is_sending ] [ text l10n.save ]
                             ]
 
                       else
@@ -93,52 +92,52 @@ show is_sending ( original_fee_plan, { installments_count, merchant_fee_variable
                     text ""
 
                   else
-                    showInterestPanel fee_plan
-                , showOver3000Message fee_plan
+                    showInterestPanel l10n fee_plan
+                , showOver3000Message l10n fee_plan
                 ]
         ]
 
 
-euros_fees : Int -> String
-euros_fees euroCents =
-    euros euroCents ++ " par transaction"
+euros_fees : String -> Int -> String
+euros_fees label euroCents =
+    euros euroCents ++ " " ++ label
 
 
-percent_fees : Int -> String
-percent_fees percentCents =
-    percents percentCents ++ " par transaction"
+percent_fees : String -> Int -> String
+percent_fees label percentCents =
+    percents percentCents ++ " " ++ label
 
 
-show_fees : Int -> Int -> String
-show_fees variable fixed =
+show_fees : L10n -> Int -> Int -> String
+show_fees l10n variable fixed =
     if fixed /= 0 then
-        euros_fees fixed
+        euros_fees l10n.per_transaction fixed
 
     else if variable /= 0 then
-        percent_fees variable
+        percent_fees l10n.per_transaction variable
 
     else
-        "aucun"
+        l10n.no_fee
 
 
-show_merchant_fees : Int -> Int -> String
-show_merchant_fees variable fixed =
+show_merchant_fees : L10n -> Int -> Int -> String
+show_merchant_fees l10n variable fixed =
     case ( fixed, variable ) of
         ( 0, 0 ) ->
-            "aucun"
+            l10n.no_fee
 
         ( _, 0 ) ->
-            euros_fees fixed
+            euros_fees l10n.per_transaction fixed
 
         ( 0, _ ) ->
-            percent_fees variable
+            percent_fees l10n.per_transaction variable
 
         ( _, _ ) ->
-            percent_fees variable ++ " + " ++ euros_fees fixed
+            percent_fees l10n.per_transaction variable ++ " + " ++ euros_fees l10n.per_transaction fixed
 
 
-showCustomerFeeVariableEditor : FeePlan -> Html Msg
-showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, customer_fee_variable, maybe_customer_fee_variable } =
+showCustomerFeeVariableEditor : L10n -> FeePlan -> Html Msg
+showCustomerFeeVariableEditor l10n { installments_count, merchant_fee_variable, customer_fee_variable, maybe_customer_fee_variable } =
     let
         fee_plan_editor_id =
             String.fromInt installments_count
@@ -168,12 +167,12 @@ showCustomerFeeVariableEditor { installments_count, merchant_fee_variable, custo
             [ class "input-group-addon"
             , for fee_plan_editor_id
             ]
-            [ text "% par transaction" ]
+            [ text <| "% " ++ l10n.per_transaction ]
         ]
 
 
-showInterestPanel : FeePlan -> Html Msg
-showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_interest_rate } =
+showInterestPanel : L10n -> FeePlan -> Html Msg
+showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_interest_rate } =
     let
         totalFees =
             customer_fee_variable + merchant_fee_variable
@@ -228,14 +227,14 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                 , style "font-weight" "bold"
                 , style "font-size" "0.9em"
                 ]
-                [ text "Frais client" ]
+                [ text l10n.customer_fees ]
             , div
                 [ class "col-xs-6 text-right"
                 , style "color" "#273d52"
                 , style "font-weight" "bold"
                 , style "font-size" "0.9em"
                 ]
-                [ text "Frais marchands" ]
+                [ text l10n.merchant_fees ]
             ]
         , div [ class "row" ]
             [ div
@@ -284,14 +283,14 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                         ]
                     , br [] []
                     , a
-                        [ title "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
+                        [ title l10n.maximum_fees_explaination
                         , href "#"
                         , style "color" "black"
                         , style "text-decoration" "none"
                         , style "display" "inline-block"
                         , style "cursor" "help"
                         ]
-                        [ text "frais max"
+                        [ text l10n.maximum_fees
                         , div
                             [ style "display" "inline-block"
                             , style "width" "16px"
@@ -314,48 +313,121 @@ showInterestPanel { customer_fee_variable, merchant_fee_variable, maximum_intere
                     |> text
                 ]
             ]
-        , div [ class "row" ]
+        , let
+            interpolated_variable_translation =
+                l10n.example_sentence
+                    |> String.replace "{purchase_amount}" (euros exampleAmount)
+                    |> String.replace "{customer_fee}" (euros exampleClientFee)
+                    |> String.replace "{merchant_fee}" (euros exampleMerchantFee)
+
+            -- Before blue
+            before_blue_split =
+                String.split "<blue>" interpolated_variable_translation
+
+            before_blue_part =
+                before_blue_split
+                    |> List.head
+                    |> Maybe.withDefault ""
+
+            remains_blue_part =
+                before_blue_split
+                    |> List.tail
+                    |> Maybe.andThen List.head
+                    |> Maybe.withDefault ""
+
+            -- Inside blue part
+            blue_split =
+                String.split "</blue>" remains_blue_part
+
+            blue_part =
+                blue_split
+                    |> List.head
+                    |> Maybe.withDefault ""
+
+            remains_after_blue_part =
+                blue_split
+                    |> List.tail
+                    |> Maybe.andThen List.head
+                    |> Maybe.withDefault ""
+
+            -- Before strong
+            before_strong_split =
+                String.split "<strong>" remains_after_blue_part
+
+            before_strong_part =
+                before_strong_split
+                    |> List.head
+                    |> Maybe.withDefault ""
+
+            remains_before_strong_part =
+                before_strong_split
+                    |> List.tail
+                    |> Maybe.andThen List.head
+                    |> Maybe.withDefault ""
+
+            -- Inside strong
+            strong_split =
+                String.split "</strong>" remains_before_strong_part
+
+            strong_part =
+                strong_split
+                    |> List.head
+                    |> Maybe.withDefault ""
+
+            -- After strong
+            after_strong_part =
+                strong_split
+                    |> List.tail
+                    |> Maybe.andThen List.head
+                    |> Maybe.withDefault ""
+          in
+          div [ class "row" ]
             [ div
                 [ class "col-xs-12"
                 , style "font-size" "0.83em"
                 ]
                 [ p []
-                    [ u [] [ text "Exemple :" ]
-                    , text " Pour un achat de "
+                    [ u [] [ text l10n.example_label ]
+                    , text <| " " ++ before_blue_part
                     , span
                         [ style "color" "#4c86e5"
                         , style "font-weight" "bold"
                         ]
-                        [ text <| euros exampleAmount ++ ", votre client paiera\u{00A0}" ++ euros exampleClientFee ]
-                    , text " de frais et "
+                        [ text blue_part ]
+                    , text before_strong_part
                     , span
                         [ style "color" "#5273d52"
                         , style "font-weight" "bold"
                         ]
-                        [ text <| "vous paierez\u{00A0}" ++ euros exampleMerchantFee ]
-                    , text " de frais."
+                        [ text <| strong_part ]
+                    , text after_strong_part
                     ]
                 ]
             ]
         ]
 
 
-showOverRate : FeePlan -> Html Msg
-showOverRate { installments_count, customer_fee_variable, maximum_interest_rate } =
+showOverRate : L10n -> FeePlan -> Html Msg
+showOverRate l10n { installments_count, customer_fee_variable, maximum_interest_rate } =
     let
         over3000Amount =
             (toFloat installments_count / toFloat (installments_count - 1) * 300000)
                 |> round
     in
     if customer_fee_variable > maximum_interest_rate.below_3000 then
-        p [ style "margin" "10px" ] [ text <| "Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u{00A0}" ++ percents maximum_interest_rate.below_3000 ++ " pour les paniers inférieurs à " ++ euros over3000Amount ++ "." ]
+        p [ style "margin" "10px" ]
+            [ l10n.explain_over_3000
+                |> String.replace "{below_3000}" (percents maximum_interest_rate.below_3000)
+                |> String.replace "{over_3000_amount}" (euros over3000Amount)
+                |> text
+            ]
 
     else
         text ""
 
 
-showOver3000Message : FeePlan -> Html Msg
-showOver3000Message ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
+showOver3000Message : L10n -> FeePlan -> Html Msg
+showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
     let
         customerFee =
             Basics.min customer_fee_variable maximum_interest_rate.below_3000
@@ -370,24 +442,41 @@ showOver3000Message ({ max_purchase_amount, installments_count, customer_fee_var
     in
     if customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
-            [ showOverRate fee_plan
+            [ showOverRate l10n fee_plan
             , p [ style "margin" "10px" ]
-                [ text <| "Les\u{00A0}" ++ percents customerFee ++ "\u{00A0}de frais ne seront appliqués que pour les paniers inférieurs à\u{00A0}" ++ euros over3000Amount ++ "."
+                [ l10n.explain_customer_fee_below_amount
+                    |> String.replace "{customer_rate}" (percents customerFee)
+                    |> String.replace "{over_amount}" (euros over3000Amount)
+                    |> text
                 , br [] []
                 , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= max_purchase_amount then
-                    text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_3000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over3000Amount ++ "\u{00A0}et inférieurs à\u{00A0}" ++ euros over6000Amount ++ " puis\u{00A0}" ++ percents maximum_interest_rate.over_6000 ++ "\u{00A0}pour les paniers supérieurs à\u{00A0}" ++ euros over6000Amount ++ "."
+                    l10n.explain_customer_fee_over_3000_and_over_6000
+                        |> String.replace "{over_3000_rate}" (percents maximum_interest_rate.over_3000)
+                        |> String.replace "{over_3000_amount}" (euros over3000Amount)
+                        |> String.replace "{over_6000_rate}" (percents maximum_interest_rate.over_6000)
+                        |> String.replace "{over_6000_amount}" (euros over6000Amount)
+                        |> text
 
                   else
-                    text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_3000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over3000Amount ++ "."
+                    l10n.explain_customer_fee_over_rate_for_amount
+                        |> String.replace "{over_rate}" (percents maximum_interest_rate.over_3000)
+                        |> String.replace "{over_amount}" (euros over3000Amount)
+                        |> text
                 ]
             ]
 
     else if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ p [ style "margin" "10px" ]
-                [ text <| "Les " ++ percents customer_fee_variable ++ " de frais ne seront appliqués que pour les paniers inférieurs à " ++ euros over6000Amount ++ "."
+                [ l10n.explain_customer_fee_below_amount
+                    |> String.replace "{customer_rate}" (percents maximum_interest_rate.over_6000)
+                    |> String.replace "{over_amount}" (euros over6000Amount)
+                    |> text
                 , br [] []
-                , text <| "Nous sommes contraints d'appliquer\u{00A0}" ++ percents maximum_interest_rate.over_6000 ++ "\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}" ++ euros over6000Amount ++ "."
+                , l10n.explain_customer_fee_over_rate_for_amount
+                    |> String.replace "{over_rate}" (percents maximum_interest_rate.over_6000)
+                    |> String.replace "{over_amount}" (euros over6000Amount)
+                    |> text
                 ]
             ]
 

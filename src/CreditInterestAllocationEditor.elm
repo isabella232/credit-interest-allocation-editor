@@ -3,9 +3,11 @@ module CreditInterestAllocationEditor exposing (main)
 import Browser
 import Data.FeePlan as FeePlan
 import Data.Flags exposing (Flags)
+import Data.L10n as L10n
 import Data.Model exposing (Model)
 import Data.Msg exposing (Msg(..))
 import Html exposing (Html, div)
+import Json.Decode exposing (decodeValue)
 import Request.FeePlan as FeePlan
 import Update.FeePlan as FeePlan
 import Views.FeePlan as FeePlan
@@ -33,6 +35,10 @@ init flags =
       , original_fee_plans = fee_plans
       , alma_settings = flags.alma_settings
       , is_sending = False
+      , l10n =
+            decodeValue L10n.decode flags.l10n
+                -- |> Debug.log "Translations"
+                |> Result.withDefault L10n.french
       }
     , Cmd.none
     )
@@ -86,7 +92,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view { fee_plans, original_fee_plans, is_sending } =
+view { l10n, fee_plans, original_fee_plans, is_sending } =
     List.map2 Tuple.pair original_fee_plans fee_plans
-        |> List.map (FeePlan.show is_sending)
+        |> List.map (FeePlan.show l10n is_sending)
         |> div []
