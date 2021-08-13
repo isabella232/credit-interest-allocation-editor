@@ -1,6 +1,8 @@
 module Data.Model exposing (Model)
 
 import Data.FeePlan exposing (FeePlan)
+import Data.L10n exposing (L10n)
+import Dict exposing (Dict)
 import Request.Alma exposing (AlmaSettings)
 
 
@@ -9,4 +11,5 @@ type alias Model =
     , original_fee_plans : List FeePlan
     , alma_settings : AlmaSettings
     , is_sending : Bool
+    , l10n : L10n
     }
