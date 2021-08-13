@@ -31,7 +31,7 @@ type alias L10n =
 
 french : L10n
 french =
-    { fee_plan_title = "Pour le paiement en {installments_count} fois"
+    { fee_plan_title = "Pour le paiement en %(installments_count)s fois"
     , fee_plan_title_pos_suffix = " - POS"
     , merchant_fees_label = "Vos frais :"
     , customer_fees_label = "Frais client :"
@@ -47,11 +47,11 @@ french =
     , maximum_fees = "frais max"
     , maximum_fees_explaination = "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
     , example_label = "Exemple :"
-    , example_sentence = "Pour un achat de <blue>{purchase_amount}, votre client paiera\u{00A0}{customer_fee}</blue> de frais et <strong>vous paierez\u{00A0}{merchant_fee}</strong> de frais."
-    , explain_over_3000 = "Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u{00A0}{below_3000} pour les paniers inférieurs à {over_3000_amount}."
-    , explain_customer_fee_below_amount = "Les\u{00A0}{customer_rate}\u{00A0}de frais ne seront appliqués que pour les paniers inférieurs à\u{00A0}{over_amount}."
-    , explain_customer_fee_over_rate_for_amount = "Nous sommes contraints d'appliquer\u{00A0}{over_3000_rate}\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}{over_3000_amount}."
-    , explain_customer_fee_over_3000_and_over_6000 = "Nous sommes contraints d'appliquer\u{00A0}{over_3000_rate}\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}{over_3000_amount}\u{00A0}et inférieurs à\u{00A0}{over_6000_amount} puis\u{00A0}{over_6000_rate}\u{00A0}pour les paniers supérieurs à\u{00A0}{over_6000_amount}."
+    , example_sentence = "Pour un achat de <blue>%(purchase_amount)s, votre client paiera\u{00A0}%(customer_fee)s</blue> de frais et <strong>vous paierez\u{00A0}%(merchant_fee)</strong> de frais."
+    , explain_over_3000 = "Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u{00A0}%(below_3000)s pour les paniers inférieurs à %(over_3000_amount)s."
+    , explain_customer_fee_below_amount = "Les\u{00A0}%(customer_rate)s\u{00A0}de frais ne seront appliqués que pour les paniers inférieurs à\u{00A0}%(over_amount)s."
+    , explain_customer_fee_over_rate_for_amount = "Nous sommes contraints d'appliquer\u{00A0}%(over_3000_rate)s\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}%(over_3000_amount)s."
+    , explain_customer_fee_over_3000_and_over_6000 = "Nous sommes contraints d'appliquer\u{00A0}%(over_3000_rate)s\u{00A0}de frais client (maximum légal autorisé) pour les paniers supérieurs à\u{00A0}%(over_3000_amount)s\u{00A0}et inférieurs à\u{00A0}%(over_6000_amount)s puis\u{00A0}%(over_6000_rate)s\u{00A0}pour les paniers supérieurs à\u{00A0}%(over_6000_amount)s."
     }
 
 
