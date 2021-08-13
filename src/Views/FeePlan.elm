@@ -388,19 +388,19 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
                 ]
                 [ p []
                     [ u [] [ text l10n.example_label ]
-                    , text <| " " ++ before_blue_part
+                    , text <| " " ++ before_blue_part ++ " "
                     , span
                         [ style "color" "#4c86e5"
                         , style "font-weight" "bold"
                         ]
                         [ text blue_part ]
-                    , text before_strong_part
+                    , text <| " " ++ before_strong_part ++ " "
                     , span
                         [ style "color" "#5273d52"
                         , style "font-weight" "bold"
                         ]
                         [ text <| strong_part ]
-                    , text after_strong_part
+                    , text <| " " ++ after_strong_part
                     ]
                 ]
             ]
@@ -469,7 +469,7 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ p [ style "margin" "10px" ]
                 [ l10n.explain_customer_fee_below_amount
-                    |> String.replace "{customer_rate}" (percents maximum_interest_rate.over_6000)
+                    |> String.replace "{customer_rate}" (percents customer_fee_variable)
                     |> String.replace "{over_amount}" (euros over6000Amount)
                     |> text
                 , br [] []
