@@ -12,7 +12,7 @@ import Views.Utils exposing (euros, percents)
 
 
 show : L10n -> Bool -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
-show l10n is_sending has_maximum_interest_rate_regulations ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
+show l10n is_sending has_maximum_interest_rate_regulations ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -137,7 +137,7 @@ show_merchant_fees l10n variable fixed =
 
 
 showCustomerFeeVariableEditor : L10n -> FeePlan -> Html Msg
-showCustomerFeeVariableEditor l10n { installments_count, merchant_fee_variable, customer_fee_variable, maybe_customer_fee_variable } =
+showCustomerFeeVariableEditor l10n { installments_count, maybe_customer_fee_variable } =
     let
         fee_plan_editor_id =
             String.fromInt installments_count

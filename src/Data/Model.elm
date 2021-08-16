@@ -2,7 +2,6 @@ module Data.Model exposing (Model)
 
 import Data.FeePlan exposing (FeePlan)
 import Data.L10n exposing (L10n)
-import Dict exposing (Dict)
 import Request.Alma exposing (AlmaSettings)
 
 
