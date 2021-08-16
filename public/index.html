@@ -90,7 +90,7 @@
           csrfToken : "19sPmw2nVoGwWm42iUeq",
         },
         "l10n": {
-          "fee_plan_title": "Para el pago en %(installments_count)s plazos",
+          "fee_plan_title": "Para el pago en {{installments_count}} plazos",
           "fee_plan_title_pos_suffix": " - Punto de venta",
           "merchant_fees_label": "Sus costes :",
           "customer_fees_label": "Honorarios del cliente :",
@@ -106,11 +106,11 @@
           "maximum_fees": "cuota máxima",
           "maximum_fees_explaination": "Las cuotas aplicables a los clientes están limitadas por Alma para mantenerse por debajo del límite máximo legal. Como este máximo legal cambia trimestralmente, los límites establecidos por Alma también pueden cambiar.",
           "example_label": "Ejemplo :",
-          "example_sentence": "Por una compra de <blue>%(purchase_amount)s, tu cliente pagará una cuota de %(customer_fee)s</blue> y <strong>tú pagarás %(merchant_fee)s</strong> de frais.",
-          "explain_over_3000": "La tarifa establecida es superior a la máxima legal permitida. Si no lo modifica, utilizaremos el tipo máximo legal vigente cuando se creó el pago. Este tipo, actualizado trimestralmente por el Banco de Francia, es actualmente del %(below_3000)s para las cestas inferiores a %(over_3000_amount)s.",
-          "explain_customer_fee_below_amount": "La tasa del %(customer_rate)s sólo se aplicará a las cestas inferiores a %(over_amount)s.",
-          "explain_customer_fee_over_rate_for_amount": "Estamos obligados a aplicar una tasa de cliente del %(over_rate)s (el máximo legalmente permitido) para las cestas de más de %(over_amount)s.",
-          "explain_customer_fee_over_3000_and_over_6000": "Estamos obligados a aplicar un cargo por cliente del %(over_3000_rate)s (el máximo cargo legal permitido) para las cestas superiores a %(over_3000_amount)s e inferiores a %(over_6000_amount)s y un cargo del %(over_6000_rate)s para las cestas superiores a %(over_6000_amount)s."
+          "example_sentence": "Por una compra de <blue>{{purchase_amount}}, tu cliente pagará una cuota de {{customer_fee}}</blue> y <strong>tú pagarás {{merchant_fee}}</strong> de frais.",
+          "explain_over_3000": "La tarifa establecida es superior a la máxima legal permitida. Si no lo modifica, utilizaremos el tipo máximo legal vigente cuando se creó el pago. Este tipo, actualizado trimestralmente por el Banco de Francia, es actualmente del {{below_3000}} para las cestas inferiores a {{over_3000_amount}}.",
+          "explain_customer_fee_below_amount": "La tasa del {{customer_rate}} sólo se aplicará a las cestas inferiores a {{over_amount}}.",
+          "explain_customer_fee_over_rate_for_amount": "Estamos obligados a aplicar una tasa de cliente del {{over_rate}} (el máximo legalmente permitido) para las cestas de más de {{over_amount}}.",
+          "explain_customer_fee_over_3000_and_over_6000": "Estamos obligados a aplicar un cargo por cliente del {{over_3000_rate}} (el máximo cargo legal permitido) para las cestas superiores a {{over_3000_amount}} e inferiores a {{over_6000_amount}} y un cargo del {{over_6000_rate}} para las cestas superiores a {{over_6000_amount}}."
         },
         "fee_plans": [
           {

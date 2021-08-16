@@ -20,7 +20,7 @@ show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_var
     in
     div []
         [ h4 []
-            [ text <| String.replace "%(installments_count)s" (String.fromInt installments_count) l10n.fee_plan_title
+            [ text <| String.replace "{{installments_count}}" (String.fromInt installments_count) l10n.fee_plan_title
             , text <|
                 if fee_plan.kind == "pos" then
                     l10n.fee_plan_title_pos_suffix
@@ -316,9 +316,9 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
         , let
             interpolated_variable_translation =
                 l10n.example_sentence
-                    |> String.replace "%(purchase_amount)s" (euros exampleAmount)
-                    |> String.replace "%(customer_fee)s" (euros exampleClientFee)
-                    |> String.replace "%(merchant_fee)s" (euros exampleMerchantFee)
+                    |> String.replace "{{purchase_amount}}" (euros exampleAmount)
+                    |> String.replace "{{customer_fee}}" (euros exampleClientFee)
+                    |> String.replace "{{merchant_fee}}" (euros exampleMerchantFee)
 
             -- Before blue
             before_blue_split =
@@ -417,8 +417,8 @@ showOverRate l10n { installments_count, customer_fee_variable, maximum_interest_
     if customer_fee_variable > maximum_interest_rate.below_3000 then
         p [ style "margin" "10px" ]
             [ l10n.explain_over_3000
-                |> String.replace "%(below_3000)s" (percents maximum_interest_rate.below_3000)
-                |> String.replace "%(over_3000_amount)s" (euros over3000Amount)
+                |> String.replace "{{below_3000}}" (percents maximum_interest_rate.below_3000)
+                |> String.replace "{{over_3000_amount}}" (euros over3000Amount)
                 |> text
             ]
 
@@ -445,22 +445,22 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
             [ showOverRate l10n fee_plan
             , p [ style "margin" "10px" ]
                 [ l10n.explain_customer_fee_below_amount
-                    |> String.replace "%(customer_rate)s" (percents customerFee)
-                    |> String.replace "%(over_amount)s" (euros over3000Amount)
+                    |> String.replace "{{customer_rate}}" (percents customerFee)
+                    |> String.replace "{{over_amount}}" (euros over3000Amount)
                     |> text
                 , br [] []
                 , if customer_fee_variable > maximum_interest_rate.over_6000 && over6000Amount <= max_purchase_amount then
                     l10n.explain_customer_fee_over_3000_and_over_6000
-                        |> String.replace "%(over_3000_rate)s" (percents maximum_interest_rate.over_3000)
-                        |> String.replace "%(over_3000_amount)s" (euros over3000Amount)
-                        |> String.replace "%(over_6000_rate)s" (percents maximum_interest_rate.over_6000)
-                        |> String.replace "%(over_6000_amount)s" (euros over6000Amount)
+                        |> String.replace "{{over_3000_rate}}" (percents maximum_interest_rate.over_3000)
+                        |> String.replace "{{over_3000_amount}}" (euros over3000Amount)
+                        |> String.replace "{{over_6000_rate}}" (percents maximum_interest_rate.over_6000)
+                        |> String.replace "{{over_6000_amount}}" (euros over6000Amount)
                         |> text
 
                   else
                     l10n.explain_customer_fee_over_rate_for_amount
-                        |> String.replace "%(over_rate)s" (percents maximum_interest_rate.over_3000)
-                        |> String.replace "%(over_amount)s" (euros over3000Amount)
+                        |> String.replace "{{over_rate}}" (percents maximum_interest_rate.over_3000)
+                        |> String.replace "{{over_amount}}" (euros over3000Amount)
                         |> text
                 ]
             ]
@@ -469,13 +469,13 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ p [ style "margin" "10px" ]
                 [ l10n.explain_customer_fee_below_amount
-                    |> String.replace "%(customer_rate)s" (percents customer_fee_variable)
-                    |> String.replace "%(over_amount)s" (euros over6000Amount)
+                    |> String.replace "{{customer_rate}}" (percents customer_fee_variable)
+                    |> String.replace "{{over_amount}}" (euros over6000Amount)
                     |> text
                 , br [] []
                 , l10n.explain_customer_fee_over_rate_for_amount
-                    |> String.replace "%(over_rate)s" (percents maximum_interest_rate.over_6000)
-                    |> String.replace "%(over_amount)s" (euros over6000Amount)
+                    |> String.replace "{{over_rate}}" (percents maximum_interest_rate.over_6000)
+                    |> String.replace "{{over_amount}}" (euros over6000Amount)
                     |> text
                 ]
             ]
