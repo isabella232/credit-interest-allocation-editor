@@ -27,13 +27,6 @@ update model installments_count maybe_value =
             maybe_value
                 |> Maybe.andThen
                     (\value ->
-                        let
-                            cappedValue =
-                                value
-                                    * 100
-                                    |> round
-                                    |> min fee_plan.maximum_interest_rate.below_3000
-                        in
                         if fee_plan.customer_fee_variable == 0 then
                             if original_fee_plan.customer_fee_variable /= 0 then
                                 Just original_fee_plan.customer_fee_variable
@@ -47,8 +40,22 @@ update model installments_count maybe_value =
                         else if value == 0 then
                             Just 0
 
+                        else if model.has_maximum_interest_rate_regulations then
+                            (value * 100)
+                                |> round
+                                |> min fee_plan.maximum_interest_rate.below_3000
+                                |> Just
+
                         else
-                            Just cappedValue
+                            let
+                                max_fee_variable =
+                                    original_fee_plan.customer_fee_variable
+                                        + original_fee_plan.merchant_fee_variable
+                            in
+                            (value * 100)
+                                |> round
+                                |> min max_fee_variable
+                                |> Just
                     )
     in
     case maybe_customer_fee_variable of
