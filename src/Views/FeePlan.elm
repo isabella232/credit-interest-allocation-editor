@@ -459,8 +459,8 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
 
                   else
                     l10n.explain_customer_fee_over_rate_for_amount
-                        |> String.replace "{{over_rate}}" (percents maximum_interest_rate.over_3000)
-                        |> String.replace "{{over_amount}}" (euros over3000Amount)
+                        |> String.replace "{{over_3000_rate}}" (percents maximum_interest_rate.over_3000)
+                        |> String.replace "{{over_3000_amount}}" (euros over3000Amount)
                         |> text
                 ]
             ]
