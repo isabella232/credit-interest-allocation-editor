@@ -47,8 +47,18 @@ update model installments_count maybe_value =
                         else if value == 0 then
                             Just 0
 
-                        else
+                        else if model.has_maximum_interest_rate_regulations then
                             Just cappedValue
+
+                        else
+                            value
+                                * 100
+                                |> round
+                                |> min
+                                    (original_fee_plan.customer_fee_variable
+                                        + original_fee_plan.merchant_fee_variable
+                                    )
+                                |> Just
                     )
     in
     case maybe_customer_fee_variable of
