@@ -35,6 +35,7 @@ init flags =
       , original_fee_plans = fee_plans
       , alma_settings = flags.alma_settings
       , is_sending = False
+      , has_maximum_interest_rate_regulations = flags.has_maximum_interest_rate_regulations
       , l10n =
             decodeValue L10n.decode flags.l10n
                 -- |> Debug.log "Translations"
@@ -92,7 +93,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view { l10n, fee_plans, original_fee_plans, is_sending } =
+view { l10n, fee_plans, original_fee_plans, is_sending, has_maximum_interest_rate_regulations } =
     List.map2 Tuple.pair original_fee_plans fee_plans
-        |> List.map (FeePlan.show l10n is_sending)
+        |> List.map (FeePlan.show l10n is_sending has_maximum_interest_rate_regulations)
         |> div []
