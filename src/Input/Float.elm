@@ -365,9 +365,9 @@ onKeyDown options currentValue =
                         (newValue event.keyCode
                             |> String.toFloat
                             |> Maybe.andThen Just
-                                -- This hack is needed for some reason,
-                                -- if we remove it a strange behaviour occurs with the . <dot>
-                                -- when removing digits
+                         -- This hack is needed for some reason,
+                         -- if we remove it a strange behaviour occurs with the . <dot>
+                         -- when removing digits
                         )
                     , False
                     )
