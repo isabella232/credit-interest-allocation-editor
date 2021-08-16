@@ -11,8 +11,8 @@ import Views.Svg as Svg
 import Views.Utils exposing (euros, percents)
 
 
-show : L10n -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
-show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
+show : L10n -> Bool -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
+show l10n is_sending has_maximum_interest_rate_regulations ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, maximum_interest_rate, max_purchase_amount } as fee_plan ) =
     let
         fee_plan_id =
             String.fromInt installments_count
@@ -92,8 +92,8 @@ show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_var
                     text ""
 
                   else
-                    showInterestPanel l10n fee_plan
-                , showOver3000Message l10n fee_plan
+                    showInterestPanel l10n has_maximum_interest_rate_regulations fee_plan
+                , showOver3000Message l10n has_maximum_interest_rate_regulations fee_plan
                 ]
         ]
 
@@ -171,8 +171,8 @@ showCustomerFeeVariableEditor l10n { installments_count, merchant_fee_variable, 
         ]
 
 
-showInterestPanel : L10n -> FeePlan -> Html Msg
-showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_interest_rate } =
+showInterestPanel : L10n -> Bool -> FeePlan -> Html Msg
+showInterestPanel l10n has_maximum_interest_rate_regulations { customer_fee_variable, merchant_fee_variable, maximum_interest_rate } =
     let
         totalFees =
             customer_fee_variable + merchant_fee_variable
@@ -249,7 +249,7 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
                     , style "border-radius" "5px"
                     , style "width" customerFeeShare
                     ]
-                    [ if maximum_interest_rate.below_3000 < totalFees then
+                    [ if has_maximum_interest_rate_regulations && maximum_interest_rate.below_3000 < totalFees then
                         div
                             [ style "position" "absolute"
                             , style "top" "-5px"
@@ -275,7 +275,7 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
                 [ percents customer_fee_variable
                     |> text
                 ]
-            , if maximum_interest_rate.below_3000 < totalFees then
+            , if has_maximum_interest_rate_regulations && maximum_interest_rate.below_3000 < totalFees then
                 div [ style "position" "absolute", style "left" maxInterestTextPosition ]
                     [ strong []
                         [ percents maximum_interest_rate.below_3000
@@ -426,8 +426,8 @@ showOverRate l10n { installments_count, customer_fee_variable, maximum_interest_
         text ""
 
 
-showOver3000Message : L10n -> FeePlan -> Html Msg
-showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
+showOver3000Message : L10n -> Bool -> FeePlan -> Html Msg
+showOver3000Message l10n has_maximum_interest_rate_regulations ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate } as fee_plan) =
     let
         customerFee =
             Basics.min customer_fee_variable maximum_interest_rate.below_3000
@@ -440,7 +440,7 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
             (toFloat installments_count / toFloat (installments_count - 1) * 600000)
                 |> round
     in
-    if customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
+    if has_maximum_interest_rate_regulations && customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ showOverRate l10n fee_plan
             , p [ style "margin" "10px" ]

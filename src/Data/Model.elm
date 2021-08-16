@@ -12,4 +12,5 @@ type alias Model =
     , alma_settings : AlmaSettings
     , is_sending : Bool
     , l10n : L10n
+    , has_maximum_interest_rate_regulations : Bool
     }
