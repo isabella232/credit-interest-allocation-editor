@@ -40,7 +40,7 @@ update model installments_count maybe_value =
                         else if value == 0 then
                             Just 0
 
-                        else if model.has_maximum_interest_rate_regulations then
+                        else if original_fee_plan.is_under_maximum_interest_rate_regulations then
                             (value * 100)
                                 |> round
                                 |> min fee_plan.maximum_interest_rate.below_3000

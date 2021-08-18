@@ -9,5 +9,4 @@ type alias Flags =
     { fee_plans : List FlagsFeePlan
     , alma_settings : AlmaSettings
     , l10n : Decode.Value
-    , has_maximum_interest_rate_regulations : Bool
     }

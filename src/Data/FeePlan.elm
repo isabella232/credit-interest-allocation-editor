@@ -19,6 +19,7 @@ type alias FlagsFeePlan =
     , capped : Bool
     , maximum_interest_rate : MaximumInterestRate
     , max_purchase_amount : Int
+    , is_under_maximum_interest_rate_regulations : Bool
     }
 
 
@@ -33,12 +34,13 @@ type alias FeePlan =
     , maximum_interest_rate : MaximumInterestRate
     , max_purchase_amount : Int
     , maybe_customer_fee_variable : Maybe Float
+    , is_under_maximum_interest_rate_regulations : Bool
     }
 
 
 empty : FeePlan
 empty =
-    FeePlan "general" 2 0 0 0 0 False MaximumInterestRate.empty 0 Nothing
+    FeePlan "general" 2 0 0 0 0 False MaximumInterestRate.empty 0 Nothing True
 
 
 fromFlagsFeePlan : FlagsFeePlan -> FeePlan
@@ -54,6 +56,7 @@ fromFlagsFeePlan flags_fee_plan =
         flags_fee_plan.maximum_interest_rate
         flags_fee_plan.max_purchase_amount
         (Just <| toFloat flags_fee_plan.customer_fee_variable / 100)
+        flags_fee_plan.is_under_maximum_interest_rate_regulations
 
 
 decode : Decoder FeePlan
@@ -69,6 +72,7 @@ decode =
         |> required "maximum_interest_rate" MaximumInterestRate.decode
         |> required "max_purchase_amount" Decode.int
         |> required "customer_fee_variable" decodeMaybeCustomerFeeVariable
+        |> required "is_under_maximum_interest_rate_regulations" Decode.bool
 
 
 decodeMaybeCustomerFeeVariable : Decoder (Maybe Float)
