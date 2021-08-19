@@ -172,7 +172,7 @@ showCustomerFeeVariableEditor l10n { installments_count, maybe_customer_fee_vari
 
 
 showInterestPanel : L10n -> FeePlan -> Html Msg
-showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_interest_rate, is_under_maximum_interest_rate_regulations } =
+showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_interest_rate, is_under_maximum_interest_regulated_rate } =
     let
         totalFees =
             customer_fee_variable + merchant_fee_variable
@@ -249,7 +249,7 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
                     , style "border-radius" "5px"
                     , style "width" customerFeeShare
                     ]
-                    [ if is_under_maximum_interest_rate_regulations && maximum_interest_rate.below_3000 < totalFees then
+                    [ if is_under_maximum_interest_regulated_rate && maximum_interest_rate.below_3000 < totalFees then
                         div
                             [ style "position" "absolute"
                             , style "top" "-5px"
@@ -275,7 +275,7 @@ showInterestPanel l10n { customer_fee_variable, merchant_fee_variable, maximum_i
                 [ percents customer_fee_variable
                     |> text
                 ]
-            , if is_under_maximum_interest_rate_regulations && maximum_interest_rate.below_3000 < totalFees then
+            , if is_under_maximum_interest_regulated_rate && maximum_interest_rate.below_3000 < totalFees then
                 div [ style "position" "absolute", style "left" maxInterestTextPosition ]
                     [ strong []
                         [ percents maximum_interest_rate.below_3000
@@ -427,7 +427,7 @@ showOverRate l10n { installments_count, customer_fee_variable, maximum_interest_
 
 
 showOver3000Message : L10n -> FeePlan -> Html Msg
-showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate, is_under_maximum_interest_rate_regulations } as fee_plan) =
+showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fee_variable, maximum_interest_rate, is_under_maximum_interest_regulated_rate } as fee_plan) =
     let
         customerFee =
             Basics.min customer_fee_variable maximum_interest_rate.below_3000
@@ -440,7 +440,7 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
             (toFloat installments_count / toFloat (installments_count - 1) * 600000)
                 |> round
     in
-    if is_under_maximum_interest_rate_regulations && customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
+    if is_under_maximum_interest_regulated_rate && customer_fee_variable > maximum_interest_rate.over_3000 && over3000Amount <= max_purchase_amount then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
             [ showOverRate l10n fee_plan
             , p [ style "margin" "10px" ]
