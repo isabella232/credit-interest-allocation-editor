@@ -82,103 +82,107 @@
     </div>
   <script src="app.js"></script>
   <script>
-    const element = document.getElementById("app");
+      const element = document.getElementById("app");
+
+    var I18N_MESSAGES = {"about_to_refund": "Vous \u00eates sur le point de rembourser ", "accept_terms": "J\u0027accepte les conditions g\u00e9n\u00e9rales d\u0027utilisation du service", "add_variable_customer_fees": "Ajouter des frais clients variables ?", "administrator": "Administrateur", "all_done_captain": "All done captain!", "all_sub_accounts": "Tous les sous-comptes", "alma_identifier": "Identifiant Alma", "amount": "Montant", "amount_": "Montant : ", "amount_already_refunded_": "Montant d\u00e9j\u00e0 rembours\u00e9: ", "an_error_occured": "Une erreur est survenue : ", "and": "et", "any_other_company_document_text": "Tout document suppl\u00e9mentaire de moins de trois mois qui indique les statuts de la soci\u00e9t\u00e9, le repr\u00e9sentant l\u00e9gal et les b\u00e9n\u00e9ficiaires effectifs", "apr_": " avr.", "april": "avril", "are_you_absolutely_sure": "En \u00eates vous absolument s\u00fbr ?", "are_you_sure": "\u00cates-vous s\u00fbr ?", "auditor": "Auditeur", "aug_": "ao\u00fbt", "august": "ao\u00fbt", "beneficial_owner": "b\u00e9n\u00e9ficiaire effectif", "between": "entre", "birth_date": "Date de naissance", "birth_place": "Ville de naissance", "can_refund_until": "Vous pouvez rembourser jusqu\u0027\u00e0 ", "cancel": "Annuler", "cancel_sending": "Annuler l\u0027envoi", "close": "Fermer", "comment_": "Commentaire : ", "company_registration_proof_full_text": "Un document certifiant l\u2019immatriculation de la soci\u00e9t\u00e9 titulaire du compte de paiement  datant de moins de trois mois (Un extrait KBIS de moins de trois mois gratuitement disponible en ligne sur \u003ca href=\"https://monidenum.fr\"\u003emonidenum.fr\u003c/a\u003e)", "company_registration_proof_full_text_bis": "Un document certifiant l\u2019immatriculation de la soci\u00e9t\u00e9 titulaire du compte de paiement  datant de moins de trois mois (Un avis de situation SIRENE /Un extrait KBIS de moins de trois mois gratuitement disponible en ligne sur \u003ca href=\"https://monidenum.fr\"\u003emonidenum.fr\u003c/a\u003e)", "company_role": "Fonction au sein de la soci\u00e9t\u00e9", "company_website": "Site de l\u0027entreprise", "completed": "Compl\u00e9t\u00e9", "confirm": "Confirmer", "confirm_action_rewrite_text": "Et afin de confirmer cette action, veuillez r\u00e9\u00e9crire le texte \"J\u0027accepte le transfert\"", "confirmation_message": "Message de confirmation", "confirmation_message_must_be_as_asked": "Le message de confirmation doit \u00eatre exactement celui demand\u00e9.", "copy_report_general_meeting_text": "Une copie (moins d\u0027un an) du compte-rendu de la derni\u00e8re assembl\u00e9e g\u00e9n\u00e9rale de l\u2019association titulaire du compte de paiement", "country_of_residence": "Pays de r\u00e9sidence", "create_account": "Cr\u00e9er le compte", "create_child_account": "Cr\u00e9er un compte enfant", "create_export": "Cr\u00e9er l\u0027export", "create_export_text": "En fonction du volume de donn\u00e9es, l\u0027op\u00e9ration peut prendre quelques secondes \u00e0 quelques minutes. Il sera t\u00e9l\u00e9chargeable sur cette page une fois cr\u00e9\u00e9.", "creation": "Cr\u00e9ation", "creation_date": "Date de cr\u00e9ation", "customer_email": "Email du client", "customer_fees": "Frais client", "customer_fees_label": "Frais client :", "customer_first_name": "Pr\u00e9nom du client", "customer_last_name": "Nom du client", "customer_phone_number": "T\u00e9l\u00e9phone du client", "customers": "Client", "date": "Date", "date_transfer": "Date du virement", "dec_": " d\u00e9c.", "december": "d\u00e9cembre", "deducted_from_merchant_fees": "d\u00e9duits des frais marchands", "destination_iban": "IBAN de destination", "devs_member": "Membre de DEV", "disabled": "D\u00e9sactiv\u00e9", "downloaded": "T\u00e9l\u00e9charger", "drop_here_your_proof": "Merci de d\u00e9poser ici vos justificatifs", "email_payment": "Paiement par email", "end": "Fin", "error_during_ownership_transfer_": "Erreur lors du transfert de propri\u00e9t\u00e9: ", "error_during_refund": "Erreur lors du remboursement", "error_during_refund_": "Erreur lors du remboursement: ", "error_while_saving_files": "Erreur lors de l\u0027enregistrement des fichiers.", "error_while_saving_form": "Erreur lors de l\u0027enregistrement du formulaire.", "eur_volume": "Volume (EUR)", "example_label": "Exemple :", "example_sentence": "Pour un achat de \u003cblue\u003e{{purchase_amount}} votre client paiera\u00a0{{customer_fee}}\u003c/blue\u003e de frais et \u003cstrong\u003evous paierez\u00a0{{merchant_fee}}\u003c/strong\u003e de frais.", "explain_customer_fee_below_amount": "Les\u00a0{{customer_rate}}\u00a0de frais ne seront appliqu\u00e9s que pour les paniers inf\u00e9rieurs \u00e0\u00a0{{over_amount}}.", "explain_customer_fee_over_3000_and_over_6000": "Nous sommes contraints d\u0027appliquer\u00a0{{over_3000_rate}}\u00a0de frais client (maximum l\u00e9gal autoris\u00e9) pour les paniers sup\u00e9rieurs \u00e0\u00a0{{over_3000_amount}}\u00a0et inf\u00e9rieurs \u00e0\u00a0{{over_6000_amount}} puis\u00a0{{over_6000_rate}}\u00a0pour les paniers sup\u00e9rieurs \u00e0\u00a0{{over_6000_amount}}.", "explain_customer_fee_over_rate_for_amount": "Nous sommes contraints d\u0027appliquer\u00a0{{over_3000_rate}}\u00a0de frais client (maximum l\u00e9gal autoris\u00e9) pour les paniers sup\u00e9rieurs \u00e0\u00a0{{over_3000_amount}}.", "explain_over_3000": "Le taux configur\u00e9 est sup\u00e9rieur au taux maximal l\u00e9gal autoris\u00e9. Sans modification de votre partnous utiliserons le taux maximal l\u00e9gal en vigueur \u00e0 la cr\u00e9ation du paiement. Ce taux mis \u00e0 jour trimestriellement par la Banque de France est actuellement de\u00a0{{below_3000}} pour les paniers inf\u00e9rieurs \u00e0 {{over_3000_amount}}.", "export_accountancy": "Export - Comptabilit\u00e9", "export_cash_flow": "Export - Relev\u00e9 de flux", "export_sells": "Export - Ventes", "external_ops_member": "Membre externe d\u0027OPS", "feb_": " f\u00e9vr.", "february": "f\u00e9vrier", "fee_plan_title": "Pour le paiement en {{installments_count}} fois", "fee_plan_title_pos_suffix": " - POS", "file_sending_canceled": "Envoi du fichier annul\u00e9", "file_too_big": "Fichier trop volumineux", "fill_the_following_fields": "Veuillez renseigner le(s) champ(s) suivant(s) : {{fields}}", "filters": "Filtres", "finance_member": "Membre de FINANCE", "finished_transfer": "Virement effectu\u00e9s", "first_name": "Pr\u00e9nom", "fr_": "Ve", "fri_": "ven.", "friday": "vendredi", "from": "Du", "generate_new_api_key": "G\u00e9n\u00e9rer une nouvelle cl\u00e9 API ?", "i_accept_transfer": "J\u0027accepte le transfert", "i_understand_consequences_transfer_ownership": "Je comprends les cons\u00e9quences, transf\u00e9rez la propri\u00e9t\u00e9", "identical_passwords": "Mots de passe identiques", "identity_document": "Document d\u0027identit\u00e9", "in_shop_app": "En boutique (Tablette/PC)", "in_shop_payment": "Paiement en boutique", "in_shop_text_msg": "En boutique (SMS)", "installments_number": "Nombre d\u0027\u00e9ch\u00e9ances", "invalid_file_extension": "Extension de fichier invalide", "invalid_file_type": "Type de fichier invalide", "is_person_politically_exposed": "Cette personne est-elle politiquement expos\u00e9e ?", "is_person_politically_exposed_full_text": "Cette personne, un membre de sa famille ou ses associ\u00e9s ont-ils exerc\u00e9 une fonction publique importante? Des fonctions telles que chef du gouvernement, membre du parlement, ambassadeur ou directeur d\u0027organisation internationales.", "jan_": " janv.", "january": "janvier", "joaf_publication_text": "La parution au JOAFE (Journal Officiel des Associations \u0026 Fondations d\u0027Entreprise) de l\u2019association titulaire du compte de paiement", "jul_": " juil.", "july": "juillet", "jun_": "juin", "june": "juin", "kyc_ops_member": "Membre de OPS r\u00e9alisant des v\u00e9rifications KYC", "last_name": "Nom", "legal_representative": "repr\u00e9sentant l\u00e9gal", "linked_accounts": "Comptes li\u00e9s", "loading": "Chargement...", "logo_must_be_smaller_than_200ko": "Le logo ne doit pas exc\u00e9der 200ko", "logo_not_uploaded": "Le logo n\u0027a pas pu \u00eatre upload\u00e9", "manager": "Manager", "mar_": "mars", "march": "mars", "maximum_fees": "frais max", "maximum_fees_explaination": "Les frais applicables aux clients sont limit\u00e9s par Alma afin de rester en de\u00e7\u00e0 du maximum l\u00e9gal autoris\u00e9. Ce maximum l\u00e9gal \u00e9voluant trimestriellement les limites fix\u00e9es par Alma pourront elles aussi changer.", "maximum_number_of_files": "{{maxFiles}} fichiers maximum.", "may": "mai", "may_": "mai", "merchant": "Marchand", "merchant_fees": "Frais marchand", "merchant_fees_label": "Vos frais :", "merchant_name": "Nom de marchand", "mo_": "Lu", "mon_": "lun.", "monday": "lundi", "more_info": "Cliquez pour plus d\u0027informations", "new_owner_email": "Email du nouveau propri\u00e9taire", "new_owner_email_can_not_be_empty": "L\u0027adresse email du futur propri\u00e9taire ne doit pas \u00eatre vide.", "new_password_and_confirmation_different": "Le nouveau mot de passe et la confirmation sont diff\u00e9rents", "no": "Non", "no_doc_generated": "Aucun document g\u00e9n\u00e9r\u00e9.", "no_fee": "aucun", "no_payment_started": "Aucun paiement entam\u00e9", "no_sale_to_display": "Aucune vente \u00e0 afficher", "no_transfer_yet": "Aucun virement encore effectu\u00e9 vers votre compte", "no_user_to_display": "Aucun utilisateur \u00e0 afficher", "normal_user": "Utilisateur d\u0027un marchand", "nov_": " nov.", "november": "novembre", "oct_": " oct.", "october": "octobre", "online": "En ligne", "online_payment": "Paiement en ligne", "operator": "Op\u00e9rateur", "ops_admin": "Admin OPS", "ops_member": "Membre d\u0027OPS", "origin": "Origine", "owner": "Propri\u00e9taire", "ownership_transfer_completed": "Le transfert de propri\u00e9t\u00e9 a \u00e9t\u00e9 effectu\u00e9 avec succ\u00e8s", "payed": "Pay\u00e9", "payment_id": "ID paiement", "payment_state_prevents_refund": "Le paiement est dans un \u00e9tat ne permettant pas son remboursement. Merci de contacter Alma.", "payments_not_completed_sandbox": "Paiements non finalis\u00e9s (vue sandbox)", "per_transaction": "par transaction", "person_type_question": "Cette personne est \u00e9galement un {{person_type_label}} de la soci\u00e9t\u00e9 ?", "phone_number": "Num\u00e9ro de t\u00e9l\u00e9phone", "please_drop_here_identity_proof": "Merci de d\u00e9poser ici un justificatif d\u0027identit\u00e9", "please_enter_actual_password": "Merci d\u0027entrer votre mot de passe actuel", "please_enter_new_password": "Merci d\u0027entrer un nouveau mot de passe", "please_enter_valid_bic": "Veuillez entrer un BIC valide", "please_enter_valid_iban": "Veuillez entrer un IBAN valide", "please_wait": "Veuillez patienter", "processing_error_see_console": "Erreur de traitement (voir console): ", "purchase_date": "Date de l\u0027achat", "reference": "R\u00e9f\u00e9rence", "refund": "Rembourser", "refund_done": "Remboursement effectu\u00e9", "refund_done_success": "Le remboursement a \u00e9t\u00e9 effectu\u00e9 avec succ\u00e8s", "refund_must_be_higher_than": "Le remboursement doit \u00eatre d\u0027au plus ", "refund_will_be_deducted_installments": "Le montant du remboursement sera d\u00e9duit des \u00e9ch\u00e9ances futures. Si le montant \u00e0 rembourser est plus important que les \u00e9ch\u00e9ances futures, le reliquat sera recr\u00e9dit\u00e9 sur la carte du client. ", "refunded": "Rembours\u00e9", "remove_file": "Supprimer le fichier", "risk_member": "Membre de RISK", "role": "R\u00f4le", "sa_": "Sa", "sales": "Ventes", "sales_member": "Membre de SALES", "salesperson": "Vendeur", "sat_": "sam.", "saturday": "samedi", "save": "Sauvegarder", "sept_": " sept.", "september": "septembre", "server_couldnt_accept_file": "Le serveur n\u0027a pas pu accepter le fichier: {{statusCode}}", "shareholding_details_document_text": "Un document pr\u00e9sentant l\u2019actionnariat de la soci\u00e9t\u00e9 : table de capitalisation avec pourcentage de d\u00e9tention de la soci\u00e9t\u00e9", "signed_status_text": "Les statuts sign\u00e9s (du pr\u00e9sident, du secr\u00e9taire g\u00e9n\u00e9ral ou du tr\u00e9sorier) de l\u2019association titulaire du compte de paiement", "start": "D\u00e9but", "su_": "Di", "sun_": "dim.", "sunday": "dimanche", "super_user": "Super utilisateur", "sure_to_cancel_sending_file_question": "\u00cates-vous sur de vouloir annuler l\u0027envoi du fichier ?", "sure_to_remove_file_question": "\u00cates-vous sur de vouloir supprimer ce fichier ?", "sure_to_transfer_merchant_ownership": "Etes-vous s\u00fbr de vouloir transf\u00e9rer la propri\u00e9t\u00e9 de ce marchand ? Cette action ne pourra \u00eatre annul\u00e9e, sans le concours du nouveau propri\u00e9taire.", "text_generate_new_api_key": "Etes-vous s\u00fbr de vouloir g\u00e9n\u00e9rer une nouvelle cl\u00e9 API ? Une fois g\u00e9n\u00e9r\u00e9e, pensez \u00e0 la changer dans votre code ou CMS, sans quoi vous ne pourrez plus accepter les paiements avec Alma.", "th_": "Je", "through_email": "Par email", "thu_": "jeu.", "thursday": "jeudi", "to": "Au", "trade_register_certificate_text": "Un Certificat du Registre des M\u00e9tiers de moins de trois mois de l\u2019artisan titulaire du compte de paiement", "trade_register_registration_proof_text": "Un document certifiant l\u2019immatriculation de la soci\u00e9t\u00e9 au registre du commerce/registre des soci\u00e9t\u00e9s datant de moins de trois mois", "transaction_amount_text": "Montant de la transaction: \u003cstrong\u003e {{amount_customer_formated}} \u003c/strong\u003e ({{amount_no_fees_formated}} d\u0027achat + {{customer_fee}} de frais clients + {{customer_interest}} d\u0027int\u00e9r\u00eats)", "transfer_completed": "Transfert effectu\u00e9", "transfer_please_provide_new_owner_email": "Afin d\u0027effectuer ce transfert, veuillez saisir l\u0027adresse email du nouveau propri\u00e9taire.", "tu_": "Ma", "tue_": "mar.", "tuesday": "mardi", "unknown": "Inconnus", "users": "Utilisateurs", "validate": "Valider", "we_": "Me", "wed_": "mer.", "wednesday": "mercredi", "what_if_not_payed_installments": "Que se passe-t-il si le client n\u0027a pas fini de payer ses \u00e9ch\u00e9ances ?", "will_create_csv_export": "Ceci cr\u00e9era un export de donn\u00e9es aux formats CSV et XLSX.", "will_create_pdf_export": "Ceci cr\u00e9era un export de donn\u00e9es au format PDF.", "yes": "Oui"};
     const app = Elm.CreditInterestAllocationEditor.init({
       node: element,
       flags: {
         "alma_settings": {
-          apiServer: "http://localhost:1337",
-          csrfToken : "19sPmw2nVoGwWm42iUeq",
+          "apiServer": "http: //localhost: 1337",
+          "csrfToken": ""
         },
         "l10n": {
-          "fee_plan_title": "Para el pago en {{installments_count}} plazos",
-          "fee_plan_title_pos_suffix": " - Punto de venta",
-          "merchant_fees_label": "Sus costes :",
-          "customer_fees_label": "Honorarios del cliente :",
-          "merchant_fees": "Coste para el comerciante",
-          "customer_fees": "Honorarios del cliente",
-          "per_transaction": "por transacción",
-          "no_fee": "sin",
-          "deducted_from_merchant_fees": "deducido de las tasas comerciales",
-          "add_variable_customer_fees": "¿Añadir cargos variables a los clientes?",
-          "no": "No",
-          "yes": "Sí",
-          "save": "Guardar",
-          "maximum_fees": "cuota máxima",
-          "maximum_fees_explaination": "Las cuotas aplicables a los clientes están limitadas por Alma para mantenerse por debajo del límite máximo legal. Como este máximo legal cambia trimestralmente, los límites establecidos por Alma también pueden cambiar.",
-          "example_label": "Ejemplo :",
-          "example_sentence": "Por una compra de <blue>{{purchase_amount}}, tu cliente pagará una cuota de {{customer_fee}}</blue> y <strong>tú pagarás {{merchant_fee}}</strong> de frais.",
-          "explain_over_3000": "La tarifa establecida es superior a la máxima legal permitida. Si no lo modifica, utilizaremos el tipo máximo legal vigente cuando se creó el pago. Este tipo, actualizado trimestralmente por el Banco de Francia, es actualmente del {{below_3000}} para las cestas inferiores a {{over_3000_amount}}.",
-          "explain_customer_fee_below_amount": "La tasa del {{customer_rate}} sólo se aplicará a las cestas inferiores a {{over_amount}}.",
-          "explain_customer_fee_over_rate_for_amount": "Estamos obligados a aplicar una tasa de cliente del {{over_3000_rate}} (el máximo legalmente permitido) para las cestas de más de {{over_3000_amount}}.",
-          "explain_customer_fee_over_3000_and_over_6000": "Estamos obligados a aplicar un cargo por cliente del {{over_3000_rate}} (el máximo cargo legal permitido) para las cestas superiores a {{over_3000_amount}} e inferiores a {{over_6000_amount}} y un cargo del {{over_6000_rate}} para las cestas superiores a {{over_6000_amount}}."
+          "fee_plan_title": I18N_MESSAGES.fee_plan_title,
+          "fee_plan_title_pos_suffix": I18N_MESSAGES.fee_plan_title_pos_suffix,
+          "merchant_fees_label": I18N_MESSAGES.merchant_fees_label,
+          "customer_fees_label": I18N_MESSAGES.customer_fees_label,
+          "per_transaction": I18N_MESSAGES.per_transaction,
+          "no_fee": I18N_MESSAGES.no_fee,
+          "deducted_from_merchant_fees": I18N_MESSAGES.deducted_from_merchant_fees,
+          "add_variable_customer_fees": I18N_MESSAGES.add_variable_customer_fees,
+          "no": I18N_MESSAGES.no,
+          "yes": I18N_MESSAGES.yes,
+          "save": I18N_MESSAGES.save,
+          "customer_fees": I18N_MESSAGES.customer_fees,
+          "merchant_fees": I18N_MESSAGES.merchant_fees,
+          "maximum_fees": I18N_MESSAGES.maximum_fees,
+          "maximum_fees_explaination": I18N_MESSAGES.maximum_fees_explaination,
+          "example_label": I18N_MESSAGES.example_label,
+          "example_sentence": I18N_MESSAGES.example_sentence,
+          "explain_over_3000": I18N_MESSAGES.explain_over_3000,
+          "explain_customer_fee_below_amount": I18N_MESSAGES.explain_customer_fee_below_amount,
+          "explain_customer_fee_over_rate_for_amount": I18N_MESSAGES.explain_customer_fee_over_rate_for_amount,
+          "explain_customer_fee_over_3000_and_over_6000": I18N_MESSAGES.explain_customer_fee_over_3000_and_over_6000
         },
         "fee_plans": [
           {
-            "kind": "general",
-            "installments_count": 2,
-            "merchant_fee_variable": 300,
-            "merchant_fee_fixed": 0,
-            "customer_fee_variable": 40,
-            "customer_fee_fixed": 0,
+            "allowed": true,
             "capped": false,
-            "max_purchase_amount": 80000,
-            "maximum_interest_rate": {
-              "below_3000": 77,
-              "over_3000": 39,
-              "over_6000": 20,
-            },
-            "is_under_maximum_interest_regulated_rate": false
-          },
-          {
-            "kind": "general",
-            "installments_count": 3,
-            "merchant_fee_variable": 380,
+            "customer_fee_fixed": 0,
+            "customer_fee_variable": 73,
+            "customer_lending_rate": 0,
+            "deferred_days": 0,
+            "deferred_months": 0,
+            "installments_count": 2,
+            "is_under_maximum_interest_regulated_rate": false,
+            "kind": "pos",
+            "max_purchase_amount": 300000,
+            "merchant": "merchant_11jU7FF71iruz7zVIqgueAssGog8l2S3bv",
             "merchant_fee_fixed": 0,
-            "customer_fee_variable": 0,
-            "customer_fee_fixed": 100,
-            "capped": true,
-            "max_purchase_amount": 80000,
+            "merchant_fee_variable": 187,
+            "min_purchase_amount": 10000,
             "maximum_interest_rate": {
               "below_3000": 153,
               "over_3000": 79,
-              "over_6000": 41,
-            },
-            "is_under_maximum_interest_regulated_rate": true
+              "over_6000": 41
+            }
           },
           {
-            "kind": "general",
+            "allowed": true,
+            "capped": false,
+            "customer_fee_fixed": 0,
+            "customer_fee_variable": 150,
+            "customer_lending_rate": 0,
+            "deferred_days": 0,
+            "deferred_months": 0,
+            "installments_count": 3,
+            "is_under_maximum_interest_regulated_rate": false,
+            "kind": "pos",
+            "max_purchase_amount": 300000,
+            "merchant": "merchant_11jU7FF71iruz7zVIqgueAssGog8l2S3bv",
+            "merchant_fee_fixed": 0,
+            "merchant_fee_variable": 150,
+            "min_purchase_amount": 10000,
+            "maximum_interest_rate": {
+              "below_3000": 153,
+              "over_3000": 79,
+              "over_6000": 41
+            }
+          },
+          {
+            "allowed": true,
+            "capped": false,
+            "customer_fee_fixed": 0,
+            "customer_fee_variable": 235,
+            "customer_lending_rate": 0,
+            "deferred_days": 0,
+            "deferred_months": 0,
             "installments_count": 4,
-            "merchant_fee_variable": 98,
-            "merchant_fee_fixed": 0,
-            "customer_fee_variable": 322,
-            "customer_fee_fixed": 0,
-            "capped": false,
-            "max_purchase_amount": 80000,
-            "maximum_interest_rate": {
-              "below_3000": 229,
-              "over_3000": 118,
-              "over_6000": 62,
-            },
-            "is_under_maximum_interest_regulated_rate": true
-          },
-          {
+            "is_under_maximum_interest_regulated_rate": false,
             "kind": "general",
-            "installments_count": 10,
-            "merchant_fee_variable": 380,
+            "max_purchase_amount": 300000,
+            "merchant": "merchant_11jU7FF71iruz7zVIqgueAssGog8l2S3bv",
             "merchant_fee_fixed": 0,
-            "customer_fee_variable": 0,
-            "customer_fee_fixed": 0,
-            "capped": false,
-            "max_purchase_amount": 80000,
+            "merchant_fee_variable": 105,
+            "min_purchase_amount": 10000,
             "maximum_interest_rate": {
-              "below_3000": 671,
-              "over_3000": 351,
-              "over_6000": 186,
-            },
-            "is_under_maximum_interest_regulated_rate": true
+              "below_3000": 153,
+              "over_3000": 79,
+              "over_6000": 41
+            }
           }
-        ],
+        ]
       }
     });
   </script>
