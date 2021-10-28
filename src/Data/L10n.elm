@@ -9,6 +9,7 @@ type alias L10n =
     , fee_plan_title_pos_suffix : String
     , merchant_fees_label : String
     , customer_fees_label : String
+    , customer_lending_rate_label : String
     , per_transaction : String
     , no_fee : String
     , deducted_from_merchant_fees : String
@@ -20,6 +21,7 @@ type alias L10n =
     , merchant_fees : String
     , maximum_fees : String
     , maximum_fees_explaination : String
+    , maximum_fees_explaination_credit : String
     , example_label : String
     , example_sentence : String
     , explain_over_3000 : String
@@ -35,6 +37,7 @@ french =
     , fee_plan_title_pos_suffix = " - POS"
     , merchant_fees_label = "Vos frais :"
     , customer_fees_label = "Frais client :"
+    , customer_lending_rate_label = "Taux d'intérêt :"
     , per_transaction = "par transaction"
     , no_fee = "aucun"
     , deducted_from_merchant_fees = "déduits des frais marchands"
@@ -46,6 +49,7 @@ french =
     , merchant_fees = "Frais client"
     , maximum_fees = "frais max"
     , maximum_fees_explaination = "Les frais applicables aux clients sont limités par Alma, afin de rester en deçà du maximum légal autorisé. Ce maximum légal évoluant trimestriellement, les limites fixées par Alma pourront elles aussi changer."
+    , maximum_fees_explaination_credit = "Au delà de 3000€ de crédit, les intérêts applicables aux clients sont limités par Alma afin de rester en deçà du maximum légal autorisé. Des frais supplémentaires peuvent vous être appliqués pour ces paiements si le taux débiteur client dépasse ce maximum."
     , example_label = "Exemple :"
     , example_sentence = "Pour un achat de <blue>{{purchase_amount}}, votre client paiera\u{00A0}{{customer_fee}}</blue> de frais et <strong>vous paierez\u{00A0}{{merchant_fee)</strong> de frais."
     , explain_over_3000 = "Le taux configuré est supérieur au taux maximal légal autorisé. Sans modification de votre part, nous utiliserons le taux maximal légal en vigueur à la création du paiement. Ce taux, mis à jour trimestriellement par la Banque de France, est actuellement de\u{00A0}{{below_3000}} pour les paniers inférieurs à {{over_3000_amount}}."
@@ -62,6 +66,7 @@ decode =
         |> required "fee_plan_title_pos_suffix" Decode.string
         |> required "merchant_fees_label" Decode.string
         |> required "customer_fees_label" Decode.string
+        |> required "customer_lending_rate_label" Decode.string
         |> required "per_transaction" Decode.string
         |> required "no_fee" Decode.string
         |> required "deducted_from_merchant_fees" Decode.string
@@ -73,6 +78,7 @@ decode =
         |> required "merchant_fees" Decode.string
         |> required "maximum_fees" Decode.string
         |> required "maximum_fees_explaination" Decode.string
+        |> required "maximum_fees_explaination_credit" Decode.string
         |> required "example_label" Decode.string
         |> required "example_sentence" Decode.string
         |> required "explain_over_3000" Decode.string
