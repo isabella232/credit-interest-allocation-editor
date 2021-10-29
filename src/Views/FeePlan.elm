@@ -542,9 +542,11 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
 showOver3000CreditMessage : L10n -> FeePlan -> Html Msg
 showOver3000CreditMessage l10n ({ max_purchase_amount, installments_count, customer_lending_rate, maximum_interest_rate } as fee_plan) =
     let
-        first_installment = toFloat max_purchase_amount / toFloat installments_count
+        first_installment =
+            toFloat max_purchase_amount / toFloat installments_count
 
-        max_credit = toFloat max_purchase_amount - first_installment
+        max_credit =
+            toFloat max_purchase_amount - first_installment
     in
     if max_credit > 3000 then
         div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
