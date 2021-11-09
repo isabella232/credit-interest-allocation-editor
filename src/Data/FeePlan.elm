@@ -16,6 +16,7 @@ type alias FlagsFeePlan =
     , merchant_fee_fixed : Int
     , customer_fee_variable : Int
     , customer_fee_fixed : Int
+    , customer_lending_rate : Int
     , capped : Bool
     , maximum_interest_rate : MaximumInterestRate
     , max_purchase_amount : Int
@@ -30,6 +31,7 @@ type alias FeePlan =
     , merchant_fee_fixed : Int
     , customer_fee_variable : Int
     , customer_fee_fixed : Int
+    , customer_lending_rate : Int
     , capped : Bool
     , maximum_interest_rate : MaximumInterestRate
     , max_purchase_amount : Int
@@ -40,7 +42,7 @@ type alias FeePlan =
 
 empty : FeePlan
 empty =
-    FeePlan "general" 2 0 0 0 0 False MaximumInterestRate.empty 0 Nothing True
+    FeePlan "general" 2 0 0 0 0 0 False MaximumInterestRate.empty 0 Nothing True
 
 
 fromFlagsFeePlan : FlagsFeePlan -> FeePlan
@@ -52,6 +54,7 @@ fromFlagsFeePlan flags_fee_plan =
         flags_fee_plan.merchant_fee_fixed
         flags_fee_plan.customer_fee_variable
         flags_fee_plan.customer_fee_fixed
+        flags_fee_plan.customer_lending_rate
         flags_fee_plan.capped
         flags_fee_plan.maximum_interest_rate
         flags_fee_plan.max_purchase_amount
@@ -68,6 +71,7 @@ decode =
         |> required "merchant_fee_fixed" Decode.int
         |> required "customer_fee_variable" Decode.int
         |> required "customer_fee_fixed" Decode.int
+        |> required "customer_lending_rate" Decode.int
         |> required "capped" Decode.bool
         |> required "maximum_interest_rate" MaximumInterestRate.decode
         |> required "max_purchase_amount" Decode.int

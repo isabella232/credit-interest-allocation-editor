@@ -14,6 +14,19 @@ import Views.Utils exposing (euros, percents)
 show : L10n -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
 show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped } as fee_plan ) =
     let
+        is_credit =
+            installments_count > 4
+    in
+    if is_credit then
+        show_credit l10n original_fee_plan
+
+    else
+        show_not_credit l10n is_sending ( original_fee_plan, fee_plan )
+
+
+show_not_credit : L10n -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
+show_not_credit l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped } as fee_plan ) =
+    let
         fee_plan_id =
             String.fromInt installments_count
                 |> (++) "fee-plan-"
@@ -95,6 +108,48 @@ show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_var
                     showInterestPanel l10n fee_plan
                 , showOver3000Message l10n fee_plan
                 ]
+        ]
+
+
+show_credit : L10n -> FeePlan -> Html Msg
+show_credit l10n ({ max_purchase_amount, installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, customer_lending_rate, capped } as fee_plan) =
+    div []
+        [ h4 []
+            [ text <| String.replace "{{installments_count}}" (String.fromInt installments_count) l10n.fee_plan_title
+            , text <|
+                if fee_plan.kind == "pos" then
+                    l10n.fee_plan_title_pos_suffix
+
+                else
+                    ""
+            ]
+        , p []
+            [ span []
+                [ strong [] [ text <| l10n.merchant_fees_label ++ " " ]
+                , show_merchant_fees l10n merchant_fee_variable merchant_fee_fixed |> text
+                ]
+            , br [] []
+            , span []
+                [ strong [] [ text <| l10n.customer_fees_label ++ " " ]
+                , show_fees l10n customer_fee_variable customer_fee_fixed |> text
+                , if capped then
+                    text <| " " ++ l10n.deducted_from_merchant_fees
+
+                  else
+                    text ""
+                ]
+            , br [] []
+            , span []
+                [ strong [] [ text <| l10n.customer_lending_rate_label ++ " " ]
+                , show_fees l10n customer_lending_rate customer_fee_fixed |> text
+                , if capped then
+                    text <| " " ++ l10n.deducted_from_merchant_fees
+
+                  else
+                    text ""
+                ]
+            , showOver3000CreditMessage l10n fee_plan
+            ]
         ]
 
 
@@ -478,6 +533,26 @@ showOver3000Message l10n ({ max_purchase_amount, installments_count, customer_fe
                     |> String.replace "{{over_amount}}" (euros over6000Amount)
                     |> text
                 ]
+            ]
+
+    else
+        text ""
+
+
+showOver3000CreditMessage : L10n -> FeePlan -> Html Msg
+showOver3000CreditMessage l10n ({ max_purchase_amount, installments_count, customer_lending_rate, maximum_interest_rate } as fee_plan) =
+    let
+        first_installment =
+            toFloat max_purchase_amount / toFloat installments_count
+
+        max_credit =
+            toFloat max_purchase_amount - first_installment
+    in
+    if max_credit > 3000 then
+        div [ class "col-xs-12", style "background-color" "#f6f6f6", style "margin" "10px 0" ]
+            [ showOverRate l10n fee_plan
+            , p [ style "margin" "10px" ]
+                [ l10n.maximum_fees_explaination_credit |> text ]
             ]
 
     else
