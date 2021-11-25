@@ -1,27 +1,27 @@
 module Update.FeePlan exposing (update)
 
-import Data.FeePlan as FeePlan exposing (FeePlan, FeePlanID)
+import Data.FeePlan as FeePlan exposing (FeePlan, FeePlanID, feePlanToID)
 import Data.Model exposing (Model)
 
 
 update : Model -> FeePlanID -> Maybe Float -> List FeePlan
-update model installments_count maybe_value =
+update model fee_plan_id maybe_value =
     let
         fee_plan =
             model.fee_plans
-                |> List.filter (.installments_count >> (==) installments_count)
+                |> List.filter (feePlanToID >> (==) fee_plan_id)
                 |> List.head
                 |> Maybe.withDefault FeePlan.empty
 
         original_fee_plan =
             model.original_fee_plans
-                |> List.filter (.installments_count >> (==) installments_count)
+                |> List.filter (feePlanToID >> (==) fee_plan_id)
                 |> List.head
                 |> Maybe.withDefault FeePlan.empty
 
         other_fee_plans =
             model.fee_plans
-                |> List.filter (.installments_count >> (/=) installments_count)
+                |> List.filter (feePlanToID >> (/=) fee_plan_id)
 
         maybe_customer_fee_variable =
             maybe_value
@@ -68,7 +68,7 @@ update model installments_count maybe_value =
                     }
             in
             (new_fee_plan :: other_fee_plans)
-                |> List.sortBy .installments_count
+                |> List.sortBy feePlanToID
 
         Just new_customer_fee_variable ->
             -- Update bot maybe_customer_fee_variable and customer_fee_variable
@@ -80,7 +80,7 @@ update model installments_count maybe_value =
                         }
                 in
                 (new_fee_plan :: other_fee_plans)
-                    |> List.sortBy .installments_count
+                    |> List.sortBy feePlanToID
 
             else
                 let
@@ -105,4 +105,4 @@ update model installments_count maybe_value =
                         }
                 in
                 (new_fee_plan :: other_fee_plans)
-                    |> List.sortBy .installments_count
+                    |> List.sortBy feePlanToID
