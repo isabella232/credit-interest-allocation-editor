@@ -1,7 +1,7 @@
 module CreditInterestAllocationEditor exposing (main)
 
 import Browser
-import Data.FeePlan as FeePlan
+import Data.FeePlan as FeePlan exposing (feePlanToID)
 import Data.Flags exposing (Flags)
 import Data.L10n as L10n
 import Data.Model exposing (Model)
@@ -28,7 +28,7 @@ init flags =
     let
         fee_plans =
             flags.fee_plans
-                |> List.sortBy .installments_count
+                |> List.sortBy feePlanToID
                 |> List.map FeePlan.fromFlagsFeePlan
     in
     ( { fee_plans = fee_plans
@@ -70,17 +70,20 @@ update msg model =
 
         FeePlanUpdated original_fee_plan (Ok new_fee_plan) ->
             let
+                originalFeePlanID =
+                    feePlanToID original_fee_plan
+
                 new_original_fee_plans =
                     model.original_fee_plans
-                        |> List.filter (\i -> i.installments_count /= original_fee_plan.installments_count)
+                        |> List.filter (feePlanToID >> (/=) originalFeePlanID)
                         |> (::) new_fee_plan
-                        |> List.sortBy .installments_count
+                        |> List.sortBy feePlanToID
 
                 new_fee_plans =
                     model.fee_plans
-                        |> List.filter (\i -> i.installments_count /= original_fee_plan.installments_count)
+                        |> List.filter (feePlanToID >> (/=) originalFeePlanID)
                         |> (::) new_fee_plan
-                        |> List.sortBy .installments_count
+                        |> List.sortBy feePlanToID
             in
             ( { model
                 | is_sending = False

@@ -1,6 +1,6 @@
 module Views.FeePlan exposing (show)
 
-import Data.FeePlan exposing (FeePlan)
+import Data.FeePlan exposing (FeePlan, feePlanToID)
 import Data.L10n exposing (L10n)
 import Data.Msg exposing (Msg(..))
 import Html exposing (..)
@@ -25,11 +25,10 @@ show l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_var
 
 
 show_not_credit : L10n -> Bool -> ( FeePlan, FeePlan ) -> Html Msg
-show_not_credit l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped } as fee_plan ) =
+show_not_credit l10n is_sending ( original_fee_plan, { installments_count, merchant_fee_variable, merchant_fee_fixed, customer_fee_variable, customer_fee_fixed, capped, kind } as fee_plan ) =
     let
         fee_plan_id =
-            String.fromInt installments_count
-                |> (++) "fee-plan-"
+            feePlanToID fee_plan
     in
     div []
         [ h4 []
@@ -71,7 +70,7 @@ show_not_credit l10n is_sending ( original_fee_plan, { installments_count, merch
                         , id <| fee_plan_id ++ "-non"
                         , checked <| customer_fee_variable == 0
                         , value "-1"
-                        , onInput <| (String.toFloat >> SetCustomerFeeVariable installments_count)
+                        , onInput <| (String.toFloat >> SetCustomerFeeVariable fee_plan_id)
                         ]
                         []
                     , text "\u{00A0}"
@@ -83,7 +82,7 @@ show_not_credit l10n is_sending ( original_fee_plan, { installments_count, merch
                         , id <| fee_plan_id ++ "-oui"
                         , checked <| customer_fee_variable /= 0
                         , value "1"
-                        , onInput <| (String.toFloat >> SetCustomerFeeVariable installments_count)
+                        , onInput <| (String.toFloat >> SetCustomerFeeVariable fee_plan_id)
                         ]
                         []
                     , text "\u{00A0}"
@@ -192,14 +191,13 @@ show_merchant_fees l10n variable fixed =
 
 
 showCustomerFeeVariableEditor : L10n -> FeePlan -> Html Msg
-showCustomerFeeVariableEditor l10n { installments_count, maybe_customer_fee_variable } =
+showCustomerFeeVariableEditor l10n ({ installments_count, maybe_customer_fee_variable, kind } as feePlan) =
     let
-        fee_plan_editor_id =
-            String.fromInt installments_count
-                |> (++) "fee-plan-"
+        fee_plan_id =
+            feePlanToID feePlan
 
         initialOptions =
-            MaskedPercentage.defaultOptions (SetCustomerFeeVariable installments_count)
+            MaskedPercentage.defaultOptions (SetCustomerFeeVariable fee_plan_id)
 
         inputOptions =
             { initialOptions
@@ -216,11 +214,11 @@ showCustomerFeeVariableEditor l10n { installments_count, maybe_customer_fee_vari
         ]
         [ MaskedPercentage.input
             inputOptions
-            [ class "form-control", id fee_plan_editor_id ]
+            [ class "form-control", id fee_plan_id ]
             maybe_customer_fee_variable
         , label
             [ class "input-group-addon"
-            , for fee_plan_editor_id
+            , for fee_plan_id
             ]
             [ text <| "% " ++ l10n.per_transaction ]
         ]

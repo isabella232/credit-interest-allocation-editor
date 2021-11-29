@@ -1,12 +1,33 @@
-module Data.FeePlan exposing (FeePlan, FeePlanID, FlagsFeePlan, decode, empty, fromFlagsFeePlan)
+module Data.FeePlan exposing (FeePlan, FeePlanID, FlagsFeePlan, decode, empty, feePlanToID, fromFlagsFeePlan)
 
 import Data.Interest as MaximumInterestRate exposing (MaximumInterestRate)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline exposing (required)
+import String exposing (left)
 
 
 type alias FeePlanID =
-    Int
+    String
+
+
+type alias FeePlanIDAble a =
+    { a | installments_count : Int, kind : String }
+
+
+feePlanToID : FeePlanIDAble a -> FeePlanID
+feePlanToID { installments_count, kind } =
+    let
+        short_kind =
+            left 1 kind
+
+        sortable_installment_count =
+            if installments_count < 10 then
+                String.fromInt installments_count |> (++) "0"
+
+            else
+                String.fromInt installments_count
+    in
+    "fee-plan-" ++ sortable_installment_count ++ "-" ++ short_kind
 
 
 type alias FlagsFeePlan =
