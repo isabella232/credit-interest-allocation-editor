@@ -9,19 +9,19 @@ update model fee_plan_id maybe_value =
     let
         fee_plan =
             model.fee_plans
-                |> List.filter (feePlanToID >> (==) fee_plan_id)
+                |> List.filter (\fp -> feePlanToID fp == fee_plan_id)
                 |> List.head
                 |> Maybe.withDefault FeePlan.empty
 
         original_fee_plan =
             model.original_fee_plans
-                |> List.filter (feePlanToID >> (==) fee_plan_id)
+                |> List.filter (\fp -> feePlanToID fp == fee_plan_id)
                 |> List.head
                 |> Maybe.withDefault FeePlan.empty
 
         other_fee_plans =
             model.fee_plans
-                |> List.filter (feePlanToID >> (/=) fee_plan_id)
+                |> List.filter (\fp -> feePlanToID fp /= fee_plan_id)
 
         maybe_customer_fee_variable =
             maybe_value

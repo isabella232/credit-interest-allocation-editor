@@ -28,7 +28,7 @@ init flags =
     let
         fee_plans =
             flags.fee_plans
-                |> List.sortBy (\f -> feePlanToID f)
+                |> List.sortBy feePlanToID
                 |> List.map FeePlan.fromFlagsFeePlan
     in
     ( { fee_plans = fee_plans

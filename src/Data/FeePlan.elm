@@ -20,17 +20,14 @@ feePlanToID { installments_count, kind } =
         short_kind =
             left 1 kind
 
-        sortable_ic =
+        sortable_installment_count =
             if installments_count < 10 then
                 String.fromInt installments_count |> (++) "0"
 
             else
                 String.fromInt installments_count
     in
-    short_kind
-        |> (++) "-"
-        |> (++) sortable_ic
-        |> (++) "fee-plan-"
+    "fee-plan-" ++ sortable_installment_count ++ "-" ++ short_kind
 
 
 type alias FlagsFeePlan =
